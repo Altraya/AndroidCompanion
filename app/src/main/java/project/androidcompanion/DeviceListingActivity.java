@@ -1,5 +1,6 @@
 package project.androidcompanion;
 
+import android.app.ListActivity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,11 +9,39 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 
-public class DeviceListingActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+//public class DeviceListingActivity extends AppCompatActivity {
+public class DeviceListingActivity extends ListActivity {
+    //LIST OF ARRAY STRINGS WHICH WILL SERVE AS LIST ITEMS
+    ArrayList<String> listItems=new ArrayList<String>();
+
+    //DEFINING A STRING ADAPTER WHICH WILL HANDLE THE DATA OF THE LISTVIEW
+    ArrayAdapter<String> adapter;
+
+    //RECORDING HOW MANY TIMES THE BUTTON HAS BEEN CLICKED
+    int clickCounter=0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle icicle) {
+        super.onCreate(icicle);
+        setContentView(R.layout.activity_device_listing);
+        adapter=new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1,
+                listItems);
+        setListAdapter(adapter);
+    }
+
+    //METHOD WHICH WILL HANDLE DYNAMIC INSERTION
+    public void addItems(View v) {
+        listItems.add("Clicked : "+clickCounter++);
+        adapter.notifyDataSetChanged();
+    }
+
+    /*@Override
+        protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_listing);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -26,7 +55,7 @@ public class DeviceListingActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

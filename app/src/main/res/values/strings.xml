@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">AndroidCompanion</string>
     <string name="action_settings">Settings</string>
+    <string name="listingUserText">List of connected Devices : </string>
+    <string name="deviceId">Device Id : </string>
+    <string name="deviceName">Device Name : </string>
+    <string name="Add">ADD</string>
 </resources>
