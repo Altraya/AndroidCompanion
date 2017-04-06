@@ -1,5 +1,6 @@
 package project.androidcompanion;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,42 +12,25 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-
+//TODO porquoi c'est lent
 //public class DeviceListingActivity extends AppCompatActivity {
-public class DeviceListingActivity extends ListActivity {
-
+public class DeviceListingActivity extends Activity {
+    //intent static variables
     public final static String DEVICEID = "id";
     public final static String DEVICENAME = "name";
 
-    //LIST OF ARRAY STRINGS WHICH WILL SERVE AS LIST ITEMS
-    //ArrayList<String> listItems=new ArrayList<String>();
     ArrayList<DeviceInformationActivity> listDevice=new ArrayList<DeviceInformationActivity>();
-
-    //DEFINING A STRING ADAPTER WHICH WILL HANDLE THE DATA OF THE LISTVIEW
-    //ArrayAdapter<String> adapter;
-
-
-    ArrayAdapter<DeviceInformationActivity> deviceAdapter;
-
-    //RECORDING HOW MANY TIMES THE BUTTON HAS BEEN CLICKED
-    int clickCounter=0;
+    DeviceListingAdaptater deviceAdapter;
 
     @Override
-    public void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_listing);
-        /*adapter=new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1,
-                listItems);
-        setListAdapter(adapter);*/
-
-        deviceAdapter=new ArrayAdapter<DeviceInformationActivity>(this,
-                android.R.layout.simple_list_item_1,
-                listDevice);
-        setListAdapter(deviceAdapter);
+        populateUsersList();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -61,7 +45,17 @@ public class DeviceListingActivity extends ListActivity {
 
 
 
+    }
 
+    private void populateUsersList() {
+        // Construct the data source
+        //ArrayList<DeviceInformationActivity> arrayOfUsers = DeviceInformationActivity.getUsers();
+        // Create the adapter to convert the array to views
+        //listDevice.add(new DeviceInformationActivity("deviceid","deviceName"));
+        deviceAdapter = new DeviceListingAdaptater(this, listDevice);
+        // Attach the adapter to a ListView
+        ListView listView = (ListView) findViewById(R.id.list);
+        listView.setAdapter(deviceAdapter);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -75,44 +69,14 @@ public class DeviceListingActivity extends ListActivity {
                 listItems.add("NAME : "+deviceName);
                 adapter.notifyDataSetChanged();*/
 
-                listDevice.add(new DeviceInformationActivity(deviceid,deviceName));
-                deviceAdapter.notifyDataSetChanged();
+                //listDevice.add(new DeviceInformationActivity(deviceid,deviceName));
+                //deviceAdapter.notifyDataSetChanged();
 
-
-
+                deviceAdapter.add(new DeviceInformationActivity(deviceid,deviceName));
             }
         }
     }
-    //METHOD WHICH WILL HANDLE DYNAMIC INSERTION
-    public void addItems(View v) {
-        //listItems.add("Clicked : "+clickCounter++);
-        //adapter.notifyDataSetChanged();
 
-
-
-        /*listDevice.add(new DeviceInformationActivity("id1","name id1"));
-        deviceAdapter.notifyDataSetChanged();*/
-
-
-
-    }
-
-    /*@Override
-        protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_device_listing);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -135,4 +99,7 @@ public class DeviceListingActivity extends ListActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }
+
+
