@@ -4,5 +4,6 @@
     <string name="listingUserText">List of connected Devices : </string>
     <string name="deviceId">Device Id : </string>
     <string name="deviceName">Device Name : </string>
+    <string name="displayDeviceInformationTitle">Device Information : </string>
     <string name="Add">ADD</string>
 </resources>

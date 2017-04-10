@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-//TODO improve adapter using viewholder : https://github.com/codepath/android_guides/wiki/Using-an-ArrayAdapter-with-ListView
+// improved adapter using viewholder : https://github.com/codepath/android_guides/wiki/Using-an-ArrayAdapter-with-ListView
 
 /**
  * Created by Sakina on 06/04/2017.
@@ -22,7 +22,7 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
         super(context, 0, devicesLists);
     }
 
-@Override
+/*@Override
     public View getView(int position, View convertView, final ViewGroup parent) {
         // Get the data item for this position
         DeviceInformationActivity deviceInformationActivity = getItem(position);
@@ -54,8 +54,63 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
 
         return convertView;
         }
+    }*/
+
+
+    // View lookup cache
+    private static class ViewHolder {
+        Button btnDelete;
+        TextView deviceName;
     }
 
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        // Get the data item for this position
+        DeviceInformationActivity deviceInformationActivity = getItem(position);
+        // Check if an existing view is being reused, otherwise inflate the view
+        ViewHolder viewHolder; // view lookup cache stored in tag
+        if (convertView == null) {
+            // If there's no view to re-use, inflate a brand new view for row
+            viewHolder = new ViewHolder();
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+            convertView = inflater.inflate(R.layout.device_listing_row, parent, false);
+            viewHolder.btnDelete = (Button) convertView.findViewById(R.id.btn_delete);
+            viewHolder.deviceName = (TextView) convertView.findViewById(R.id.txt_deviceNameRow);
+            // Cache the viewHolder object inside the fresh view
+            convertView.setTag(viewHolder);
+        } else {
+            // View is being recycled, retrieve the viewHolder object from tag
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+        // Populate the data from the data object via the viewHolder object
+        // into the template view.
+        viewHolder.deviceName.setText(deviceInformationActivity.getDeviceName());
+        viewHolder.btnDelete.setTag(position);
+        viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = (Integer) view.getTag();
+                // Access the row position here to get the correct data item
+                DeviceInformationActivity dev = getItem(position);
+                // Do what you want here...
+                remove(dev);
+            }
+        });
+
+       /* viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                data.get(position).setButtonClicked(1);
+                new DownloadTask(currentActivity, position).execute();
+            }
+        });*/
+
+
+        // Return the completed view to render on screen
+        return convertView;
+    }
+}
 
 
 /*
