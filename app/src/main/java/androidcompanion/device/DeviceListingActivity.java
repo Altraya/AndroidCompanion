@@ -59,10 +59,12 @@ public class DeviceListingActivity extends Activity
         {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(DeviceListingActivity.this, addDeviceToListActivity.class);
-                startActivityForResult(i, 1);
+                /*Intent i = new Intent(DeviceListingActivity.this, addDeviceToListActivity.class);
+                startActivityForResult(i, 1);*/
+
+                
             }
-            Intent form = getIntent();
+            //Intent form = getIntent();
 
         });
 

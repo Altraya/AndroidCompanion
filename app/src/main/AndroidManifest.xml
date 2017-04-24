@@ -18,13 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="androidcompanion.device.DeviceListingActivity"
             android:label="@string/app_name"
             android:parentActivityName="androidcompanion.main.MainActivity" />
-
-        <activity android:name="androidcompanion.device.addDeviceToListActivity"/>
+        <activity android:name="androidcompanion.device.addDeviceToListActivity" />
 
         <service
             android:name="androidcompanion.notifications.NotificationService"
@@ -35,6 +33,7 @@
             </intent-filter>
         </service>
 
+        <activity android:name="androidcompanion.device.ReadQRCodeActivity"></activity>
     </application>
 
 </manifest>
