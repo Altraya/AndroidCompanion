@@ -1,4 +1,4 @@
-package project.androidcompanion;
+package androidcompanion.device;
 
 import android.support.v7.app.AppCompatActivity;
 /**

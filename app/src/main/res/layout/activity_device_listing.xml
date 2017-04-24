@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="project.androidcompanion.DeviceListingActivity">
+    tools:context="project.androidcompanion.androidcompanion.device.DeviceListingActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -53,5 +53,6 @@
             android:layout_height="fill_parent"
             android:drawSelectorOnTop="false" />
     </LinearLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>
