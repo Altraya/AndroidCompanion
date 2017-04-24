@@ -1,4 +1,4 @@
-package project.androidcompanion;
+package androidcompanion.netcode;
 
 import android.util.Log;
 import java.io.*;
@@ -8,10 +8,10 @@ import java.net.Socket;
 public class TCPClient {
 
     private String serverMessage;
-    public static final String SERVERIP = "192.168.43.223"; //L'adresse IP de l'ordinateur faisant office de serveur
-    public static final int SERVERPORT = 4444;
     private OnMessageReceived mMessageListener = null;        // Variable utilisée pour mes tests. Le test consiste à pouvoir faire un petit chat entre le pc et le téléphone.
     private boolean mRun = false;
+
+    private Client client;
 
     PrintWriter out;
     BufferedReader in;
@@ -19,7 +19,8 @@ public class TCPClient {
     /**
      *  Constructor of the class. OnMessagedReceived listens for the messages received from server
      */
-    public TCPClient(OnMessageReceived listener) {
+    public TCPClient(Client client, OnMessageReceived listener) {
+        this.client = client;
         mMessageListener = listener;
     }
 
@@ -46,12 +47,12 @@ public class TCPClient {
 
             //-------------------------La création du socket
             //here you must put your computer's IP address.
-            InetAddress serverAddr = InetAddress.getByName(SERVERIP);
+            InetAddress serverAddr = InetAddress.getByName(client.getAddress());
 
             //Log.e("TCP Client", "C: Connecting...");
 
             //create a socket to make the connection with the server
-            Socket socket = new Socket(serverAddr, SERVERPORT);
+            Socket socket = new Socket(serverAddr, client.getPort());
 
             try {
 
@@ -66,6 +67,8 @@ public class TCPClient {
 
                 //receive the message which the server sends back
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+                client.getClientEventManager().fireConnectedEvent();
 
                 //in this while the client listens for the messages sent by the server
                 while (mRun) {
@@ -86,9 +89,8 @@ public class TCPClient {
                 Log.e("TCP", "S: Error", e);
 
             } finally {
-                //the socket must be closed. It is not possible to reconnect to this socket
-                // after it is closed, which means a new socket instance has to be created.
                 socket.close();
+                client.getClientEventManager().fireDisconnectedEvent();
             }
 
         } catch (Exception e) {
