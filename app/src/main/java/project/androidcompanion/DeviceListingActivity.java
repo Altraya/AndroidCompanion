@@ -3,6 +3,7 @@ package project.androidcompanion;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.hardware.camera2.TotalCaptureResult;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,8 +22,10 @@ import java.util.ArrayList;
 import static project.androidcompanion.R.id.fab;
 
 //TODO porquoi c'est lent
+// TODO use JSON to store data (devices)
 //public class DeviceListingActivity extends AppCompatActivity {
-public class DeviceListingActivity extends Activity {
+public class DeviceListingActivity extends Activity
+{
     //intent static variables
     public final static String DEVICEID = "id";
     public final static String DEVICENAME = "name";
@@ -32,7 +35,8 @@ public class DeviceListingActivity extends Activity {
     ListView listView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_listing);
         //populateDeviceList();
@@ -43,7 +47,8 @@ public class DeviceListingActivity extends Activity {
         listView.setAdapter(deviceAdapter);
 
         //click on a deviceList item
-        /**/listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /**/listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(DeviceListingActivity.this, DisplayDeviceInformationActivity.class);
@@ -53,24 +58,11 @@ public class DeviceListingActivity extends Activity {
                 startActivity(intent);
             }
         });
-        /*
-        listView.setOnClickListener(new View.OnClickListener(){
 
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DeviceListingActivity.this, DisplayDeviceInformationActivity.class);
-                //DeviceInformationActivity clickedDevice = (DeviceInformationActivity) parent.getItemAtPosition(position);
-                //intent.putExtra(DEVICENAME, clickedDevice.getDeviceName());
-                //intent.putExtra(DEVICEID, clickedDevice.getDeviceId());
-                startActivity(intent);
-            }
-        });*/
-
-
-
-                //click on add button
+        //click on add button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(DeviceListingActivity.this, addDeviceToListActivity.class);
