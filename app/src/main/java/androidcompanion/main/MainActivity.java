@@ -10,10 +10,15 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Html;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidcompanion.device.DeviceInformationActivity;
+import androidcompanion.device.DeviceListingActivity;
+import androidcompanion.device.addDeviceToListActivity;
 import project.androidcompanion.R;
 
 
@@ -23,12 +28,21 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.watchnotification);
+
+        Button btnLaunch = (Button) findViewById(R.id.button);
+        btnLaunch.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, DeviceListingActivity.class);
+                startActivity(i);
+            }
+        });
+
         tab = (TableLayout)findViewById(R.id.tab);
         LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("Msg"));
-
     }
 
 
