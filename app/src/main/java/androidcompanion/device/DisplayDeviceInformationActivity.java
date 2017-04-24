@@ -1,4 +1,4 @@
-package project.androidcompanion;
+package androidcompanion.device;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import project.androidcompanion.R;
 
 /**
  * Created by Sakina on 07/04/2017.
