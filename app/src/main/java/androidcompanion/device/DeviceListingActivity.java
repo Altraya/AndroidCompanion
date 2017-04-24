@@ -12,6 +12,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import androidcompanion.main.MainActivity;
+import androidcompanion.main.SystemManager;
 import androidcompanion.netcode.Client;
 import androidcompanion.netcode.ClientEvent;
 import project.androidcompanion.R;
@@ -30,26 +32,6 @@ public class DeviceListingActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Client client = new Client("192.168.43.223", 4444);
-        client.addClientEventListener(new ClientEvent.ClientEventListener() {
-            @Override
-            public void connectedEvent(ClientEvent event) {
-                System.out.println("Connexion établie");
-            }
-
-            @Override
-            public void messageReceivedEvent(ClientEvent event, String message) {
-                System.out.println("Message reçu : " + message);
-            }
-
-            @Override
-            public void disconnectedEvent(ClientEvent event) {
-                System.out.println("Déconnexion");
-            }
-        });
-
-        client.connect();
 
         setContentView(R.layout.activity_device_listing);
         //populateDeviceList();

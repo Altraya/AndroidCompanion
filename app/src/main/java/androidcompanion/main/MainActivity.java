@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import androidcompanion.netcode.Client;
 import androidcompanion.netcode.ClientEvent;
+import androidcompanion.notifications.NotifyFactory;
 import project.androidcompanion.R;
 
 
@@ -30,6 +31,32 @@ public class MainActivity extends Activity {
         setContentView(R.layout.watchnotification);
         tab = (TableLayout)findViewById(R.id.tab);
         LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("Msg"));
+
+        //Create the notifyFactory
+        SystemManager.getInstance().setNotifyFactory(new NotifyFactory());
+
+        //Connects the client
+        SystemManager.getInstance().setClient(new Client("192.168.43.223", 4444));
+        SystemManager.getInstance().getClient().addClientEventListener(new ClientEvent.ClientEventListener() {
+            @Override
+            public void connectedEvent(ClientEvent event) {
+                System.out.println("Connexion établie");
+                SystemManager.getInstance().getNotifyFactory().connect();
+            }
+
+            @Override
+            public void messageReceivedEvent(ClientEvent event, String message) {
+                System.out.println("Message reçu : " + message);
+            }
+
+            @Override
+            public void disconnectedEvent(ClientEvent event) {
+                System.out.println("Déconnexion");
+            }
+        });
+
+        SystemManager.getInstance().getClient().connect();
+
     }
 
 
