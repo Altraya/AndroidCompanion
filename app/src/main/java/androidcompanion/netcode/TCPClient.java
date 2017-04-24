@@ -86,7 +86,7 @@ public class TCPClient {
 
             } catch (Exception e) {
 
-                Log.e("TCP", "S: Error", e);
+               // Log.e("TCP", "S: Error", e);
 
             } finally {
                 socket.close();

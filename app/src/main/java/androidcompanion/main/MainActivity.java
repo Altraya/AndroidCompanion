@@ -14,6 +14,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidcompanion.netcode.Client;
+import androidcompanion.netcode.ClientEvent;
 import project.androidcompanion.R;
 
 
@@ -28,7 +30,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.watchnotification);
         tab = (TableLayout)findViewById(R.id.tab);
         LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("Msg"));
-
     }
 
 

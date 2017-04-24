@@ -34,6 +34,8 @@ public class Client {
 
         asyncClient = new AsyncClient(tcpClient);
 
+        asyncClient.execute();
+
     }
 
     public void sendMessage(String data){
