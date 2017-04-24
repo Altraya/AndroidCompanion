@@ -59,13 +59,9 @@ public class DeviceListingActivity extends Activity
         {
             @Override
             public void onClick(View view) {
-                /*Intent i = new Intent(DeviceListingActivity.this, addDeviceToListActivity.class);
-                startActivityForResult(i, 1);*/
-
-                
+                Intent intent = new Intent(DeviceListingActivity.this, ReadQRCodeActivity.class);
+                startActivity(intent);
             }
-            //Intent form = getIntent();
-
         });
 
 

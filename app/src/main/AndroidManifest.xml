@@ -2,12 +2,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="project.androidcompanion">
 
+    <!-- TODO check for a compatible Google Play services APK before access Google Play services features -->
+    <!-- TODO verify the version available before attempting to perform API transactions -->
+    <!-- automatically install the barcode detection libraries on the device that runs the app -->
+    <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="barcode"/>
+
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name="androidcompanion.main.MainActivity"
             android:label="@string/app_name"
