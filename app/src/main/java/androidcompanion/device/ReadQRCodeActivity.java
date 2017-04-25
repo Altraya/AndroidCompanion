@@ -1,6 +1,7 @@
 package androidcompanion.device;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -10,10 +11,13 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
+import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
@@ -21,6 +25,8 @@ import java.io.IOException;
 
 import project.androidcompanion.R;
 
+// TODO improve interface (bigger SurfaceView, centered scan result, ...)
+// TODO add for register when ip adress and port are found
 public class ReadQRCodeActivity extends AppCompatActivity {
 
     private final int MY_PERMISSIONS_REQUEST_CAMERA = 0;
@@ -36,6 +42,7 @@ public class ReadQRCodeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read_qrcode);
 
+        // TODO handle permission on application start OR before QRCodeActivity is launched
         // check for permission (use of camera)
         int cameraPermissionCheck = ContextCompat.checkSelfPermission(ReadQRCodeActivity.this,
                 Manifest.permission.CAMERA);
@@ -71,6 +78,10 @@ public class ReadQRCodeActivity extends AppCompatActivity {
                 new BarcodeDetector.Builder(this)
                         .setBarcodeFormats(Barcode.QR_CODE)
                         .build();
+        if (!barcodeDetector.isOperational()) {
+            barcodeInfo.setText("Could not set up the detector!");
+            return;
+        }
 
         // This instance will hold the stream of fetched images from device's camera
         cameraSource = new CameraSource
@@ -118,19 +129,25 @@ public class ReadQRCodeActivity extends AppCompatActivity {
             {
             }
 
+            // /!\ DOES NOT RUN ON THE UI THREAD
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections)
             {
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
-
-                if (barcodes.size() != 0) {
-                    barcodeInfo.post(new Runnable() {    // Use the post method of the TextView
-                        public void run() {
+                if (barcodes.size() != 0)
+                {
+                    barcodeInfo.post(new Runnable()
+                    {    // Use the post method of the TextView
+                        public void run()
+                        {
                             barcodeInfo.setText(    // Update the TextView
                                     barcodes.valueAt(0).displayValue
                             );
+                            // TODO find way to do things elsewhere than in TextView.post method
+                            Toast.makeText(getApplicationContext(),barcodes.valueAt(0).displayValue,Toast.LENGTH_SHORT).show();
                         }
                     });
+
                 }
             }
         });
@@ -146,8 +163,15 @@ public class ReadQRCodeActivity extends AppCompatActivity {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 {
+                    // TODO get camera permission before starting this activity
                     // permission was granted.
                     // Do the camera task you need to do.
+
+                    // We restart the activity in order to apply permission changed state
+                    //Intent intent = getIntent();
+                    //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    //finish();
+                    //startActivity(intent);
                 }
                 else
                 {
@@ -160,5 +184,13 @@ public class ReadQRCodeActivity extends AppCompatActivity {
             // other 'case' lines to check for other
             // permissions this app might request
         }
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();;
+        cameraSource.release();
+        barcodeDetector.release();
     }
 }

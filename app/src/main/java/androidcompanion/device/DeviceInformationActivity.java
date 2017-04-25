@@ -6,31 +6,32 @@ import android.support.v7.app.AppCompatActivity;
  */
 
 public class DeviceInformationActivity extends AppCompatActivity{
-    private String deviceId = "";
-    private String deviceName = "";
+    private String deviceIPAdress = "";
+    private String devicePort = "";
 
-    public DeviceInformationActivity(String deviceId, String deviceName) {
-        this.deviceId = deviceId;
-        this.deviceName = deviceName;
+    public DeviceInformationActivity(String deviceIPAdress, String devicePort) {
+        this.deviceIPAdress = deviceIPAdress;
+        this.devicePort = devicePort;
     }
 
-    public String getDeviceId() {
-        return deviceId;
+    public String getDeviceIPAdress() {
+        return deviceIPAdress;
     }
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setDeviceIPAdress(String deviceIPAdress) {
+        this.deviceIPAdress = deviceIPAdress;
     }
 
-    public String getDeviceName() {
-        return deviceName;
+    public String getDevicePort() {
+        return devicePort;
     }
 
-    public void setDeviceName(String deviceName) {
-        this.deviceName = deviceName;
+    public void setDevicePort(String devicePort) {
+        this.devicePort = devicePort;
     }
+
     public String toString(){
 
-        return this.deviceName;
+        return this.deviceIPAdress + "\n" + this.devicePort;
     }
 }

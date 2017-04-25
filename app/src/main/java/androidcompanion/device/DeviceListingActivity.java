@@ -10,7 +10,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import project.androidcompanion.R;
@@ -24,7 +31,7 @@ public class DeviceListingActivity extends Activity
     public final static String DEVICEID = "id";
     public final static String DEVICENAME = "name";
 
-    ArrayList<DeviceInformationActivity> listDevice=new ArrayList<DeviceInformationActivity>();
+    ArrayList<DeviceInformationActivity> listDevice = new ArrayList<DeviceInformationActivity>();
     DeviceListingAdaptater deviceAdapter;
     ListView listView;
 
@@ -54,12 +61,15 @@ public class DeviceListingActivity extends Activity
             }
         });
 
+        loadConnectedDevices();
+
         //click on add button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 Intent intent = new Intent(DeviceListingActivity.this, ReadQRCodeActivity.class);
                 startActivity(intent);
             }
@@ -122,6 +132,51 @@ public class DeviceListingActivity extends Activity
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Fetch data from json file
+     * @param asset_name
+     * @return JSONObject instance containing the data
+     */
+    public String loadJSONFromAsset(String asset_name) {
+        String json = null;
+        try {
+            InputStream is = this.getAssets().open(asset_name);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
+
+    /**
+     * Load the connected devices list
+     */
+    private void loadConnectedDevices() {
+        try
+        {
+            JSONObject jsonObj = new JSONObject(loadJSONFromAsset("device_list.json"));
+            if(!jsonObj.isNull("devices"))
+            {
+                JSONArray devices = jsonObj.getJSONArray("devices");
+                for(int i = 0; i < devices.length(); i++)
+                {
+                    JSONObject device = devices.getJSONObject(i);
+                    String deviceIP = device.getString("ip_adress");
+                    String devicePort = device.getString("port");
+                    deviceAdapter.add(new DeviceInformationActivity(deviceIP,devicePort));
+                }
+            }
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+    }
 }
 
 
