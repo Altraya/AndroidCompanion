@@ -12,10 +12,6 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import androidcompanion.main.MainActivity;
-import androidcompanion.main.SystemManager;
-import androidcompanion.netcode.Client;
-import androidcompanion.netcode.ClientEvent;
 import project.androidcompanion.R;
 
 //TODO porquoi c'est lent

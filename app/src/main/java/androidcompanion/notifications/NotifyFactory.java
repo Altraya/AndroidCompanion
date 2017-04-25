@@ -3,7 +3,6 @@ package androidcompanion.notifications;
 import com.google.gson.Gson;
 
 import java.util.Date;
-import java.util.Objects;
 
 import androidcompanion.main.MainActivity;
 import androidcompanion.main.SystemManager;

@@ -1,7 +1,5 @@
 package androidcompanion.notifications.json;
 
-import androidcompanion.main.SystemManager;
-
 /**
  * Created by Jo on 25/04/2017.
  */
