@@ -28,22 +28,22 @@ public class NotifyFactory {
 
     }
 
-    public void notify(final String j_app,final String j_title,final String j_text){
+    public void notify(String app,String title,String text){
 
         final Date d = new Date();
 
-        Notify notifyObject = new Notify(j_app,j_title,j_text,d.toString());
+        Notify notifyObject = new Notify(app,title,text,d.toString());
 
         SystemManager.getInstance().getClient().sendMessage(getJson("Notification",notifyObject));
 
     }
 
-    private String getJson(String j_type,JsonObject j_object){
+    private String getJson(String type,JsonObject object){
 
         String conn = SystemManager.getInstance().getClient().getAddress() + "@" + SystemManager.getInstance().getClient().getPort();
         String author = "MOMO-LG";
 
-        Message message = new Message(j_type,conn,author,j_object);
+        Message message = new Message(type,conn,author,object);
 
         Gson gson = new Gson();
 
