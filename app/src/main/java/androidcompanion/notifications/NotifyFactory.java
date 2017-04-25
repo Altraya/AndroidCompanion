@@ -7,6 +7,9 @@ import java.util.Objects;
 
 import androidcompanion.main.MainActivity;
 import androidcompanion.main.SystemManager;
+import androidcompanion.notifications.json.JsonObject;
+import androidcompanion.notifications.json.Message;
+import androidcompanion.notifications.json.Notify;
 
 /**
  * Created by Jo on 24/04/2017.
@@ -29,33 +32,22 @@ public class NotifyFactory {
 
         final Date d = new Date();
 
-        Object notifyObject = new Object(){
-
-            String application = j_app;
-            String title = j_title;
-            String message = j_text;
-            String heureDate = d.toString();
-
-        };
+        Notify notifyObject = new Notify(j_app,j_title,j_text,d.toString());
 
         SystemManager.getInstance().getClient().sendMessage(getJson("Notification",notifyObject));
 
     }
 
-    private String getJson(final String j_type,final Object j_object){
+    private String getJson(String j_type,JsonObject j_object){
 
-        Object jsonObj = new Object(){
+        String conn = SystemManager.getInstance().getClient().getAddress() + "@" + SystemManager.getInstance().getClient().getPort();
+        String author = "MOMO-LG";
 
-            String type = j_type;
-            String conn = SystemManager.getInstance().getClient().getAddress() + "@" + SystemManager.getInstance().getClient().getPort();
-            String author = "MOMO-LG";
-            Object object = j_object;
-
-        };
+        Message message = new Message(j_type,conn,author,j_object);
 
         Gson gson = new Gson();
 
-        return gson.toJson(jsonObj);
+        return gson.toJson(message);
 
     }
 
