@@ -10,15 +10,13 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Html;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import androidcompanion.device.DeviceInformationActivity;
-import androidcompanion.device.DeviceListingActivity;
-import androidcompanion.device.addDeviceToListActivity;
+import androidcompanion.netcode.Client;
+import androidcompanion.netcode.ClientEvent;
+import androidcompanion.notifications.NotifyFactory;
 import project.androidcompanion.R;
 
 
@@ -28,21 +26,37 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.watchnotification);
+        tab = (TableLayout)findViewById(R.id.tab);
+        LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("Msg"));
 
-        Button btnLaunch = (Button) findViewById(R.id.button);
-        btnLaunch.setOnClickListener(new View.OnClickListener()
-        {
+        //Create the notifyFactory
+        SystemManager.getInstance().setNotifyFactory(new NotifyFactory());
+
+        //Connects the client
+        SystemManager.getInstance().setClient(new Client("192.168.43.223", 4444));
+        SystemManager.getInstance().getClient().addClientEventListener(new ClientEvent.ClientEventListener() {
             @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, DeviceListingActivity.class);
-                startActivity(i);
+            public void connectedEvent(ClientEvent event) {
+                System.out.println("Connexion établie");
+                SystemManager.getInstance().getNotifyFactory().connect();
+            }
+
+            @Override
+            public void messageReceivedEvent(ClientEvent event, String message) {
+                System.out.println("Message reçu : " + message);
+            }
+
+            @Override
+            public void disconnectedEvent(ClientEvent event) {
+                System.out.println("Déconnexion");
             }
         });
 
-        tab = (TableLayout)findViewById(R.id.tab);
-        LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("Msg"));
+        SystemManager.getInstance().getClient().connect();
+
     }
 
 
