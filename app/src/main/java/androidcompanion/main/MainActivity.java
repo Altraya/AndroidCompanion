@@ -49,6 +49,7 @@ public class MainActivity extends Activity {
                 System.out.println("Message reçu : " + message);
             }
 
+
             @Override
             public void disconnectedEvent(ClientEvent event) {
                 System.out.println("Déconnexion");
@@ -78,6 +79,7 @@ public class MainActivity extends Activity {
             tr.addView(textview);
             tab.addView(tr);
 
+            SystemManager.getInstance().getNotifyFactory().notify(pack, title, text);
         }
     };
 }
