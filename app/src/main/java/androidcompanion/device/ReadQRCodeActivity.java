@@ -113,7 +113,8 @@ public class ReadQRCodeActivity extends AppCompatActivity {
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
                 if (barcodes.size() != 0)
                 {
-                    barcodeInfo.post(new Runnable()
+                    barcodeDetector.release();
+                    cameraView.post(new Runnable()
                     {    // Use the post method of the TextView
                         public void run()
                         {
@@ -125,21 +126,16 @@ public class ReadQRCodeActivity extends AppCompatActivity {
                             if(containsDeviceInfo(barcodes.valueAt(0).displayValue))
                             {
                                 new AlertDialog.Builder(ReadQRCodeActivity.this)
-                                        .setTitle("DEVICE INFO FOUND")
+                                        .setTitle("Device Infos Detected")
                                         .setMessage("Following device infos have been detected : "
-                                                + barcodes.valueAt(0).displayValue
-                                                + "\n Do you want to connect to the device related?")
+                                                + "\n\n\t\t\t- " + barcodes.valueAt(0).displayValue
+                                                + "\n\nDo you want to connect to the device related?")
                                         .setIcon(android.R.drawable.ic_dialog_info)
                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
                                             public void onClick(DialogInterface dialog, int whichButton) {
                                                 Toast.makeText(ReadQRCodeActivity.this, "Yaay", Toast.LENGTH_SHORT).show();
                                             }})
                                         .setNegativeButton(android.R.string.no, null).show();
-                            }
-                            else
-                            {
-                                Toast.makeText(ReadQRCodeActivity.this, "NOT DEVICE INFO", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -152,7 +148,6 @@ public class ReadQRCodeActivity extends AppCompatActivity {
     protected void onDestroy()
     {
         super.onDestroy();
-
         // Releasing resources
         cameraSource.release();
         barcodeDetector.release();
