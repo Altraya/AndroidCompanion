@@ -25,7 +25,7 @@ import java.io.IOException;
 
 import project.androidcompanion.R;
 
-// TODO improve interface (bigger SurfaceView, centered scan result, ...)
+// TODO improve interface?
 // TODO add for register when ip adress and port are found
 public class ReadQRCodeActivity extends AppCompatActivity {
 
@@ -42,34 +42,7 @@ public class ReadQRCodeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read_qrcode);
 
-        // TODO handle permission on application start OR before QRCodeActivity is launched
-        // check for permission (use of camera)
-        int cameraPermissionCheck = ContextCompat.checkSelfPermission(ReadQRCodeActivity.this,
-                Manifest.permission.CAMERA);
-
-        // Check if permission granted
-        if (cameraPermissionCheck != PackageManager.PERMISSION_GRANTED)
-        {
-            // explanation needed?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(ReadQRCodeActivity.this,
-                    Manifest.permission.CAMERA))
-            {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-            }
-            else
-            {
-                // No explanation needed, we can request the permission
-                ActivityCompat.requestPermissions(ReadQRCodeActivity.this,
-                        new String[]{Manifest.permission.CAMERA},
-                        MY_PERMISSIONS_REQUEST_CAMERA);
-
-                // MY_PERMISSIONS_REQUEST_CAMERA is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
-        }
+        requestCameraPermission();
 
         cameraView = (SurfaceView)findViewById(R.id.camera_view);
         barcodeInfo = (TextView)findViewById(R.id.code_info);
@@ -153,7 +126,56 @@ public class ReadQRCodeActivity extends AppCompatActivity {
         });
     }
 
-    // Handles the permissions request response
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();;
+        cameraSource.release();
+        barcodeDetector.release();
+    }
+
+    /**
+     * Request to get use of camera permission from user
+     */
+    // TODO move the two methods below to static class? (e.g. PermissionHandler)
+    private void requestCameraPermission()
+    {
+        // TODO handle permission request on application start OR before QRCodeActivity is launched
+        // check for permission (use of camera)
+        int cameraPermissionCheck = ContextCompat.checkSelfPermission(ReadQRCodeActivity.this,
+                Manifest.permission.CAMERA);
+
+        // Check if permission granted
+        if (cameraPermissionCheck != PackageManager.PERMISSION_GRANTED)
+        {
+            // explanation needed?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(ReadQRCodeActivity.this,
+                    Manifest.permission.CAMERA))
+            {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+            }
+            else
+            {
+                // No explanation needed, we can request the permission
+                ActivityCompat.requestPermissions(ReadQRCodeActivity.this,
+                        new String[]{Manifest.permission.CAMERA},
+                        MY_PERMISSIONS_REQUEST_CAMERA);
+
+                // MY_PERMISSIONS_REQUEST_CAMERA is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
+    }
+
+    /**
+     * Handles permissions request response
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults)
     {
@@ -184,13 +206,5 @@ public class ReadQRCodeActivity extends AppCompatActivity {
             // other 'case' lines to check for other
             // permissions this app might request
         }
-    }
-
-    @Override
-    protected void onDestroy()
-    {
-        super.onDestroy();;
-        cameraSource.release();
-        barcodeDetector.release();
     }
 }

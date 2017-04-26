@@ -9,7 +9,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
         android:layout_marginRight="5dp"
         android:text="Delete" />
 
@@ -18,7 +17,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
         android:layout_toLeftOf="@id/btn_delete"
         android:layout_alignTop="@id/btn_delete"
         android:paddingLeft="8dp"
@@ -31,12 +29,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
         android:layout_toLeftOf="@id/btn_delete"
-        android:layout_below="@id/textView_deviceIP"
+        android:layout_below="@+id/textView_deviceIP"
         android:paddingLeft="8dp"
         android:text="Port"
-        android:textSize="18sp"/>
+        android:textSize="16sp"/>
 
 </RelativeLayout>
 

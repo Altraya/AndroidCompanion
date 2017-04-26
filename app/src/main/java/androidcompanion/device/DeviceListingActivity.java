@@ -1,10 +1,16 @@
 package androidcompanion.device;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.hardware.camera2.TotalCaptureResult;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,8 +22,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 import project.androidcompanion.R;
@@ -25,8 +35,8 @@ import project.androidcompanion.R;
 //TODO porquoi c'est lent
 // TODO use JSON to store data (devices)
 //public class DeviceListingActivity extends AppCompatActivity {
-public class DeviceListingActivity extends Activity
-{
+public class DeviceListingActivity extends Activity  {
+
     //intent static variables
     public final static String DEVICEID = "id";
     public final static String DEVICENAME = "name";
@@ -39,9 +49,11 @@ public class DeviceListingActivity extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_device_listing);
         //populateDeviceList();
+
+        // We copy the assets to the external storage(in order to be able to write in them)
+        copyAssets();
 
         deviceAdapter = new DeviceListingAdaptater(this, listDevice);
         // Attach the adapter to a ListView
@@ -60,6 +72,7 @@ public class DeviceListingActivity extends Activity
                 startActivity(intent);
             }
         });
+
 
         loadConnectedDevices();
 
@@ -133,14 +146,15 @@ public class DeviceListingActivity extends Activity
     }
 
     /**
-     * Fetch data from json file
+     * Fetch data from json file (asset)
      * @param asset_name
      * @return JSONObject instance containing the data
      */
     public String loadJSONFromAsset(String asset_name) {
         String json = null;
         try {
-            InputStream is = this.getAssets().open(asset_name);
+            File jsonFile = new File(getExternalFilesDir(null).getPath(), asset_name);
+            InputStream is = new FileInputStream(jsonFile);
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -175,6 +189,61 @@ public class DeviceListingActivity extends Activity
         catch (JSONException e)
         {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Copy files from Assets folder to External Storage
+     */
+    private void copyAssets() {
+        AssetManager assetManager = getAssets();
+        String[] files = null;
+        try {
+            files = assetManager.list("");
+        } catch (IOException e) {
+            Log.e("tag", "Failed to get asset file list.", e);
+        }
+        if (files != null) for (String filename : files) {
+            InputStream in = null;
+            OutputStream out = null;
+            try {
+                in = assetManager.open(filename);
+                File outFile = new File(getExternalFilesDir(null), filename);
+                out = new FileOutputStream(outFile);
+                copyFile(in, out);
+            } catch (IOException e) {
+                Log.e("tag", "Failed to copy asset file: " + filename, e);
+            } finally {
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                        Log.e("tag", "Failed to close asset file.", e);
+                    }
+                }
+                if (out != null) {
+                    try {
+                        out.close();
+                    } catch (IOException e) {
+                        Log.e("tag", "Failed to close FileOuputStream.", e);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Copy a file from InputStream to OutputStream
+     * @param in
+     * @param out
+     * @throws IOException
+     */
+    private void copyFile(InputStream in, OutputStream out) throws IOException {
+        int size = in.available();
+        byte[] buffer = new byte[size];
+        int read;
+        while ((read = in.read(buffer)) != -1) {
+            out.write(buffer, 0, read);
         }
     }
 }
