@@ -1,13 +1,16 @@
 package androidcompanion.device;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -22,6 +25,7 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
 
 import project.androidcompanion.R;
 
@@ -113,14 +117,32 @@ public class ReadQRCodeActivity extends AppCompatActivity {
                     {    // Use the post method of the TextView
                         public void run()
                         {
-                            barcodeInfo.setText(    // Update the TextView
-                                    barcodes.valueAt(0).displayValue
-                            );
+                            // Update the TextView
+                            barcodeInfo.setText(barcodes.valueAt(0).displayValue);
                             // TODO find way to do things elsewhere than in TextView.post method
+                            // TODO why does it loop?
                             Toast.makeText(getApplicationContext(),barcodes.valueAt(0).displayValue,Toast.LENGTH_SHORT).show();
+                            if(containsDeviceInfo(barcodes.valueAt(0).displayValue))
+                            {
+                                new AlertDialog.Builder(ReadQRCodeActivity.this)
+                                        .setTitle("DEVICE INFO FOUND")
+                                        .setMessage("Following device infos have been detected : "
+                                                + barcodes.valueAt(0).displayValue
+                                                + "\n Do you want to connect to the device related?")
+                                        .setIcon(android.R.drawable.ic_dialog_info)
+                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                                            public void onClick(DialogInterface dialog, int whichButton) {
+                                                Toast.makeText(ReadQRCodeActivity.this, "Yaay", Toast.LENGTH_SHORT).show();
+                                            }})
+                                        .setNegativeButton(android.R.string.no, null).show();
+                            }
+                            else
+                            {
+                                Toast.makeText(ReadQRCodeActivity.this, "NOT DEVICE INFO", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
-
                 }
             }
         });
@@ -129,7 +151,9 @@ public class ReadQRCodeActivity extends AppCompatActivity {
     @Override
     protected void onDestroy()
     {
-        super.onDestroy();;
+        super.onDestroy();
+
+        // Releasing resources
         cameraSource.release();
         barcodeDetector.release();
     }
@@ -205,6 +229,46 @@ public class ReadQRCodeActivity extends AppCompatActivity {
 
             // other 'case' lines to check for other
             // permissions this app might request
+        }
+    }
+
+    /**
+     * Check of presence of IP adress and port in a string
+     * @param str
+     * @return
+     */
+    private boolean containsDeviceInfo(String str)
+    {
+        if(str.contains(":"))
+        {
+            String[] split = str.split(":");
+            if(split.length == 2)
+            {
+                try {
+                    Integer.parseInt(split[1]);
+                }
+                catch (NumberFormatException e) {
+                    return false;
+                }
+
+                Matcher ipMatcher = Patterns.IP_ADDRESS.matcher(split[0]);
+                int port = Integer.parseInt(split[1]);
+                if(ipMatcher.matches()) {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
         }
     }
 }
