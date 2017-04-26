@@ -1,14 +1,17 @@
 package androidcompanion.device;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.JsonWriter;
 import android.util.Log;
 import android.util.Patterns;
 import android.util.SparseArray;
@@ -24,7 +27,11 @@ import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.util.List;
 import java.util.regex.Matcher;
 
 import project.androidcompanion.R;
@@ -133,9 +140,28 @@ public class ReadQRCodeActivity extends AppCompatActivity {
                                         .setIcon(android.R.drawable.ic_dialog_info)
                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int whichButton) {
-                                                Toast.makeText(ReadQRCodeActivity.this, "Yaay", Toast.LENGTH_SHORT).show();
-                                            }})
-                                        .setNegativeButton(android.R.string.no, null).show();
+                                                String[] split = barcodes.valueAt(0).displayValue.split(":");
+                                                String deviceIPAdress = split[0];
+                                                String devicePort = split[1];
+                                                Intent i = new Intent();
+                                                i.putExtra(DeviceListingActivity.EXTRA_DEVICE_IP_ADRESS,deviceIPAdress);
+                                                i.putExtra(DeviceListingActivity.EXTRA_DEVICE_PORT,devicePort);
+                                                setResult(RESULT_OK, i);
+                                                finish();
+                                            }
+                                        })
+                                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int whichButton) {
+                                                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                                                    // only for honeycomb and newer versions
+                                                    ReadQRCodeActivity.this.recreate();
+                                                } else {
+                                                    finish();
+                                                    startActivity(ReadQRCodeActivity.this.getIntent());
+                                                }
+                                            }
+                                        })
+                                        .show();
                             }
                         }
                     });
