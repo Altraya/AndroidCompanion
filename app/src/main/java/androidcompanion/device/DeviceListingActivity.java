@@ -141,6 +141,7 @@ public class DeviceListingActivity extends Activity  {
                         @Override
                         public void messageReceivedEvent(ClientEvent event, String message) {
                             // ...
+                            System.out.println("MESSAGE RECEIVED EVENT");
                         }
 
                         @Override
