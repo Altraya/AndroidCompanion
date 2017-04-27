@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="project.androidcompanion">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,28 +11,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="androidcompanion.main.MainActivity"
-            android:label="@string/app_name"
+            android:name="androidcompanion.gui.Managment"
+            android:label="@string/title_activity_managment"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <service android:name="androidcompanion.notifications.NotificationService"
+        <service
+            android:name="androidcompanion.notifications.NotificationService"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
-
             <intent-filter>
-
                 <action android:name="android.service.notification.NotificationListenerService" />
-
             </intent-filter>
-
         </service>
-    </application>
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    </application>
 
 </manifest>

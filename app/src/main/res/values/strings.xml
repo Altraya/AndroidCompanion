@@ -6,4 +6,11 @@
     <string name="deviceName">Device Name : </string>
     <string name="displayDeviceInformationTitle">Device Information : </string>
     <string name="Add">ADD</string>
+    <string name="title_activity_managment">Managment</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+
 </resources>
