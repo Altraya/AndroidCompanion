@@ -36,7 +36,6 @@ public class DeviceListingActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("Connected devices");
         toolbar.setTitleTextColor(0xFFFFFFFF);
 
         deviceAdapter = new DeviceListingAdaptater(this, listDevice);
