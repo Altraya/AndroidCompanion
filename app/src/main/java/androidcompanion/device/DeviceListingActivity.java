@@ -40,7 +40,6 @@ import java.util.ArrayList;
 import project.androidcompanion.R;
 
 //TODO porquoi c'est lent
-// TODO use JSON to store data (devices)
 // TODO lock screen orientation to portrait?
 //public class DeviceListingActivity extends AppCompatActivity {
 public class DeviceListingActivity extends Activity  {
@@ -177,57 +176,60 @@ public class DeviceListingActivity extends Activity  {
      * @param asset_name
      */
     public void addEntryToJsonFile(String asset_name, String ipAdress, String port) {
-        try {
-            // Already existing JSON object
-            JSONObject prevJSONObj = new JSONObject(loadJSONFromAsset(asset_name));
-            // New JSON object
-            JSONObject newJSONobj = new JSONObject();
-            JSONArray  devices;
-            if(!prevJSONObj.isNull("devices"))
-            {
-                // Array in which data is appended
-                devices = prevJSONObj.getJSONArray("devices");
-                // Adding data
-                newJSONobj.put("ip_adress",ipAdress);
-                newJSONobj.put("port",port);
-                // Append
-                devices.put(newJSONobj);
-                // Save new data in file
-                File JSONFile = new File(getExternalFilesDir(null).getPath(),asset_name);
-                /*FileWriter writer = new FileWriter(getExternalFilesDir(null).getPath());
-                FileOutputStream outputStream = openFileOutput(getExternalFilesDir(null).getPath() + "/" + asset_name, Context.MODE_PRIVATE);
-                outputStream.write(devices.toString().getBytes());
-                outputStream.close();*/
-                OutputStream out = new FileOutputStream(JSONFile);
-                JsonWriter writer = new JsonWriter(new OutputStreamWriter(out,"UTF-8"));
-                writer.setIndent("  ");
-                writer.beginObject();
-                writer.name("devices");
-                writer.beginArray();
-                for (int i = 0; i < devices.length(); i++) {
-                    JSONObject device = devices.getJSONObject(i);
-                    String deviceIPAdress = device.getString("ip_adress");
-                    String devicePort = device.getString("port");
+        if(isNewDevice(ipAdress,port))
+        {
+            try {
+                // Already existing JSON object
+                JSONObject prevJSONObj = new JSONObject(loadJSONFromAsset(asset_name));
+                // New JSON object
+                JSONObject newJSONobj = new JSONObject();
+                JSONArray  devices;
+                if(!prevJSONObj.isNull("devices"))
+                {
+                    // Array in which data is appended
+                    devices = prevJSONObj.getJSONArray("devices");
+                    // Adding data
+                    newJSONobj.put("ip_adress",ipAdress);
+                    newJSONobj.put("port",port);
+                    // Append
+                    devices.put(newJSONobj);
+                    // Save new data in file
+                    File JSONFile = new File(getExternalFilesDir(null).getPath(),asset_name);
+                    OutputStream out = new FileOutputStream(JSONFile);
+                    JsonWriter writer = new JsonWriter(new OutputStreamWriter(out,"UTF-8"));
+                    writer.setIndent("  ");
                     writer.beginObject();
-                    writer.name("ip_adress").value(deviceIPAdress);
-                    writer.name("port").value(devicePort);
+                    writer.name("devices");
+                    writer.beginArray();
+                    for (int i = 0; i < devices.length(); i++) {
+                        JSONObject device = devices.getJSONObject(i);
+                        String deviceIPAdress = device.getString("ip_adress");
+                        String devicePort = device.getString("port");
+                        writer.beginObject();
+                        writer.name("ip_adress").value(deviceIPAdress);
+                        writer.name("port").value(devicePort);
+                        writer.endObject();
+                    }
+                    writer.endArray();
                     writer.endObject();
+                    //out.write(writer.toString().getBytes());
+                    writer.close();
+                    out.close();
                 }
-                writer.endArray();
-                writer.endObject();
-                //out.write(writer.toString().getBytes());
-                writer.close();
-                out.close();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        catch (IOException e) {
-            e.printStackTrace();
+        else
+        {
+            Toast.makeText(getApplicationContext(),"This device is already connected.",Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -309,6 +311,37 @@ public class DeviceListingActivity extends Activity  {
         int read;
         while ((read = in.read(buffer)) != -1) {
             out.write(buffer, 0, read);
+        }
+    }
+
+    /**
+     * Check if device with given IP adress and port is new
+     * @param ipAdress
+     * @param port
+     * @return true if new device, false otherwise
+     */
+    private boolean isNewDevice(String ipAdress, String port)
+    {
+        try {
+            JSONObject jsonObj = new JSONObject(loadJSONFromAsset("device_list.json"));
+            if(!jsonObj.isNull("devices"))
+            {
+                JSONArray devices = jsonObj.getJSONArray("devices");
+                for(int i = 0; i < devices.length(); i++)
+                {
+                    JSONObject device = devices.getJSONObject(i);
+                    String deviceIPAdress = device.getString("ip_adress");
+                    String devicePort = device.getString("port");
+                    if(deviceIPAdress.equals(ipAdress) && devicePort.equals(port))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }

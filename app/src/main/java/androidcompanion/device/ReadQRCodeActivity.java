@@ -39,7 +39,6 @@ import project.androidcompanion.R;
 // TODO improve interface?
 // TODO connection on register (device info)
 // TODO handle when not device infos
-// TODO check if not already registered
 // TODO connection
 public class ReadQRCodeActivity extends AppCompatActivity {
 
@@ -131,7 +130,6 @@ public class ReadQRCodeActivity extends AppCompatActivity {
                             // Update the TextView
                             barcodeInfo.setText(barcodes.valueAt(0).displayValue);
                             // TODO find way to do things elsewhere than in TextView.post method
-                            // TODO why does it loop?
                             Toast.makeText(getApplicationContext(),barcodes.valueAt(0).displayValue,Toast.LENGTH_SHORT).show();
                             if(containsDeviceInfo(barcodes.valueAt(0).displayValue))
                             {
