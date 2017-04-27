@@ -60,7 +60,8 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
     // View lookup cache
     private static class ViewHolder {
         Button btnDelete;
-        TextView deviceName;
+        TextView deviceIPAdress;
+        TextView devicePort;
     }
 
 
@@ -76,7 +77,8 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.device_listing_row, parent, false);
             viewHolder.btnDelete = (Button) convertView.findViewById(R.id.btn_delete);
-            viewHolder.deviceName = (TextView) convertView.findViewById(R.id.txt_deviceNameRow);
+            viewHolder.deviceIPAdress = (TextView) convertView.findViewById(R.id.textView_deviceIP);
+            viewHolder.devicePort = (TextView) convertView.findViewById(R.id.textView_devicePort);
             // Cache the viewHolder object inside the fresh view
             convertView.setTag(viewHolder);
         } else {
@@ -85,7 +87,8 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
         }
         // Populate the data from the data object via the viewHolder object
         // into the template view.
-        viewHolder.deviceName.setText(deviceInformationActivity.getDeviceName());
+        viewHolder.deviceIPAdress.setText("IP Adress : " + deviceInformationActivity.getDeviceIPAdress());
+        viewHolder.devicePort.setText("Port : " + deviceInformationActivity.getDevicePort());
         viewHolder.btnDelete.setTag(position);
         viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override

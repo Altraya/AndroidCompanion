@@ -36,8 +36,8 @@ public class addDeviceToListActivity extends AppCompatActivity {
                 v.getId();
 
                 Intent i = new Intent();
-                i.putExtra(DeviceListingActivity.DEVICEID,deviceId.getText().toString() );
-                i.putExtra(DeviceListingActivity.DEVICENAME, deviceName.getText().toString());
+                //i.putExtra(DeviceListingActivity.DEVICEID,deviceId.getText().toString() );
+                //i.putExtra(DeviceListingActivity.DEVICENAME, deviceName.getText().toString());
                 setResult(RESULT_OK, i);
                 finish();
             }

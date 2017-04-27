@@ -1,6 +1,7 @@
 package androidcompanion.notifications;
 
 import com.google.gson.Gson;
+import com.jaredrummler.android.device.DeviceName;
 
 import java.util.Date;
 
@@ -40,7 +41,8 @@ public class NotifyFactory {
     private String getJson(String type,JsonObject object){
 
         String conn = SystemManager.getInstance().getClient().getAddress() + "@" + SystemManager.getInstance().getClient().getPort();
-        String author = "MOMO-LG";
+
+        String author = DeviceName.getDeviceName();
 
         Message message = new Message(type,conn,author,object);
 
