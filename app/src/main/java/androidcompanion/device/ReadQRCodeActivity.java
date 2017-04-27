@@ -37,7 +37,10 @@ import java.util.regex.Matcher;
 import project.androidcompanion.R;
 
 // TODO improve interface?
-// TODO add for register when ip adress and port are found
+// TODO connection on register (device info)
+// TODO handle when not device infos
+// TODO check if not already registered
+// TODO connection
 public class ReadQRCodeActivity extends AppCompatActivity {
 
     private final int MY_PERMISSIONS_REQUEST_CAMERA = 0;

@@ -2,7 +2,9 @@ package androidcompanion.device;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.hardware.camera2.TotalCaptureResult;
@@ -27,6 +29,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -61,7 +64,18 @@ public class DeviceListingActivity extends Activity  {
         setContentView(R.layout.activity_device_listing);
 
         // We copy the assets to the external storage(in order to be able to write in them)
-        copyAssets();
+        SharedPreferences settings = getSharedPreferences("PREFS_NAME", 0);
+        boolean isFirstLaunch = settings.getBoolean("FIRST_RUN", false);
+        if (!isFirstLaunch) {
+            // do the thing for the first time
+            copyAssets();
+            settings = getSharedPreferences("PREFS_NAME", 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putBoolean("FIRST_RUN", true);
+            editor.commit();
+        } else {
+            // other time your app loads
+        }
 
         deviceAdapter = new DeviceListingAdaptater(this, listDevice);
         // Attach the adapter to a ListView
@@ -180,10 +194,15 @@ public class DeviceListingActivity extends Activity  {
                 devices.put(newJSONobj);
                 // Save new data in file
                 File JSONFile = new File(getExternalFilesDir(null).getPath(),asset_name);
+                /*FileWriter writer = new FileWriter(getExternalFilesDir(null).getPath());
+                FileOutputStream outputStream = openFileOutput(getExternalFilesDir(null).getPath() + "/" + asset_name, Context.MODE_PRIVATE);
+                outputStream.write(devices.toString().getBytes());
+                outputStream.close();*/
                 OutputStream out = new FileOutputStream(JSONFile);
-
                 JsonWriter writer = new JsonWriter(new OutputStreamWriter(out,"UTF-8"));
                 writer.setIndent("  ");
+                writer.beginObject();
+                writer.name("devices");
                 writer.beginArray();
                 for (int i = 0; i < devices.length(); i++) {
                     JSONObject device = devices.getJSONObject(i);
@@ -195,6 +214,8 @@ public class DeviceListingActivity extends Activity  {
                     writer.endObject();
                 }
                 writer.endArray();
+                writer.endObject();
+                //out.write(writer.toString().getBytes());
                 writer.close();
                 out.close();
             }
@@ -214,6 +235,7 @@ public class DeviceListingActivity extends Activity  {
      * Load the connected devices list
      */
     private void loadConnectedDevices() {
+        deviceAdapter.clear();
         try
         {
             JSONObject jsonObj = new JSONObject(loadJSONFromAsset("device_list.json"));
