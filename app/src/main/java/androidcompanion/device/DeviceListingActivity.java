@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +18,7 @@ import project.androidcompanion.R;
 
 //TODO porquoi c'est lent
 //public class DeviceListingActivity extends AppCompatActivity {
-public class DeviceListingActivity extends Activity {
+public class DeviceListingActivity extends AppCompatActivity {
     //intent static variables
     public final static String DEVICEID = "id";
     public final static String DEVICENAME = "name";
@@ -31,6 +33,11 @@ public class DeviceListingActivity extends Activity {
 
         setContentView(R.layout.activity_device_listing);
         //populateDeviceList();
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle("Connected devices");
+        toolbar.setTitleTextColor(0xFFFFFFFF);
 
         deviceAdapter = new DeviceListingAdaptater(this, listDevice);
         // Attach the adapter to a ListView
@@ -78,6 +85,8 @@ public class DeviceListingActivity extends Activity {
 
 
     }
+
+
 
    /* private void populateDeviceList() {
         // Construct the data source
