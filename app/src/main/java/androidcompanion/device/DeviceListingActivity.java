@@ -1,17 +1,11 @@
 package androidcompanion.device;
 
-import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
-import android.hardware.camera2.TotalCaptureResult;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.JsonWriter;
 import android.util.Log;
 import android.view.View;
@@ -29,7 +23,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -37,6 +30,10 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
+import androidcompanion.main.SystemManager;
+import androidcompanion.netcode.Client;
+import androidcompanion.netcode.ClientEvent;
+import androidcompanion.notifications.NotifyFactory;
 import project.androidcompanion.R;
 
 //TODO porquoi c'est lent
@@ -130,6 +127,30 @@ public class DeviceListingActivity extends Activity  {
                 }
                 else
                 {
+                    // Connection to the device using the infos previously provided
+                    SystemManager.getInstance().setNotifyFactory(new NotifyFactory());
+                    SystemManager.getInstance().setClient(new Client(deviceIPAdress,Integer.parseInt(devicePort)));
+                    SystemManager.getInstance().getClient().addClientEventListener(new ClientEvent.ClientEventListener() {
+                        @Override
+                        public void connectedEvent(ClientEvent event) {
+                            // connection notification is sent to the device
+                            SystemManager.getInstance().getNotifyFactory().connect();
+                            Toast.makeText(getApplicationContext(),"ConnectedEvent",Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void messageReceivedEvent(ClientEvent event, String message) {
+                            // ...
+                        }
+
+                        @Override
+                        public void disconnectedEvent(ClientEvent event) {
+                            // ...
+                        }
+                    });
+                    // effective connection to the client (socket)
+                    SystemManager.getInstance().getClient().connect();
+                    //Toast.makeText(getApplicationContext(),"Device successfully connected!",Toast.LENGTH_SHORT).show();
                     addEntryToJsonFile("device_list.json",deviceIPAdress,devicePort);
                     loadConnectedDevices();
                 }
