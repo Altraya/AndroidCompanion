@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.JsonWriter;
 import android.util.Log;
 import android.view.View;
@@ -39,7 +42,7 @@ import project.androidcompanion.R;
 //TODO porquoi c'est lent
 // TODO lock screen orientation to portrait?
 //public class DeviceListingActivity extends AppCompatActivity {
-public class DeviceListingActivity extends Activity  {
+public class DeviceListingActivity extends AppCompatActivity{
 
     // Request code(s)
     static final int DEVICE_INFO_REQUEST = 1;
@@ -58,6 +61,11 @@ public class DeviceListingActivity extends Activity  {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_listing);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
+        myToolbar.setTitleTextColor(Color.WHITE);
+        getSupportActionBar().setTitle(R.string.title_activity_managment);
 
         // We copy the assets to the external storage(in order to be able to write in them)
         SharedPreferences settings = getSharedPreferences("PREFS_NAME", 0);
