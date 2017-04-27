@@ -38,6 +38,8 @@ public class DeviceListingActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(0xFFFFFFFF);
 
+        getSupportActionBar().setTitle(R.string.title_activity_managment);
+
         deviceAdapter = new DeviceListingAdaptater(this, listDevice);
         // Attach the adapter to a ListView
         listView = (ListView) findViewById(R.id.list);
