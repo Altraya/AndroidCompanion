@@ -130,7 +130,7 @@ public class ReadQRCodeActivity extends AppCompatActivity {
                             // Update the TextView
                             barcodeInfo.setText(barcodes.valueAt(0).displayValue);
                             // TODO find way to do things elsewhere than in TextView.post method
-                            Toast.makeText(getApplicationContext(),barcodes.valueAt(0).displayValue,Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(),barcodes.valueAt(0).displayValue,Toast.LENGTH_SHORT).show();
                             if(containsDeviceInfo(barcodes.valueAt(0).displayValue))
                             {
                                 new AlertDialog.Builder(ReadQRCodeActivity.this)
@@ -153,16 +153,29 @@ public class ReadQRCodeActivity extends AppCompatActivity {
                                         })
                                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int whichButton) {
-                                                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                                                /*if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                                                     // only for honeycomb and newer versions
                                                     ReadQRCodeActivity.this.recreate();
                                                 } else {
                                                     finish();
                                                     startActivity(ReadQRCodeActivity.this.getIntent());
-                                                }
+                                                }*/
+                                                Intent i = new Intent();
+                                                i.putExtra(DeviceListingActivity.EXTRA_DEVICE_IP_ADRESS,"cancelled");
+                                                i.putExtra(DeviceListingActivity.EXTRA_DEVICE_PORT,"cancelled");
+                                                setResult(RESULT_OK, i);
+                                                finish();
                                             }
                                         })
                                         .show();
+                            }
+                            else
+                            {
+                                Intent i = new Intent();
+                                i.putExtra(DeviceListingActivity.EXTRA_DEVICE_IP_ADRESS,"none");
+                                i.putExtra(DeviceListingActivity.EXTRA_DEVICE_PORT,"none");
+                                setResult(RESULT_OK, i);
+                                finish();
                             }
                         }
                     });

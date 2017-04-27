@@ -119,9 +119,20 @@ public class DeviceListingActivity extends Activity  {
                 // Scanned a QRCode and got device infos
                 String deviceIPAdress = data.getStringExtra(EXTRA_DEVICE_IP_ADRESS);
                 String devicePort = data.getStringExtra(EXTRA_DEVICE_PORT);
-                // We add the data to our adapter
-                addEntryToJsonFile("device_list.json",deviceIPAdress,devicePort);
-                loadConnectedDevices();
+                // If the data is approved, we add it to our JSON file
+                if(deviceIPAdress.equals("none") && devicePort.equals("none"))
+                {
+                    Toast.makeText(getApplicationContext(),"The QR code didn't hold any device informations.",Toast.LENGTH_SHORT).show();
+                }
+                else if(deviceIPAdress.equals("cancelled") && devicePort.equals("cancelled"))
+                {
+                    Toast.makeText(getApplicationContext(),"Adding device cancelled.",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    addEntryToJsonFile("device_list.json",deviceIPAdress,devicePort);
+                    loadConnectedDevices();
+                }
                 //deviceAdapter.add(new DeviceInformationActivity(deviceIPAdress,devicePort));
             }
         }
