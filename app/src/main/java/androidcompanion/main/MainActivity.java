@@ -32,9 +32,6 @@ public class MainActivity extends Activity {
         tab = (TableLayout)findViewById(R.id.tab);
         LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("Msg"));
 
-        //Create the notifyFactory
-        SystemManager.getInstance().setNotifyFactory(new NotifyFactory());
-
         //Connects the client
         SystemManager.getInstance().setClient(new Client("192.168.43.223", 4444));
         SystemManager.getInstance().getClient().addClientEventListener(new ClientEvent.ClientEventListener() {

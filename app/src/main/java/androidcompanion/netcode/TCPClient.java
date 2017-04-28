@@ -13,8 +13,9 @@ public class TCPClient {
 
     private Client client;
 
-    PrintWriter out;
-    BufferedReader in;
+    private Socket socket;
+    private PrintWriter out;
+    private BufferedReader in;
 
     /**
      *  Constructor of the class. OnMessagedReceived listens for the messages received from server
@@ -52,7 +53,7 @@ public class TCPClient {
             //Log.e("TCP Client", "C: Connecting...");
 
             //create a socket to make the connection with the server
-            Socket socket = new Socket(serverAddr, client.getPort());
+            socket = new Socket(serverAddr, client.getPort());
 
             try {
 
@@ -89,8 +90,8 @@ public class TCPClient {
                // Log.e("TCP", "S: Error", e);
 
             } finally {
-                socket.close();
-                client.getClientEventManager().fireDisconnectedEvent();
+                terminateConnection();
+
             }
 
         } catch (Exception e) {
@@ -106,4 +107,14 @@ public class TCPClient {
     public interface OnMessageReceived {
         public void messageReceived(String message);
     }
+
+    public void terminateConnection(){
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        client.getClientEventManager().fireDisconnectedEvent();
+    }
+
 }

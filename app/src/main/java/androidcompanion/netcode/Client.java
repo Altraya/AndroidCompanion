@@ -38,6 +38,14 @@ public class Client {
 
     }
 
+    public void disconnect(){
+
+        asyncClient.cancel(true);
+
+        tcpClient.terminateConnection();
+
+    }
+
     public void sendMessage(String data){
 
         tcpClient.sendMessage(data);

@@ -1,6 +1,8 @@
 package androidcompanion.main;
 
 import androidcompanion.netcode.Client;
+import androidcompanion.netcode.ClientManager;
+import androidcompanion.notifications.NotificationInterpretor;
 import androidcompanion.notifications.NotifyFactory;
 
 /**
@@ -25,7 +27,19 @@ public class SystemManager {
     //Instance
 
     private NotifyFactory notifyFactory;
+    //A virer !!!
     private Client client;
+    private NotificationInterpretor notificationInterpretor;
+    private ClientManager clientManager;
+
+    //Set up function
+    public void instanciate(){
+
+        notifyFactory = new NotifyFactory();
+        notificationInterpretor = new NotificationInterpretor();
+        clientManager = new ClientManager();
+
+    }
 
     public NotifyFactory getNotifyFactory() {
         return notifyFactory;
@@ -41,5 +55,21 @@ public class SystemManager {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public NotificationInterpretor getNotificationInterpretor() {
+        return notificationInterpretor;
+    }
+
+    public void setNotificationInterpretor(NotificationInterpretor notificationInterpretor) {
+        this.notificationInterpretor = notificationInterpretor;
+    }
+
+    public ClientManager getClientManager() {
+        return clientManager;
+    }
+
+    public void setClientManager(ClientManager clientManager) {
+        this.clientManager = clientManager;
     }
 }
