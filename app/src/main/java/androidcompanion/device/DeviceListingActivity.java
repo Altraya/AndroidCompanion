@@ -143,13 +143,12 @@ public class DeviceListingActivity extends AppCompatActivity{
                         public void connectedEvent(ClientEvent event) {
                             // connection notification is sent to the device
                             SystemManager.getInstance().getNotifyFactory().connect();
-                            Toast.makeText(getApplicationContext(),"ConnectedEvent",Toast.LENGTH_LONG).show();
                         }
 
                         @Override
                         public void messageReceivedEvent(ClientEvent event, String message) {
                             // ...
-                            System.out.println("MESSAGE RECEIVED EVENT");
+                            System.out.println("MESSAGE RECEIVED : " + message);
                         }
 
                         @Override
