@@ -1,14 +1,19 @@
 package androidcompanion.device;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.JsonWriter;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +21,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -127,14 +134,16 @@ public class DeviceListingActivity extends AppCompatActivity{
                 // If the data is approved, we add it to our JSON file
                 if(deviceIPAdress.equals("none") && devicePort.equals("none"))
                 {
-                    Toast.makeText(getApplicationContext(),"The QR code didn't hold any device informations.",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(),"The QR code didn't hold any device informations.",Toast.LENGTH_SHORT).show();
                 }
                 else if(deviceIPAdress.equals("cancelled") && devicePort.equals("cancelled"))
                 {
-                    Toast.makeText(getApplicationContext(),"Adding device cancelled.",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(),"Adding device cancelled.",Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
+                    LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("Msg"));
+
                     // Connection to the device using the infos previously provided
                     SystemManager.getInstance().setNotifyFactory(new NotifyFactory());
                     SystemManager.getInstance().setClient(new Client(deviceIPAdress,Integer.parseInt(devicePort)));
@@ -384,6 +393,28 @@ public class DeviceListingActivity extends AppCompatActivity{
             return false;
         }
     }
+
+    private BroadcastReceiver onNotice= new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String pack = intent.getStringExtra("package");
+            String title = intent.getStringExtra("title");
+            String text = intent.getStringExtra("text");
+
+            /*TableRow tr = new TableRow(getApplicationContext());
+            tr.setLayoutParams(new TableRow.LayoutParams( TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+            TextView textview = new TextView(getApplicationContext());
+            textview.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT,1.0f));
+            textview.setTextSize(20);
+            textview.setTextColor(Color.parseColor("#0B0719"));
+            textview.setText(Html.fromHtml(pack +"<br><b>" + title + " : </b>" + text));
+            tr.addView(textview);
+            tab.addView(tr);*/
+
+            SystemManager.getInstance().getNotifyFactory().notify(pack, title, text);
+        }
+    };
 }
 
 
