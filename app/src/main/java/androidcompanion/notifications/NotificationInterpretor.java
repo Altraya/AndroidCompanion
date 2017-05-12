@@ -1,0 +1,43 @@
+package androidcompanion.notifications;
+
+import android.telephony.SmsManager;
+
+import com.google.gson.Gson;
+
+import androidcompanion.notifications.json.Message;
+import androidcompanion.notifications.json.SmsToSend;
+
+/**
+ * Created by Jo on 28/04/2017.
+ */
+
+public class NotificationInterpretor {
+
+    public NotificationInterpretor(){
+
+    }
+
+    public void interpretNotify(String jsonString){
+
+        Gson gson = new Gson();
+
+        Message message = gson.fromJson(jsonString, Message.class);
+
+        switch (message.getType()){
+            case "smsToSend" : interpretSmsToSend(message); break;
+        }
+
+    }
+
+    private void interpretSmsToSend(Message message){
+
+        if(message.getObject() == null) return;
+
+        SmsToSend smsToSend = (SmsToSend) message.getObject();
+
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage(smsToSend.getNumber(), null, smsToSend.getMessage(), null, null);
+
+    }
+
+}
