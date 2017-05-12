@@ -16,7 +16,6 @@ public class ClientEvent extends EventObject{
         void connectedEvent(ClientEvent event);
         void messageReceivedEvent(ClientEvent event, String message);
         void disconnectedEvent(ClientEvent event);
-
     }
 
 }
