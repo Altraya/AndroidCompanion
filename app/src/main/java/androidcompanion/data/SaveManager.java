@@ -117,58 +117,57 @@ public class SaveManager {
      * @param asset_name
      */
     public void removeDeviceFromJsonFile(String asset_name, String ipAdress, String port) {
-        if(isNewDevice(ipAdress,port))
+        try
         {
-            try {
-                // Already existing JSON object
-                JSONObject prevJSONObj = new JSONObject(loadJSONFromAsset(asset_name));
-                // New JSON object
-                JSONObject newJSONobj = new JSONObject();
-                JSONArray  devices;
-                if(!prevJSONObj.isNull("devices"))
-                {
-                    // Array of devices
-                    devices = prevJSONObj.getJSONArray("devices");
-                    // Save new data (w/o the device removed) in file
-                    File JSONFile = new File(MyApp.getInstance().getExternalFilesDir(null).getPath(),asset_name);
-                    OutputStream out = new FileOutputStream(JSONFile);
-                    JsonWriter writer = new JsonWriter(new OutputStreamWriter(out,"UTF-8"));
-                    writer.setIndent("  ");
-                    writer.beginObject();
-                    writer.name("devices");
-                    writer.beginArray();
-                    for (int i = 0; i < devices.length(); i++) {
-                        JSONObject device = devices.getJSONObject(i);
-                        String deviceIPAdress = device.getString("ip_adress");
-                        String devicePort = device.getString("port");
-                        if(deviceIPAdress.equals(ipAdress) && devicePort.equals(port))
-                        {
-                            writer.beginObject();
-                            writer.name("ip_adress").value(deviceIPAdress);
-                            writer.name("port").value(devicePort);
-                            writer.endObject();
-                        }
+            // Already existing JSON object
+            JSONObject prevJSONObj = new JSONObject(loadJSONFromAsset(asset_name));
+            // New JSON object
+            JSONObject newJSONobj = new JSONObject();
+            JSONArray  devices;
+            if(!prevJSONObj.isNull("devices"))
+            {
+                // Array of devices
+                devices = prevJSONObj.getJSONArray("devices");
+                // Save new data (w/o the device removed) in file
+                File JSONFile = new File(MyApp.getInstance().getExternalFilesDir(null).getPath(),asset_name);
+                OutputStream out = new FileOutputStream(JSONFile);
+                JsonWriter writer = new JsonWriter(new OutputStreamWriter(out,"UTF-8"));
+                writer.setIndent("  ");
+                writer.beginObject();
+                writer.name("devices");
+                writer.beginArray();
+                for (int i = 0; i < devices.length(); i++) {
+                    JSONObject device = devices.getJSONObject(i);
+                    String deviceIPAdress = device.getString("ip_adress");
+                    String devicePort = device.getString("port");
+                    if(deviceIPAdress.equals(ipAdress) && devicePort.equals(port))
+                    {
+                        continue;
                     }
-                    writer.endArray();
-                    writer.endObject();
-                    //out.write(writer.toString().getBytes());
-                    writer.close();
-                    out.close();
+                    else
+                    {
+                        writer.beginObject();
+                        writer.name("ip_adress").value(deviceIPAdress);
+                        writer.name("port").value(devicePort);
+                        writer.endObject();
+                    }
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                writer.endArray();
+                writer.endObject();
+                //out.write(writer.toString().getBytes());
+                writer.close();
+                out.close();
             }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        else
-        {
             Toast.makeText(MyApp.getInstance().getApplicationContext(),"This device has been disconnected.",Toast.LENGTH_SHORT).show();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

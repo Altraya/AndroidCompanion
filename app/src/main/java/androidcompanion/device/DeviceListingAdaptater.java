@@ -107,6 +107,7 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
                             && (new String(localClient.getClient().getPort() + "").equals(device.getDevicePort())))
                     {
                         SystemManager.getInstance().getNotifyFactory().disconnect(localClient);
+                        SystemManager.getInstance().getSaveManager().removeDeviceFromJsonFile("device_list.json",device.getDeviceIPAdress(),device.getDevicePort());
                         break;
                     }
                 }
