@@ -4,6 +4,8 @@ import android.location.Address;
 
 import java.util.ArrayList;
 
+import androidcompanion.main.SystemManager;
+
 /**
  * Created by Jo on 28/04/2017.
  */
@@ -14,13 +16,25 @@ public class ClientManager {
 
     public  ClientManager(){
 
+    }
 
+    public void notifyAll(String pack,String title,String text){
+
+        for(int i = 0; i < clients.size(); i++){
+
+            SystemManager.getInstance().getNotifyFactory().notify(clients.get(i),pack, title, text);
+
+        }
 
     }
 
-    public void addClient(String address, int port){
+    public LocalClient addClient(String address, int port){
 
-        clients.add(new LocalClient(address,port));
+        LocalClient localClient = new LocalClient(address,port);
+
+        clients.add(localClient);
+
+        return localClient;
 
     }
 

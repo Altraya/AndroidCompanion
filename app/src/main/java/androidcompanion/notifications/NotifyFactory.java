@@ -5,8 +5,8 @@ import com.jaredrummler.android.device.DeviceName;
 
 import java.util.Date;
 
-import androidcompanion.main.MainActivity;
 import androidcompanion.main.SystemManager;
+import androidcompanion.netcode.LocalClient;
 import androidcompanion.notifications.json.JsonObject;
 import androidcompanion.notifications.json.Message;
 import androidcompanion.notifications.json.Notify;
@@ -17,30 +17,28 @@ import androidcompanion.notifications.json.Notify;
 
 public class NotifyFactory {
 
-    private MainActivity main;
-
     public NotifyFactory(){
     }
 
-    public void connect(){
+    public void connect(LocalClient localClient){
 
-        SystemManager.getInstance().getClient().sendMessage(getJson("connect",null));
+        localClient.getClient().sendMessage(getJson(localClient,"connect",null));
 
     }
 
-    public void notify(String app,String title,String text){
+    public void notify(LocalClient localClient,String app,String title,String text){
 
         final Date d = new Date();
 
         Notify notifyObject = new Notify(app,title,text,d.toString());
 
-        SystemManager.getInstance().getClient().sendMessage(getJson("Notification",notifyObject));
+        localClient.getClient().sendMessage(getJson(localClient,"Notification",notifyObject));
 
     }
 
-    private String getJson(String type,JsonObject object){
+    private String getJson(LocalClient localClient,String type,JsonObject object){
 
-        String conn = SystemManager.getInstance().getClient().getAddress() + "@" + SystemManager.getInstance().getClient().getPort();
+        String conn = localClient.getClient().getAddress() + "@" + localClient.getClient().getPort();
 
         String author = DeviceName.getDeviceName();
 

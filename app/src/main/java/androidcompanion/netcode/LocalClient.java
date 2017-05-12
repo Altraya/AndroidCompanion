@@ -9,8 +9,11 @@ import androidcompanion.main.SystemManager;
 public class LocalClient {
 
     private Client client;
+    private LocalClient thisObj;
 
     public LocalClient(String address,int port){
+
+        thisObj = this;
 
         client = new Client(address,port);
 
@@ -18,7 +21,7 @@ public class LocalClient {
             @Override
             public void connectedEvent(ClientEvent event) {
                 //Sends connection message to the server
-                SystemManager.getInstance().getNotifyFactory().connect();
+                SystemManager.getInstance().getNotifyFactory().connect(thisObj);
             }
 
             @Override

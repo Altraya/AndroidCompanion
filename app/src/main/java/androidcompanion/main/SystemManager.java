@@ -20,6 +20,7 @@ public class SystemManager {
     public static SystemManager getInstance() {
         if(instance == null) {
             instance = new SystemManager();
+            instance.instanciate();
         }
         return instance;
     }
@@ -27,8 +28,6 @@ public class SystemManager {
     //Instance
 
     private NotifyFactory notifyFactory;
-    //A virer !!!
-    private Client client;
     private NotificationInterpretor notificationInterpretor;
     private ClientManager clientManager;
 
@@ -47,14 +46,6 @@ public class SystemManager {
 
     public void setNotifyFactory(NotifyFactory notifyFactory) {
         this.notifyFactory = notifyFactory;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
     }
 
     public NotificationInterpretor getNotificationInterpretor() {

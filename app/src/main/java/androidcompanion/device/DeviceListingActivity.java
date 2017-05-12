@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import androidcompanion.main.SystemManager;
 import androidcompanion.netcode.Client;
 import androidcompanion.netcode.ClientEvent;
+import androidcompanion.netcode.LocalClient;
 import androidcompanion.notifications.NotifyFactory;
 import project.androidcompanion.R;
 
@@ -145,28 +146,9 @@ public class DeviceListingActivity extends AppCompatActivity{
                     LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("Msg"));
 
                     // Connection to the device using the infos previously provided
-                    SystemManager.getInstance().setNotifyFactory(new NotifyFactory());
-                    SystemManager.getInstance().setClient(new Client(deviceIPAdress,Integer.parseInt(devicePort)));
-                    SystemManager.getInstance().getClient().addClientEventListener(new ClientEvent.ClientEventListener() {
-                        @Override
-                        public void connectedEvent(ClientEvent event) {
-                            // connection notification is sent to the device
-                            SystemManager.getInstance().getNotifyFactory().connect();
-                        }
-
-                        @Override
-                        public void messageReceivedEvent(ClientEvent event, String message) {
-                            // ...
-                            System.out.println("MESSAGE RECEIVED : " + message);
-                        }
-
-                        @Override
-                        public void disconnectedEvent(ClientEvent event) {
-                            // ...
-                        }
-                    });
+                    LocalClient newClient = SystemManager.getInstance().getClientManager().addClient(deviceIPAdress,Integer.parseInt(devicePort));
                     // effective connection to the client (socket)
-                    SystemManager.getInstance().getClient().connect();
+                    newClient.connect();
                     //Toast.makeText(getApplicationContext(),"Device successfully connected!",Toast.LENGTH_SHORT).show();
                     addEntryToJsonFile("device_list.json",deviceIPAdress,devicePort);
                     loadConnectedDevices();
@@ -412,7 +394,7 @@ public class DeviceListingActivity extends AppCompatActivity{
             tr.addView(textview);
             tab.addView(tr);*/
 
-            SystemManager.getInstance().getNotifyFactory().notify(pack, title, text);
+            SystemManager.getInstance().getClientManager().notifyAll(pack, title, text);
         }
     };
 }
