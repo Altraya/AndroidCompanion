@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import androidcompanion.main.SystemManager;
+import androidcompanion.netcode.LocalClient;
 import project.androidcompanion.R;
 
 // improved adapter using viewholder : https://github.com/codepath/android_guides/wiki/Using-an-ArrayAdapter-with-ListView
@@ -76,7 +78,7 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.device_listing_row, parent, false);
-            viewHolder.btnDelete = (Button) convertView.findViewById(R.id.btn_delete);
+            viewHolder.btnDelete = (Button) convertView.findViewById(R.id.btn_disconnect);
             viewHolder.deviceIPAdress = (TextView) convertView.findViewById(R.id.textView_deviceIP);
             viewHolder.devicePort = (TextView) convertView.findViewById(R.id.textView_devicePort);
             // Cache the viewHolder object inside the fresh view
@@ -95,9 +97,19 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
             public void onClick(View view) {
                 int position = (Integer) view.getTag();
                 // Access the row position here to get the correct data item
-                DeviceInformationActivity dev = getItem(position);
+                DeviceInformationActivity device = getItem(position);
                 // Do what you want here...
-                remove(dev);
+                //remove(device);
+                // We look for the local client to disconnect
+                for(LocalClient localClient : SystemManager.getInstance().getClientManager().getClients())
+                {
+                    if(localClient.getClient().getAddress().equals(device.getDeviceIPAdress())
+                            && (new String(localClient.getClient().getPort() + "").equals(device.getDevicePort())))
+                    {
+                        SystemManager.getInstance().getNotifyFactory().disconnect(localClient);
+                        break;
+                    }
+                }
             }
         });
 

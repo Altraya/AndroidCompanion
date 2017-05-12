@@ -1,5 +1,6 @@
 package androidcompanion.main;
 
+import androidcompanion.data.SaveManager;
 import androidcompanion.netcode.Client;
 import androidcompanion.netcode.ClientManager;
 import androidcompanion.notifications.NotificationInterpretor;
@@ -30,6 +31,7 @@ public class SystemManager {
     private NotifyFactory notifyFactory;
     private NotificationInterpretor notificationInterpretor;
     private ClientManager clientManager;
+    private SaveManager saveManager;
 
     //Set up function
     public void instanciate(){
@@ -37,6 +39,7 @@ public class SystemManager {
         notifyFactory = new NotifyFactory();
         notificationInterpretor = new NotificationInterpretor();
         clientManager = new ClientManager();
+        saveManager = new SaveManager();
 
     }
 
@@ -62,5 +65,13 @@ public class SystemManager {
 
     public void setClientManager(ClientManager clientManager) {
         this.clientManager = clientManager;
+    }
+
+    public SaveManager getSaveManager() {
+        return saveManager;
+    }
+
+    public void setSaveManager(SaveManager saveManager) {
+        this.saveManager = saveManager;
     }
 }

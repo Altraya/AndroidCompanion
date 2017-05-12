@@ -26,6 +26,12 @@ public class NotifyFactory {
 
     }
 
+    public void disconnect(LocalClient localClient){
+
+        localClient.getClient().sendMessage(getJson(localClient,"disconnect",null));
+
+    }
+
     public void notify(LocalClient localClient,String app,String title,String text){
 
         final Date d = new Date();
