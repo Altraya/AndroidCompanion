@@ -258,8 +258,7 @@ public class DeviceListingActivity extends AppCompatActivity{
                 e.printStackTrace();
             }
         }
-        else
-        {
+        else{
             Toast.makeText(getApplicationContext(),"This device is already connected.",Toast.LENGTH_SHORT).show();
         }
     }
