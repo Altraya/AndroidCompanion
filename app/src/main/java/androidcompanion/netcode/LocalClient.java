@@ -1,5 +1,7 @@
 package androidcompanion.netcode;
 
+import java.util.ArrayList;
+
 import androidcompanion.main.SystemManager;
 
 /**
@@ -27,12 +29,12 @@ public class LocalClient {
             @Override
             public void messageReceivedEvent(ClientEvent event, String message) {
                 //Interprets incomming json string
-                SystemManager.getInstance().getNotificationInterpretor().interpretNotify(message);
+                SystemManager.getInstance().getNotificationInterpretor().interpretNotify(thisObj,message);
             }
 
             @Override
             public void disconnectedEvent(ClientEvent event) {
-
+                SystemManager.getInstance().getClientManager().getClients().remove(thisObj);
             }
         });
 
