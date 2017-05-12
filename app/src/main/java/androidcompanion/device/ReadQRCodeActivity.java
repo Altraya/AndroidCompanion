@@ -145,9 +145,11 @@ public class ReadQRCodeActivity extends AppCompatActivity {
                                                 String[] split = barcodes.valueAt(0).displayValue.split(":");
                                                 String deviceIPAdress = split[0];
                                                 String devicePort = split[1];
+                                                String pairingKey = split[2];
                                                 Intent i = new Intent();
                                                 i.putExtra(DeviceListingActivity.EXTRA_DEVICE_IP_ADRESS,deviceIPAdress);
                                                 i.putExtra(DeviceListingActivity.EXTRA_DEVICE_PORT,devicePort);
+                                                i.putExtra(DeviceListingActivity.EXTRA_PAIRING_KEY,pairingKey);
                                                 setResult(RESULT_OK, i);
                                                 finish();
                                             }
@@ -162,6 +164,7 @@ public class ReadQRCodeActivity extends AppCompatActivity {
                                                     startActivity(ReadQRCodeActivity.this.getIntent());
                                                 }*/
                                                 Intent i = new Intent();
+                                                // TODO try to setResult(RESULT_CANCELED,i)
                                                 i.putExtra(DeviceListingActivity.EXTRA_DEVICE_IP_ADRESS,"cancelled");
                                                 i.putExtra(DeviceListingActivity.EXTRA_DEVICE_PORT,"cancelled");
                                                 setResult(RESULT_OK, i);

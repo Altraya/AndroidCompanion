@@ -28,9 +28,9 @@ public class ClientManager {
 
     }
 
-    public LocalClient addClient(String address, int port){
+    public LocalClient addClient(String address, int port, int key){
 
-        LocalClient localClient = new LocalClient(address,port);
+        LocalClient localClient = new LocalClient(address,port, key);
 
         clients.add(localClient);
 

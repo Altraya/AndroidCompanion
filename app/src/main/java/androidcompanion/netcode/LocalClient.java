@@ -10,12 +10,15 @@ public class LocalClient {
 
     private Client client;
     private LocalClient thisObj;
+    private int pairingKey;
 
-    public LocalClient(String address,int port){
+    public LocalClient(String address,int port, int pairingKey){
 
         thisObj = this;
 
         client = new Client(address,port);
+
+        this.pairingKey = pairingKey;
 
         client.addClientEventListener(new ClientEvent.ClientEventListener() {
             @Override
@@ -56,5 +59,13 @@ public class LocalClient {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public int getPairingKey() {
+        return pairingKey;
+    }
+
+    public void setPairingKey(int pairingKey) {
+        this.pairingKey = pairingKey;
     }
 }
