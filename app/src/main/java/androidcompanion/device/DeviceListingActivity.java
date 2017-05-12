@@ -1,6 +1,5 @@
 package androidcompanion.device;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +12,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.util.JsonWriter;
 import android.util.Log;
 import android.view.View;
@@ -21,8 +19,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TableRow;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -41,10 +37,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import androidcompanion.main.SystemManager;
-import androidcompanion.netcode.Client;
-import androidcompanion.netcode.ClientEvent;
 import androidcompanion.netcode.LocalClient;
-import androidcompanion.notifications.NotifyFactory;
 import project.androidcompanion.R;
 
 //TODO porquoi c'est lent
@@ -150,7 +143,7 @@ public class DeviceListingActivity extends AppCompatActivity{
                     // effective connection to the client (socket)
                     newClient.connect();
                     //Toast.makeText(getApplicationContext(),"Device successfully connected!",Toast.LENGTH_SHORT).show();
-                    addEntryToJsonFile("device_list.json",deviceIPAdress,devicePort);
+                    addDeviceToJsonFile("device_list.json",deviceIPAdress,devicePort);
                     loadConnectedDevices();
                 }
                 //deviceAdapter.add(new DeviceInformationActivity(deviceIPAdress,devicePort));
@@ -206,7 +199,7 @@ public class DeviceListingActivity extends AppCompatActivity{
      * Retrieve current data from JSON file and add entry to it
      * @param asset_name
      */
-    public void addEntryToJsonFile(String asset_name, String ipAdress, String port) {
+    public void addDeviceToJsonFile(String asset_name, String ipAdress, String port) {
         if(isNewDevice(ipAdress,port))
         {
             try {

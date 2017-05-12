@@ -20,6 +20,7 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 
 import androidcompanion.device.DeviceListingActivity;
+import androidcompanion.main.MyApp;
 
 /**
  * Created by dmarck on 12/05/2017.
@@ -31,11 +32,11 @@ public class SaveManager {
      * Fetch data from json file (asset)
      * @param asset_name
      * @return JSONObject instance containing the data
-     *//*
+     */
     public String loadJSONFromAsset(String asset_name) {
         String json = null;
         try {
-            File jsonFile = new File(getExternalFilesDir(null).getPath(), asset_name);
+            File jsonFile = new File(MyApp.getInstance().getExternalFilesDir(null).getPath(), asset_name);
             InputStream is = new FileInputStream(jsonFile);
             int size = is.available();
             byte[] buffer = new byte[size];
@@ -49,11 +50,11 @@ public class SaveManager {
         return json;
     }
 
-    *//**
+    /**
      * Retrieve current data from JSON file and add entry to it
      * @param asset_name
-     *//*
-    public void addEntryToJsonFile(String asset_name, String ipAdress, String port) {
+     */
+    public void addDeviceToJsonFile(String asset_name, String ipAdress, String port) {
         if(isNewDevice(ipAdress,port))
         {
             try {
@@ -72,7 +73,7 @@ public class SaveManager {
                     // Append
                     devices.put(newJSONobj);
                     // Save new data in file
-                    File JSONFile = new File(getExternalFilesDir(null).getPath(),asset_name);
+                    File JSONFile = new File(MyApp.getInstance().getExternalFilesDir(null).getPath(),asset_name);
                     OutputStream out = new FileOutputStream(JSONFile);
                     JsonWriter writer = new JsonWriter(new OutputStreamWriter(out,"UTF-8"));
                     writer.setIndent("  ");
@@ -107,15 +108,75 @@ public class SaveManager {
         }
         else
         {
-            Toast.makeText(DeviceListingActivity.getApplicationContext(),"This device is already connected.",Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApp.getInstance().getApplicationContext(),"This device is already connected.",Toast.LENGTH_SHORT).show();
         }
     }
 
-    *//**
+    /**
+     * Retrieve current data from JSON file and remove entry from it
+     * @param asset_name
+     */
+    public void removeDeviceFromJsonFile(String asset_name, String ipAdress, String port) {
+        if(isNewDevice(ipAdress,port))
+        {
+            try {
+                // Already existing JSON object
+                JSONObject prevJSONObj = new JSONObject(loadJSONFromAsset(asset_name));
+                // New JSON object
+                JSONObject newJSONobj = new JSONObject();
+                JSONArray  devices;
+                if(!prevJSONObj.isNull("devices"))
+                {
+                    // Array of devices
+                    devices = prevJSONObj.getJSONArray("devices");
+                    // Save new data (w/o the device removed) in file
+                    File JSONFile = new File(MyApp.getInstance().getExternalFilesDir(null).getPath(),asset_name);
+                    OutputStream out = new FileOutputStream(JSONFile);
+                    JsonWriter writer = new JsonWriter(new OutputStreamWriter(out,"UTF-8"));
+                    writer.setIndent("  ");
+                    writer.beginObject();
+                    writer.name("devices");
+                    writer.beginArray();
+                    for (int i = 0; i < devices.length(); i++) {
+                        JSONObject device = devices.getJSONObject(i);
+                        String deviceIPAdress = device.getString("ip_adress");
+                        String devicePort = device.getString("port");
+                        if(deviceIPAdress.equals(ipAdress) && devicePort.equals(port))
+                        {
+                            writer.beginObject();
+                            writer.name("ip_adress").value(deviceIPAdress);
+                            writer.name("port").value(devicePort);
+                            writer.endObject();
+                        }
+                    }
+                    writer.endArray();
+                    writer.endObject();
+                    //out.write(writer.toString().getBytes());
+                    writer.close();
+                    out.close();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            Toast.makeText(MyApp.getInstance().getApplicationContext(),"This device has been disconnected.",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
      * Copy files from Assets folder to External Storage
-     *//*
+     */
     public void copyAssets() {
-        AssetManager assetManager = getAssets();
+        AssetManager assetManager = MyApp.getInstance().getAssets();
         String[] files = null;
         try {
             files = assetManager.list("");
@@ -127,7 +188,7 @@ public class SaveManager {
             OutputStream out = null;
             try {
                 in = assetManager.open(filename);
-                File outFile = new File(getExternalFilesDir(null), filename);
+                File outFile = new File(MyApp.getInstance().getExternalFilesDir(null), filename);
                 out = new FileOutputStream(outFile);
                 copyFile(in, out);
             } catch (IOException e) {
@@ -151,12 +212,12 @@ public class SaveManager {
         }
     }
 
-    *//**
+    /**
      * Copy a file from InputStream to OutputStream
      * @param in
      * @param out
      * @throws IOException
-     *//*
+     */
     private void copyFile(InputStream in, OutputStream out) throws IOException {
         int size = in.available();
         byte[] buffer = new byte[size];
@@ -166,12 +227,12 @@ public class SaveManager {
         }
     }
 
-    *//**
+    /**
      * Check if device with given IP adress and port is new
      * @param ipAdress
      * @param port
      * @return true if new device, false otherwise
-     *//*
+     */
     private boolean isNewDevice(String ipAdress, String port)
     {
         try {
@@ -196,5 +257,4 @@ public class SaveManager {
             return false;
         }
     }
-    */
 }

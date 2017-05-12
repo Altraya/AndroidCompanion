@@ -133,10 +133,11 @@ public class ReadQRCodeActivity extends AppCompatActivity {
                             //Toast.makeText(getApplicationContext(),barcodes.valueAt(0).displayValue,Toast.LENGTH_SHORT).show();
                             if(containsDeviceInfo(barcodes.valueAt(0).displayValue))
                             {
+                                String[] split = barcodes.valueAt(0).displayValue.split(":");
                                 new AlertDialog.Builder(ReadQRCodeActivity.this)
                                         .setTitle("Device Infos Detected")
                                         .setMessage("Following device infos have been detected : "
-                                                + "\n\n\t\t\t- " + barcodes.valueAt(0).displayValue
+                                                + "\n\n\t\t\t- " + split[0] + ":" + split[1]
                                                 + "\n\nDo you want to connect to the device related?")
                                         .setIcon(android.R.drawable.ic_dialog_info)
                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
