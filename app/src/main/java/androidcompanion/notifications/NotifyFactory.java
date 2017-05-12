@@ -5,7 +5,7 @@ import com.jaredrummler.android.device.DeviceName;
 
 import java.util.Date;
 
-import androidcompanion.main.MainActivity;
+
 import androidcompanion.main.SystemManager;
 import androidcompanion.notifications.json.JsonObject;
 import androidcompanion.notifications.json.Message;
@@ -17,7 +17,6 @@ import androidcompanion.notifications.json.Notify;
 
 public class NotifyFactory {
 
-    private MainActivity main;
 
     public NotifyFactory(){
     }
