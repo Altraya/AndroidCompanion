@@ -277,10 +277,11 @@ public class ReadQRCodeActivity extends AppCompatActivity {
         if(str.contains(":"))
         {
             String[] split = str.split(":");
-            if(split.length == 2)
+            if(split.length == 3)
             {
                 try {
                     Integer.parseInt(split[1]);
+                    Integer.parseInt(split[2]);
                 }
                 catch (NumberFormatException e) {
                     return false;
