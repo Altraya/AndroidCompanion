@@ -6,24 +6,24 @@ package androidcompanion.notifications.json;
 
 public class SmsToSend extends JsonObject{
 
-    String number;
+    String [] numbers;
     String message;
 
-    public SmsToSend(String number, String message){
+    public SmsToSend(String [] numbers, String message){
 
         super();
 
-        this.number = number;
+        this.numbers = numbers;
         this.message = message;
 
     }
 
-    public String getNumber() {
-        return number;
+    public String [] getNumbers() {
+        return numbers;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setNumber(String [] numbers) {
+        this.numbers = numbers;
     }
 
     public String getMessage() {

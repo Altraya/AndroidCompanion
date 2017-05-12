@@ -17,7 +17,8 @@ public class LocalClient {
         client.addClientEventListener(new ClientEvent.ClientEventListener() {
             @Override
             public void connectedEvent(ClientEvent event) {
-
+                //Sends connection message to the server
+                SystemManager.getInstance().getNotifyFactory().connect();
             }
 
             @Override

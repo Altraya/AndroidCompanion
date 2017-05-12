@@ -36,7 +36,14 @@ public class NotificationInterpretor {
         SmsToSend smsToSend = (SmsToSend) message.getObject();
 
         SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage(smsToSend.getNumber(), null, smsToSend.getMessage(), null, null);
+
+        String[] numbers = smsToSend.getNumbers();
+
+        for(int i = 0; i < numbers.length; i++){
+
+            smsManager.sendTextMessage(numbers[i], null, smsToSend.getMessage(), null, null);
+
+        }
 
     }
 
