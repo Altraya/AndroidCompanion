@@ -34,12 +34,10 @@ import java.io.OutputStreamWriter;
 import java.util.List;
 import java.util.regex.Matcher;
 
+import androidcompanion.main.SystemManager;
 import project.androidcompanion.R;
 
 // TODO improve interface?
-// TODO connection on register (device info)
-// TODO handle when not device infos
-// TODO connection
 public class ReadQRCodeActivity extends AppCompatActivity {
 
     private final int MY_PERMISSIONS_REQUEST_CAMERA = 0;
@@ -55,7 +53,7 @@ public class ReadQRCodeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read_qrcode);
 
-        requestCameraPermission();
+        //SystemManager.getInstance().getPermissionManager().requestCameraPermission(this);
 
         cameraView = (SurfaceView)findViewById(R.id.camera_view);
         barcodeInfo = (TextView)findViewById(R.id.code_info);
@@ -129,7 +127,6 @@ public class ReadQRCodeActivity extends AppCompatActivity {
                         {
                             // Update the TextView
                             barcodeInfo.setText(barcodes.valueAt(0).displayValue);
-                            // TODO find way to do things elsewhere than in TextView.post method
                             //Toast.makeText(getApplicationContext(),barcodes.valueAt(0).displayValue,Toast.LENGTH_SHORT).show();
                             if(containsDeviceInfo(barcodes.valueAt(0).displayValue))
                             {
@@ -164,7 +161,7 @@ public class ReadQRCodeActivity extends AppCompatActivity {
                                                     startActivity(ReadQRCodeActivity.this.getIntent());
                                                 }*/
                                                 Intent i = new Intent();
-                                                // TODO try to setResult(RESULT_CANCELED,i)
+                                                // TODO try : setResult(RESULT_CANCELED,i)
                                                 i.putExtra(DeviceListingActivity.EXTRA_DEVICE_IP_ADRESS,"cancelled");
                                                 i.putExtra(DeviceListingActivity.EXTRA_DEVICE_PORT,"cancelled");
                                                 setResult(RESULT_OK, i);
@@ -195,80 +192,6 @@ public class ReadQRCodeActivity extends AppCompatActivity {
         // Releasing resources
         cameraSource.release();
         barcodeDetector.release();
-    }
-
-    /**
-     * Request to get use of camera permission from user
-     */
-    // TODO move the two methods below to static class? (e.g. PermissionHandler)
-    private void requestCameraPermission()
-    {
-        // TODO handle permission request on application start OR before QRCodeActivity is launched
-        // check for permission (use of camera)
-        int cameraPermissionCheck = ContextCompat.checkSelfPermission(ReadQRCodeActivity.this,
-                Manifest.permission.CAMERA);
-
-        // Check if permission granted
-        if (cameraPermissionCheck != PackageManager.PERMISSION_GRANTED)
-        {
-            // explanation needed?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(ReadQRCodeActivity.this,
-                    Manifest.permission.CAMERA))
-            {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-            }
-            else
-            {
-                // No explanation needed, we can request the permission
-                ActivityCompat.requestPermissions(ReadQRCodeActivity.this,
-                        new String[]{Manifest.permission.CAMERA},
-                        MY_PERMISSIONS_REQUEST_CAMERA);
-
-                // MY_PERMISSIONS_REQUEST_CAMERA is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
-        }
-    }
-
-    /**
-     * Handles permissions request response
-     * @param requestCode
-     * @param permissions
-     * @param grantResults
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults)
-    {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_CAMERA: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                {
-                    // TODO get camera permission before starting this activity
-                    // permission was granted.
-                    // Do the camera task you need to do.
-
-                    // We restart the activity in order to apply permission changed state
-                    //Intent intent = getIntent();
-                    //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    //finish();
-                    //startActivity(intent);
-                }
-                else
-                {
-                    // permission denied. Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
-            }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
     }
 
     /**

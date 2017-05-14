@@ -7,6 +7,7 @@ import android.content.Context;
  * Created by dmarck on 12/05/2017.
  */
 
+// singleton
 public class MyApp extends Application {
     private static MyApp instance;
 

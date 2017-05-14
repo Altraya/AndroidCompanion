@@ -32,6 +32,7 @@ public class SystemManager {
     private NotificationInterpretor notificationInterpretor;
     private ClientManager clientManager;
     private SaveManager saveManager;
+    private PermissionManager permissionManager;
 
     //Set up function
     public void instanciate(){
@@ -40,6 +41,7 @@ public class SystemManager {
         notificationInterpretor = new NotificationInterpretor();
         clientManager = new ClientManager();
         saveManager = new SaveManager();
+        permissionManager = new PermissionManager();
 
     }
 
@@ -73,5 +75,13 @@ public class SystemManager {
 
     public void setSaveManager(SaveManager saveManager) {
         this.saveManager = saveManager;
+    }
+
+    public PermissionManager getPermissionManager() {
+        return permissionManager;
+    }
+
+    public void setPermissionManager(PermissionManager permissionManager) {
+        this.permissionManager = permissionManager;
     }
 }
