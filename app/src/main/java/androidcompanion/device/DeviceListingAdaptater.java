@@ -68,7 +68,7 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
 
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, final ViewGroup parent) {
         // Get the data item for this position
         DeviceInformationActivity deviceInformationActivity = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
@@ -108,6 +108,7 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
                     {
                         SystemManager.getInstance().getNotifyFactory().disconnect(localClient);
                         SystemManager.getInstance().getSaveManager().removeDeviceFromJsonFile("device_list.json",device.getDeviceIPAdress(),device.getDevicePort());
+                        SystemManager.getInstance().getSaveManager().loadConnectedDevices(DeviceListingActivity.deviceAdapter);
                         break;
                     }
                 }

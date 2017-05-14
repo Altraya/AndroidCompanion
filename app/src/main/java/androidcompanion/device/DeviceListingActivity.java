@@ -42,7 +42,7 @@ public class DeviceListingActivity extends AppCompatActivity{
     public final static String EXTRA_PAIRING_KEY = "androidcompanion.KEY";
 
     ArrayList<DeviceInformationActivity> listDevice = new ArrayList<DeviceInformationActivity>();
-    DeviceListingAdaptater deviceAdapter;
+    public static DeviceListingAdaptater deviceAdapter;
     ListView listView;
 
     @Override
@@ -88,7 +88,7 @@ public class DeviceListingActivity extends AppCompatActivity{
             }
         });
 
-        loadConnectedDevices();
+        SystemManager.getInstance().getSaveManager().loadConnectedDevices(deviceAdapter);
 
         //click on add button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -133,7 +133,7 @@ public class DeviceListingActivity extends AppCompatActivity{
                     newClient.connect();
                     //Toast.makeText(getApplicationContext(),"Device successfully connected!",Toast.LENGTH_SHORT).show();
                     SystemManager.getInstance().getSaveManager().addDeviceToJsonFile("device_list.json",deviceIPAdress,devicePort);
-                    loadConnectedDevices();
+                    SystemManager.getInstance().getSaveManager().loadConnectedDevices(deviceAdapter);
                 }
                 //deviceAdapter.add(new DeviceInformationActivity(deviceIPAdress,devicePort));
             }

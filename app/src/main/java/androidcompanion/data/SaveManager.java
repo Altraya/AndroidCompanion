@@ -19,8 +19,11 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 
+import androidcompanion.device.DeviceInformationActivity;
 import androidcompanion.device.DeviceListingActivity;
+import androidcompanion.device.DeviceListingAdaptater;
 import androidcompanion.main.MyApp;
+import androidcompanion.main.SystemManager;
 
 /**
  * Created by dmarck on 12/05/2017.
@@ -208,6 +211,33 @@ public class SaveManager {
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Load the connected devices list
+     * @param deviceAdapter in which will be loaded
+     */
+    public void loadConnectedDevices(DeviceListingAdaptater deviceAdapter) {
+        deviceAdapter.clear();
+        try
+        {
+            JSONObject jsonObj = new JSONObject(loadJSONFromAsset("device_list.json"));
+            if(!jsonObj.isNull("devices"))
+            {
+                JSONArray devices = jsonObj.getJSONArray("devices");
+                for(int i = 0; i < devices.length(); i++)
+                {
+                    JSONObject device = devices.getJSONObject(i);
+                    String deviceIPAdress = device.getString("ip_adress");
+                    String devicePort = device.getString("port");
+                    deviceAdapter.add(new DeviceInformationActivity(deviceIPAdress,devicePort));
+                }
+            }
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
         }
     }
 
