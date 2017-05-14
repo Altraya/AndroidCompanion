@@ -23,7 +23,6 @@ public class PermissionManager {
      */
     public void requestCameraPermission(Activity activity)
     {
-        // TODO handle permission request on application start OR before QRCodeActivity is launched
         // check for permission (use of camera)
         int cameraPermissionCheck = ContextCompat.checkSelfPermission(activity,
                 Manifest.permission.CAMERA);
