@@ -44,7 +44,7 @@ public class NotifyFactory {
 
     private String getJson(LocalClient localClient,String type,JsonObject object){
 
-        String conn = localClient.getClient().getAddress() + "@" + localClient.getClient().getPort();
+        String conn = localClient.getClient().getAddress() + ":" + localClient.getClient().getPort() + "@" + localClient.getPairingKey();
 
         String author = DeviceName.getDeviceName();
 
