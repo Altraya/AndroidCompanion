@@ -40,9 +40,9 @@ public class Client {
 
     public void disconnect(){
 
-        asyncClient.cancel(true);
-
         tcpClient.terminateConnection();
+
+        asyncClient.cancel(true);
 
     }
 

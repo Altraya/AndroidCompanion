@@ -4,6 +4,7 @@ import android.telephony.SmsManager;
 
 import com.google.gson.Gson;
 
+import androidcompanion.netcode.LocalClient;
 import androidcompanion.notifications.json.Message;
 import androidcompanion.notifications.json.SmsToSend;
 
@@ -17,7 +18,7 @@ public class NotificationInterpretor {
 
     }
 
-    public void interpretNotify(String jsonString){
+    public void interpretNotify(LocalClient source,String jsonString){
 
         Gson gson = new Gson();
 
@@ -25,6 +26,7 @@ public class NotificationInterpretor {
 
         switch (message.getType()){
             case "smsToSend" : interpretSmsToSend(message); break;
+            case "disconnectionAcknowledged" : interpretDisconnectionConfirmation(source);
         }
 
     }
@@ -44,6 +46,12 @@ public class NotificationInterpretor {
             smsManager.sendTextMessage(numbers[i], null, smsToSend.getMessage(), null, null);
 
         }
+
+    }
+
+    private void interpretDisconnectionConfirmation(LocalClient source){
+
+        source.disconnect();
 
     }
 
