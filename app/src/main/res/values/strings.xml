@@ -14,4 +14,7 @@
 
     <string name="disconnect_device">Disconnect</string>
 
+    <string name="yes">Yes</string>
+    <string name="yes_ale">Yes, the ALE way!</string>
+    <string name="no">No</string>
 </resources>

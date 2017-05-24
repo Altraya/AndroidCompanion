@@ -2,6 +2,7 @@ package androidcompanion.device;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -61,6 +63,27 @@ public class DeviceListingActivity extends AppCompatActivity{
         // We request the camera permission
         SystemManager.getInstance().getPermissionManager().requestCameraPermission(DeviceListingActivity.this);
 
+        // We ask the user to grant notification access to the app
+        if(!isNotificationServiceRunning())
+        {
+            new AlertDialog.Builder(DeviceListingActivity.this)
+                    .setTitle("Notification access required")
+                    .setMessage("The application needs notification access and it seems that it is not enabled."
+                                + "\n" + "Do you want to enable notification access for this application?")
+                    .setIcon(android.R.drawable.ic_dialog_info)
+                    .setPositiveButton(R.string.yes_ale, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            startActivity(new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS));
+                        }
+                    })
+                    .setNegativeButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            startActivity(new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS));
+                        }
+                    })
+                    .show();
+        }
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         myToolbar.setTitleTextColor(Color.WHITE);
@@ -71,6 +94,7 @@ public class DeviceListingActivity extends AppCompatActivity{
         boolean isFirstLaunch = settings.getBoolean("FIRST_RUN", false);
         if (!isFirstLaunch) {
             // do the thing for the first time
+            // here we copy the assets to the internal storage
             SystemManager.getInstance().getSaveManager().copyAssets();
             settings = getSharedPreferences("PREFS_NAME", 0);
             SharedPreferences.Editor editor = settings.edit();
@@ -227,6 +251,18 @@ public class DeviceListingActivity extends AppCompatActivity{
             SystemManager.getInstance().getClientManager().notifyAll(pack, title, text);
         }
     };
+
+    /**
+     * This method tests if the application has notification access enabled
+     * @return true if notification access enabled
+     */
+    private boolean isNotificationServiceRunning()
+    {
+        ContentResolver contentResolver = getContentResolver();
+        String enabledNotificationListeners = Settings.Secure.getString(contentResolver, "enabled_notification_listeners");
+        String packageName = getPackageName();
+        return enabledNotificationListeners != null && enabledNotificationListeners.contains(packageName);
+    }
 }
 
 

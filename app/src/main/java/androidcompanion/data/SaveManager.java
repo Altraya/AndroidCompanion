@@ -111,7 +111,7 @@ public class SaveManager {
         }
         else
         {
-            Toast.makeText(MyApp.getInstance().getApplicationContext(),"This device is already connected.",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MyApp.getInstance().getApplicationContext(),"This device is already connected.",Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -161,7 +161,7 @@ public class SaveManager {
                 writer.close();
                 out.close();
             }
-            Toast.makeText(MyApp.getInstance().getApplicationContext(),"This device has been disconnected.",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MyApp.getInstance().getApplicationContext(),"This device has been disconnected.",Toast.LENGTH_SHORT).show();
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
