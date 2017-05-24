@@ -50,6 +50,8 @@ public class Client {
 
         tcpClient.sendMessage(data);
 
+        System.out.println("SENDING DATA TO REMOTE : " + data);
+
     }
 
     public synchronized  void addClientEventListener(ClientEvent.ClientEventListener l){
