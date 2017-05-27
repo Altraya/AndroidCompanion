@@ -27,6 +27,16 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="androidcompanion.notifications.NotificationInterpretor"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
         <activity android:name="androidcompanion.device.ReadQRCodeActivity" android:parentActivityName="androidcompanion.device.DeviceListingActivity"></activity>
 
         <service
