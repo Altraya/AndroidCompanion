@@ -1,5 +1,7 @@
 package androidcompanion.data;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.util.JsonWriter;
 import android.util.Log;
@@ -18,12 +20,16 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import androidcompanion.device.DeviceInformationActivity;
 import androidcompanion.device.DeviceListingActivity;
 import androidcompanion.device.DeviceListingAdaptater;
 import androidcompanion.main.MyApp;
 import androidcompanion.main.SystemManager;
+import androidcompanion.netcode.LocalClient;
 
 /**
  * Created by dmarck on 12/05/2017.
@@ -56,8 +62,11 @@ public class SaveManager {
     /**
      * Retrieve current data from JSON file and add entry to it
      * @param asset_name
+     * @param ipAdress ip adress of the device to add
+     * @param port port number of the device to add
+     * @param pairingKey numeric key corresponding to the device to add
      */
-    public void addDeviceToJsonFile(String asset_name, String ipAdress, String port) {
+    public void addDeviceToJsonFile(String asset_name, String ipAdress, String port, String pairingKey) {
         if(isNewDevice(ipAdress,port))
         {
             try {
@@ -73,6 +82,7 @@ public class SaveManager {
                     // Adding data
                     newJSONobj.put("ip_adress",ipAdress);
                     newJSONobj.put("port",port);
+                    newJSONobj.put("pairing_key",pairingKey);
                     // Append
                     devices.put(newJSONobj);
                     // Save new data in file
@@ -87,9 +97,11 @@ public class SaveManager {
                         JSONObject device = devices.getJSONObject(i);
                         String deviceIPAdress = device.getString("ip_adress");
                         String devicePort = device.getString("port");
+                        String devicePairingKey = device.getString("pairing_key");
                         writer.beginObject();
                         writer.name("ip_adress").value(deviceIPAdress);
                         writer.name("port").value(devicePort);
+                        writer.name("pairing_key").value(pairingKey);
                         writer.endObject();
                     }
                     writer.endArray();
@@ -118,8 +130,11 @@ public class SaveManager {
     /**
      * Retrieve current data from JSON file and remove entry from it
      * @param asset_name
+     * @param ipAdress ip adress of the device to remove
+     * @param port port number of the device to remove
+     * @param pairingKey numeric key corresponding to the device to remove
      */
-    public void removeDeviceFromJsonFile(String asset_name, String ipAdress, String port) {
+    public void removeDeviceFromJsonFile(String asset_name, String ipAdress, String port, String pairingKey) {
         try
         {
             // Already existing JSON object
@@ -143,7 +158,8 @@ public class SaveManager {
                     JSONObject device = devices.getJSONObject(i);
                     String deviceIPAdress = device.getString("ip_adress");
                     String devicePort = device.getString("port");
-                    if(deviceIPAdress.equals(ipAdress) && devicePort.equals(port))
+                    String devicePairingKey = device.getString("pairing_key");
+                    if(deviceIPAdress.equals(ipAdress) && devicePort.equals(port) && devicePairingKey.equals(pairingKey))
                     {
                         continue;
                     }
@@ -152,6 +168,7 @@ public class SaveManager {
                         writer.beginObject();
                         writer.name("ip_adress").value(deviceIPAdress);
                         writer.name("port").value(devicePort);
+                        writer.name("pairing_key").value(devicePairingKey);
                         writer.endObject();
                     }
                 }
@@ -231,7 +248,8 @@ public class SaveManager {
                     JSONObject device = devices.getJSONObject(i);
                     String deviceIPAdress = device.getString("ip_adress");
                     String devicePort = device.getString("port");
-                    deviceAdapter.add(new DeviceInformationActivity(deviceIPAdress,devicePort));
+                    String devicePairingKey = device.getString("pairing_key");
+                    deviceAdapter.add(new DeviceInformationActivity(deviceIPAdress,devicePort,devicePairingKey));
                 }
             }
         }

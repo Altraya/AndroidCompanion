@@ -8,10 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 public class DeviceInformationActivity extends AppCompatActivity{
     private String deviceIPAdress = "";
     private String devicePort = "";
+    private String devicePairingKey = "";
 
-    public DeviceInformationActivity(String deviceIPAdress, String devicePort) {
+    public DeviceInformationActivity(String deviceIPAdress, String devicePort, String devicePairingKey) {
         this.deviceIPAdress = deviceIPAdress;
         this.devicePort = devicePort;
+        this.devicePairingKey = devicePairingKey;
     }
 
     public String getDeviceIPAdress() {
@@ -28,6 +30,14 @@ public class DeviceInformationActivity extends AppCompatActivity{
 
     public void setDevicePort(String devicePort) {
         this.devicePort = devicePort;
+    }
+
+    public String getDevicePairingKey() {
+        return devicePairingKey;
+    }
+
+    public void setDevicePairingKey(String devicePairingKey) {
+        this.devicePairingKey = devicePairingKey;
     }
 
     public String toString(){

@@ -104,10 +104,11 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
                 for(LocalClient localClient : SystemManager.getInstance().getClientManager().getClients())
                 {
                     if(localClient.getClient().getAddress().equals(device.getDeviceIPAdress())
-                            && (new String(localClient.getClient().getPort() + "").equals(device.getDevicePort())))
+                            && (new String(localClient.getClient().getPort() + "").equals(device.getDevicePort()))
+                            && (new String(localClient.getPairingKey() + "").equals(device.getDevicePairingKey())))
                     {
                         SystemManager.getInstance().getNotifyFactory().disconnect(localClient);
-                        SystemManager.getInstance().getSaveManager().removeDeviceFromJsonFile("device_list.json",device.getDeviceIPAdress(),device.getDevicePort());
+                        SystemManager.getInstance().getSaveManager().removeDeviceFromJsonFile("device_list.json",device.getDeviceIPAdress(),device.getDevicePort(),device.getDevicePairingKey());
                         SystemManager.getInstance().getSaveManager().loadConnectedDevices(DeviceListingActivity.deviceAdapter);
                         break;
                     }
