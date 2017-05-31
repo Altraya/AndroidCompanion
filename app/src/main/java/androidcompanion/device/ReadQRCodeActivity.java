@@ -37,7 +37,6 @@ import java.util.regex.Matcher;
 import androidcompanion.main.SystemManager;
 import project.androidcompanion.R;
 
-// TODO improve interface?
 public class ReadQRCodeActivity extends AppCompatActivity {
 
     private final int MY_PERMISSIONS_REQUEST_CAMERA = 0;
@@ -153,13 +152,7 @@ public class ReadQRCodeActivity extends AppCompatActivity {
                                         })
                                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int whichButton) {
-                                                /*if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                                                    // only for honeycomb and newer versions
-                                                    ReadQRCodeActivity.this.recreate();
-                                                } else {
-                                                    finish();
-                                                    startActivity(ReadQRCodeActivity.this.getIntent());
-                                                }*/
+
                                                 Intent i = new Intent();
                                                 // TODO try : setResult(RESULT_CANCELED,i)
                                                 i.putExtra(DeviceListingActivity.EXTRA_DEVICE_IP_ADRESS,"cancelled");

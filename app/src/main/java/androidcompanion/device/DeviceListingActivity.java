@@ -36,9 +36,7 @@ import androidcompanion.main.SystemManager;
 import androidcompanion.netcode.LocalClient;
 import project.androidcompanion.R;
 
-//TODO porquoi c'est lent
-// TODO lock screen orientation to portrait?
-//public class DeviceListingActivity extends AppCompatActivity {
+
 public class DeviceListingActivity extends AppCompatActivity{
 
     // Request code(s)
@@ -230,25 +228,24 @@ public class DeviceListingActivity extends AppCompatActivity{
         }
     }
 
+    //called by NotificationService with onNotificationPosted function
     private BroadcastReceiver onNotice= new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
             String pack = intent.getStringExtra("package");
             String title = intent.getStringExtra("title");
+            String ticker = intent.getStringExtra("ticker");
             String text = intent.getStringExtra("text");
 
-            /*TableRow tr = new TableRow(getApplicationContext());
-            tr.setLayoutParams(new TableRow.LayoutParams( TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-            TextView textview = new TextView(getApplicationContext());
-            textview.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT,1.0f));
-            textview.setTextSize(20);
-            textview.setTextColor(Color.parseColor("#0B0719"));
-            textview.setText(Html.fromHtml(pack +"<br><b>" + title + " : </b>" + text));
-            tr.addView(textview);
-            tab.addView(tr);*/
-
-            SystemManager.getInstance().getClientManager().notifyAll(pack, title, text);
+            if(ticker != null) //if the ticker is not null that means it's a message
+            {
+                //here we will send the right message and not only "you have 2 messages"
+                SystemManager.getInstance().getClientManager().notifyAll(pack, ticker, text);
+            }
+            else {
+                SystemManager.getInstance().getClientManager().notifyAll(pack, title, text);
+            }
         }
     };
 
