@@ -3,6 +3,7 @@ package androidcompanion.notifications;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -23,7 +24,7 @@ import androidcompanion.notifications.json.SmsToSend;
  * Created by Jo on 28/04/2017.
  */
 
-public class NotificationInterpretor extends Activity {
+public class NotificationInterpretor {
 
     public NotificationInterpretor() {
 
@@ -36,9 +37,17 @@ public class NotificationInterpretor extends Activity {
         Message message = gson.fromJson(jsonString, Message.class);
 
         switch (message.getType()){
-            case "smsToSend" : interpretSmsToSend(message); break;
-            case "askCall" : interpretNumberToCall(message); break;
-            case "disconnectionAcknowledged" : interpretDisconnectionConfirmation(source);
+            case "smsToSend" :
+                interpretSmsToSend(message);
+                break;
+            case "askCall" :
+                interpretNumberToCall(message);
+                break;
+            case "disconnectionAcknowledged" :
+                interpretDisconnectionConfirmation(source);
+                break;
+            default:
+                break;
         }
 
     }
@@ -69,11 +78,12 @@ public class NotificationInterpretor extends Activity {
         try {
             Intent callIntent = new Intent(Intent.ACTION_CALL);
             callIntent.setData(Uri.parse("tel:"+number));
-            if (ActivityCompat.checkSelfPermission(NotificationInterpretor.this,
+            Context currentContext = MyApp.getInstance().getContext();
+            if (ActivityCompat.checkSelfPermission(currentContext,
                     Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
-            startActivity(callIntent);
+            currentContext.startActivity(callIntent);
 
         } catch (ActivityNotFoundException e) {
             Log.e("error call", "Call failed", e);

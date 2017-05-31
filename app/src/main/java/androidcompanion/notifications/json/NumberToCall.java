@@ -5,17 +5,21 @@ package androidcompanion.notifications.json;
  */
 
 public class NumberToCall extends JsonObject {
+
+
+    String number ;
+
+    public NumberToCall(String number){
+
+        this.number = number;
+    }
+
     public String getNumber() {
         return number;
     }
 
     public void setNumber(String number) {
-        this.number = number;
-    }
 
-    String number ;
-
-    NumberToCall(String number){
         this.number = number;
     }
 
