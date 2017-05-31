@@ -13,6 +13,7 @@ import androidcompanion.netcode.LocalClient;
 
 /**
  * Created by dmarck on 12/05/2017.
+ * Class to get context of the application exerywhere
  */
 
 /**
