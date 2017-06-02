@@ -1,11 +1,23 @@
 package androidcompanion.notifications;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.SmsManager;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
+import androidcompanion.main.MyApp;
+import androidcompanion.main.SystemManager;
 import androidcompanion.netcode.LocalClient;
 import androidcompanion.notifications.json.Message;
+import androidcompanion.notifications.json.NumberToCall;
 import androidcompanion.notifications.json.SmsToSend;
 
 /**
@@ -14,7 +26,7 @@ import androidcompanion.notifications.json.SmsToSend;
 
 public class NotificationInterpretor {
 
-    public NotificationInterpretor(){
+    public NotificationInterpretor() {
 
     }
 
@@ -25,8 +37,17 @@ public class NotificationInterpretor {
         Message message = gson.fromJson(jsonString, Message.class);
 
         switch (message.getType()){
-            case "smsToSend" : interpretSmsToSend(message); break;
-            case "disconnectionAcknowledged" : interpretDisconnectionConfirmation(source);
+            case "smsToSend" :
+                interpretSmsToSend(message);
+                break;
+            case "askCall" :
+                interpretNumberToCall(message);
+                break;
+            case "disconnectionAcknowledged" :
+                interpretDisconnectionConfirmation(source);
+                break;
+            default:
+                break;
         }
 
     }
@@ -48,6 +69,30 @@ public class NotificationInterpretor {
         }
 
     }
+
+    private void interpretNumberToCall(Message message){
+
+        if(message.getObject() == null) return;
+        NumberToCall numberToCall = (NumberToCall) message.getObject();
+        String number = numberToCall.getNumber();
+        try {
+            Intent callIntent = new Intent(Intent.ACTION_CALL);
+            callIntent.setData(Uri.parse("tel:"+number));
+            Context currentContext = MyApp.getInstance().getContext();
+            if (ActivityCompat.checkSelfPermission(currentContext,
+                    Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            currentContext.startActivity(callIntent);
+
+        } catch (ActivityNotFoundException e) {
+            Log.e("error call", "Call failed", e);
+        }
+
+
+
+    }
+
 
     private void interpretDisconnectionConfirmation(LocalClient source){
 

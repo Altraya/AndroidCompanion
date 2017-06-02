@@ -13,7 +13,6 @@ import project.androidcompanion.R;
  * Created by Sakina on 04/04/2017.
  */
 
-// TODO améliorer l'échange peut etre utiliser des parcel ou bundle
 public class addDeviceToListActivity extends AppCompatActivity {
 
     Button btn_createDevice;
