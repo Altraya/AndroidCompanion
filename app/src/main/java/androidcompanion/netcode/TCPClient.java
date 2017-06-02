@@ -8,6 +8,7 @@ import java.net.Socket;
 public class TCPClient {
 
     private String serverMessage;
+    private OnMessageReceived mMessageListener = null;        // Variable utilisée pour mes tests. Le test consiste à pouvoir faire un petit chat entre le pc et le téléphone.
     private boolean mRun = false;
 
     private Client client;
@@ -19,8 +20,9 @@ public class TCPClient {
     /**
      *  Constructor of the class. OnMessagedReceived listens for the messages received from server
      */
-    public TCPClient(Client client) {
+    public TCPClient(Client client, OnMessageReceived listener) {
         this.client = client;
+        mMessageListener = listener;
     }
 
     /**
@@ -29,7 +31,7 @@ public class TCPClient {
      */
     public void sendMessage(String message){
         if (out != null && !out.checkError()) {
-            out.println(message + "<Client Quit>");
+            out.println(message);
             out.flush();
         }
     }
@@ -71,13 +73,11 @@ public class TCPClient {
 
                 //in this while the client listens for the messages sent by the server
                 while (mRun) {
-
                     serverMessage = in.readLine();
 
-                    if (serverMessage != null) {
-
-                        client.getClientEventManager().fireMessageReceivedEvent(serverMessage);
-
+                    if (serverMessage != null && mMessageListener != null) {
+                        //call the method messageReceived from MyActivity class
+                        mMessageListener.messageReceived(serverMessage);
                     }
                     serverMessage = null;
 
@@ -87,10 +87,9 @@ public class TCPClient {
 
             } catch (Exception e) {
 
-                // Log.e("TCP", "S: Error", e);
+               // Log.e("TCP", "S: Error", e);
 
             } finally {
-
                 terminateConnection();
 
             }

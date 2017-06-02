@@ -66,5 +66,4 @@ public class ClientEventManager {
     public void setListeners(List listeners) {
         this.listeners = listeners;
     }
-
 }
