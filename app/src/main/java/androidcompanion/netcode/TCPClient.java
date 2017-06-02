@@ -31,7 +31,7 @@ public class TCPClient {
      */
     public void sendMessage(String message){
         if (out != null && !out.checkError()) {
-            out.println(message + "<Client Quit>");
+            out.println(message);
             out.flush();
         }
     }
