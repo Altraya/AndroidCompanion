@@ -38,12 +38,15 @@ public class NotificationInterpretor {
 
         switch (message.getType()){
             case "smsToSend" :
+                System.out.println("Will send a message "+message);
                 interpretSmsToSend(message);
                 break;
             case "askCall" :
+                System.out.println("Will send a call order "+message);
                 interpretNumberToCall(message);
                 break;
             case "disconnectionAcknowledged" :
+                System.out.println("The client "+source.toString()+" will be diconnected");
                 interpretDisconnectionConfirmation(source);
                 break;
             default:
@@ -54,10 +57,11 @@ public class NotificationInterpretor {
 
     private void interpretSmsToSend(Message message){
 
+        System.out.println(message);
         if(message.getObject() == null) return;
 
         SmsToSend smsToSend = (SmsToSend) message.getObject();
-
+        System.out.println(smsToSend);
         SmsManager smsManager = SmsManager.getDefault();
 
         String[] numbers = smsToSend.getNumbers();
