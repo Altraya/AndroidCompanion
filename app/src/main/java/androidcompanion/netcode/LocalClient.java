@@ -33,6 +33,7 @@ public class LocalClient {
 
             @Override
             public void messageReceivedEvent(ClientEvent event, String message) {
+                System.out.println("Message recu du serveur "+message);
                 //Interprets incomming json string
                 ToastManager.makeToast("Message reçu du serveur");
                 SystemManager.getInstance().getNotificationInterpretor().interpretNotify(thisObj,message);
