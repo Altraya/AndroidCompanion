@@ -8,7 +8,6 @@ import java.net.Socket;
 public class TCPClient {
 
     private String serverMessage;
-    private OnMessageReceived mMessageListener = null;        // Variable utilisée pour mes tests. Le test consiste à pouvoir faire un petit chat entre le pc et le téléphone.
     private boolean mRun = false;
 
     private Client client;
@@ -20,9 +19,8 @@ public class TCPClient {
     /**
      *  Constructor of the class. OnMessagedReceived listens for the messages received from server
      */
-    public TCPClient(Client client, OnMessageReceived listener) {
+    public TCPClient(Client client) {
         this.client = client;
-        mMessageListener = listener;
     }
 
     /**
@@ -73,11 +71,14 @@ public class TCPClient {
 
                 //in this while the client listens for the messages sent by the server
                 while (mRun) {
+
                     serverMessage = in.readLine();
 
-                    if (serverMessage != null && mMessageListener != null) {
+                    Log.e("ASYNC READ", serverMessage);
+
+                    if (serverMessage != null) {
                         //call the method messageReceived from MyActivity class
-                        mMessageListener.messageReceived(serverMessage);
+                        client.getClientEventManager().fireMessageReceivedEvent(serverMessage);
                     }
                     serverMessage = null;
 
@@ -96,16 +97,10 @@ public class TCPClient {
 
         } catch (Exception e) {
 
-            Log.e("TCP", "C: Error", e);
+            terminateConnection();
 
         }
 
-    }
-
-    //Declare the interface. The method messageReceived(String message) will must be implemented in the MyActivity
-    //class at on asynckTask doInBackground
-    public interface OnMessageReceived {
-        public void messageReceived(String message);
     }
 
     public void terminateConnection(){

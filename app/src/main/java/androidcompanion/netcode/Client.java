@@ -24,13 +24,7 @@ public class Client {
 
     public void connect(){
 
-        tcpClient = new TCPClient(this,new TCPClient.OnMessageReceived() {
-            @Override
-            //here the messageReceived method is implemented
-            public void messageReceived(String message) {
-                clientEventManager.fireMessageReceivedEvent(message);
-            }
-        });
+        tcpClient = new TCPClient(this);
 
         asyncClient = new AsyncClient(tcpClient);
 
