@@ -63,6 +63,8 @@ public class DeviceListingActivity extends AppCompatActivity{
         // We request the smstosend permission
         SystemManager.getInstance().getPermissionManager().requestSMSToSendPermission(DeviceListingActivity.this);
 
+        SystemManager.getInstance().getPermissionManager().requestCallPermission(DeviceListingActivity.this);
+
         // We ask the user to grant notification access to the app
         if(!isNotificationServiceRunning())
         {

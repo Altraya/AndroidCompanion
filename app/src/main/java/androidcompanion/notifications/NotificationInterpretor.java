@@ -49,7 +49,7 @@ public class NotificationInterpretor {
                     System.out.println("Will send a message " + message);
                     interpretSmsToSend(message);
                     break;
-                case "askCall":
+                case "requestCall":
                     System.out.println("Will send a call order " + message);
                     interpretNumberToCall(message);
                     break;
@@ -67,6 +67,8 @@ public class NotificationInterpretor {
     }
 
     private void interpretSmsToSend(Message message){
+
+        if(message.getObject() == null) return;
 
         try{
 
@@ -95,20 +97,31 @@ public class NotificationInterpretor {
     private void interpretNumberToCall(Message message){
 
         if(message.getObject() == null) return;
-        NumberToCall numberToCall = (NumberToCall) message.getObject();
-        String number = numberToCall.getNumber();
-        try {
-            Intent callIntent = new Intent(Intent.ACTION_CALL);
-            callIntent.setData(Uri.parse("tel:"+number));
-            Context currentContext = MyApp.getInstance().getContext();
-            if (ActivityCompat.checkSelfPermission(currentContext,
-                    Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-            currentContext.startActivity(callIntent);
 
-        } catch (ActivityNotFoundException e) {
-            Log.e("error call", "Call failed", e);
+        try{
+
+            System.out.println(message.getObject());
+
+            Gson gson = new Gson();
+            NumberToCall subMessageObject = gson.fromJson(message.getObject().toString(), NumberToCall.class);
+
+            try {
+                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                callIntent.setData(Uri.parse("tel:"+subMessageObject.getNumber()));
+                Context currentContext = MyApp.getInstance().getContext();
+                if (ActivityCompat.checkSelfPermission(currentContext,
+                        Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                currentContext.startActivity(callIntent);
+
+            } catch (ActivityNotFoundException e) {
+                Log.e("error call", "Call failed", e);
+            }
+
+        }catch(Exception e)
+        {
+            Log.e("Error :", e.toString());
         }
 
 
