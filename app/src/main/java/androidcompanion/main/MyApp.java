@@ -69,7 +69,9 @@ public class MyApp extends Application {
                     // Connection to the device using the infos previously provided
                     LocalClient newClient = SystemManager.getInstance().getClientManager().addClient(deviceIPAdress,Integer.parseInt(devicePort),Integer.parseInt(devicePairingKey));
                     // effective connection to the client (socket)
-                    newClient.connect();
+                    if(newClient != null){
+                        newClient.connect();
+                    }
                     //Toast.makeText(getApplicationContext(),"Device successfully connected!",Toast.LENGTH_SHORT).show();
                 }
             }

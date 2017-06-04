@@ -60,6 +60,8 @@ public class DeviceListingActivity extends AppCompatActivity{
 
         // We request the camera permission
         SystemManager.getInstance().getPermissionManager().requestCameraPermission(DeviceListingActivity.this);
+        // We request the smstosend permission
+        SystemManager.getInstance().getPermissionManager().requestSMSToSendPermission(DeviceListingActivity.this);
 
         // We ask the user to grant notification access to the app
         if(!isNotificationServiceRunning())
@@ -150,12 +152,13 @@ public class DeviceListingActivity extends AppCompatActivity{
                 }
                 else
                 {
-                    LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("Msg"));
 
                     // Connection to the device using the infos previously provided
                     LocalClient newClient = SystemManager.getInstance().getClientManager().addClient(deviceIPAdress,Integer.parseInt(devicePort),Integer.parseInt(devicePairingKey));
                     // effective connection to the client (socket)
-                    newClient.connect();
+                    if(newClient!=null){
+                        newClient.connect();
+                    }
                     //Toast.makeText(getApplicationContext(),"Device successfully connected!",Toast.LENGTH_SHORT).show();
                     SystemManager.getInstance().getSaveManager().addDeviceToJsonFile("device_list.json",deviceIPAdress,devicePort,devicePairingKey);
                     SystemManager.getInstance().getSaveManager().loadConnectedDevices(deviceAdapter);
@@ -187,26 +190,6 @@ public class DeviceListingActivity extends AppCompatActivity{
 
         return super.onOptionsItemSelected(item);
     }
-
-    private BroadcastReceiver onNotice= new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String pack = intent.getStringExtra("package");
-            String title = intent.getStringExtra("title");
-            String ticker = intent.getStringExtra("ticker");
-            String text = intent.getStringExtra("text");
-
-            if(ticker != null) //if the ticker is not null that means it's a message
-            {
-                //here we will send the right message and not only "you have 2 messages"
-                SystemManager.getInstance().getClientManager().notifyAll(pack, ticker, text);
-            }
-            else {
-                SystemManager.getInstance().getClientManager().notifyAll(pack, title, text);
-            }
-        }
-    };
 
     /**
      * This method tests if the application has notification access enabled

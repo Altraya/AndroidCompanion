@@ -1,30 +1,38 @@
 package androidcompanion.notifications.json;
 
+import java.util.List;
+
 /**
  * Created by Jo on 25/04/2017.
  */
 
 public class SmsToSend extends JsonObject{
 
+    String type;
+    String conn;
+    String author;
     String application;
-    String [] numbers;
+    List<String> numbers;
     String message;
 
-    public SmsToSend(String application,String [] numbers, String message){
+    public SmsToSend(String type,String conn,String author,String application,List<String> numbers, String message){
 
         super();
 
+        this.type = type;
+        this.conn = conn;
+        this.author = author;
         this.application = application;
         this.numbers = numbers;
         this.message = message;
 
     }
 
-    public String [] getNumbers() {
+    public List<String> getNumbers() {
         return numbers;
     }
 
-    public void setNumber(String [] numbers) {
+    public void setNumber(List<String> numbers) {
         this.numbers = numbers;
     }
 
@@ -44,7 +52,31 @@ public class SmsToSend extends JsonObject{
         this.application = application;
     }
 
-    public void setNumbers(String[] numbers) {
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getConn() {
+        return conn;
+    }
+
+    public void setConn(String conn) {
+        this.conn = conn;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setNumbers(List<String> numbers) {
         this.numbers = numbers;
     }
 }

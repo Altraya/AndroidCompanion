@@ -91,6 +91,7 @@ public class TCPClient {
                // Log.e("TCP", "S: Error", e);
 
             } finally {
+
                 terminateConnection();
 
             }
@@ -104,6 +105,9 @@ public class TCPClient {
     }
 
     public void terminateConnection(){
+
+        client.setActive(false);
+
         try {
             socket.close();
         } catch (IOException e) {

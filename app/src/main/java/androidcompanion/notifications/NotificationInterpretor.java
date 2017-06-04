@@ -2,19 +2,25 @@ package androidcompanion.notifications;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import java.util.List;
+
 import androidcompanion.main.MyApp;
 import androidcompanion.main.SystemManager;
+import androidcompanion.main.ToastManager;
 import androidcompanion.netcode.LocalClient;
 import androidcompanion.notifications.json.Message;
 import androidcompanion.notifications.json.NumberToCall;
@@ -32,9 +38,13 @@ public class NotificationInterpretor {
 
     public void interpretNotify(LocalClient source,String jsonString){
 
+        System.out.println("Miaou");
+        System.out.println(jsonString);
         Gson gson = new Gson();
+        System.out.println("waffle blue");
+        SmsToSend message = gson.fromJson(jsonString, SmsToSend.class);
 
-        Message message = gson.fromJson(jsonString, Message.class);
+        System.out.println(message.getType());
 
         switch (message.getType()){
             case "smsToSend" :
@@ -43,7 +53,7 @@ public class NotificationInterpretor {
                 break;
             case "askCall" :
                 System.out.println("Will send a call order "+message);
-                interpretNumberToCall(message);
+                //interpretNumberToCall(message);
                 break;
             case "disconnectionAcknowledged" :
                 System.out.println("The client "+source.toString()+" will be diconnected");
@@ -55,20 +65,19 @@ public class NotificationInterpretor {
 
     }
 
-    private void interpretSmsToSend(Message message){
+    private void interpretSmsToSend(SmsToSend message){
 
         System.out.println(message);
-        if(message.getObject() == null) return;
 
-        SmsToSend smsToSend = (SmsToSend) message.getObject();
-        System.out.println(smsToSend);
         SmsManager smsManager = SmsManager.getDefault();
 
-        String[] numbers = smsToSend.getNumbers();
+        List<String> numbers = message.getNumbers();
 
-        for(int i = 0; i < numbers.length; i++){
+        for(int i = 0; i < numbers.size(); i++){
 
-            smsManager.sendTextMessage(numbers[i], null, smsToSend.getMessage(), null, null);
+            System.out.println("Sending to : " + message.getNumbers().get(i));
+
+            sendSMS(message.getNumbers().get(i), message.getMessage());
 
         }
 
@@ -102,6 +111,19 @@ public class NotificationInterpretor {
 
         source.disconnect();
 
+    }
+
+    private void sendSMS(String  phoneNumber, String  message)
+    {
+        try {
+
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNumber, null, message, null, null);
+            ToastManager.makeToast("You send a message to "+phoneNumber);
+        }catch (Exception e)
+        {
+            Log.e("Error",e.toString());
+        }
     }
 
 }
