@@ -8,9 +8,6 @@ import java.util.List;
 
 public class SmsToSend extends JsonObject{
 
-    String type;
-    String conn;
-    String author;
     String application;
     List<String> numbers;
     String message;
@@ -19,9 +16,6 @@ public class SmsToSend extends JsonObject{
 
         super();
 
-        this.type = type;
-        this.conn = conn;
-        this.author = author;
         this.application = application;
         this.numbers = numbers;
         this.message = message;
@@ -52,29 +46,6 @@ public class SmsToSend extends JsonObject{
         this.application = application;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getConn() {
-        return conn;
-    }
-
-    public void setConn(String conn) {
-        this.conn = conn;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
 
     public void setNumbers(List<String> numbers) {
         this.numbers = numbers;

@@ -21,17 +21,7 @@ public class ClientManager {
 
     public void notifyAll(String pack,String title,String text){
 
-        System.out.println("Content : ");
-
         for(int i = 0; i < clients.size(); i++){
-
-            System.out.println(i + " : " + clients.get(i).getClient().getAddress() + " " + clients.get(i).getClient().getPort());
-
-        }
-
-        for(int i = 0; i < clients.size(); i++){
-
-            System.out.println("NOTIFYING " + clients.get(i).getClient().getAddress());
 
             SystemManager.getInstance().getNotifyFactory().notify(clients.get(i),pack, title, text);
 
@@ -41,21 +31,13 @@ public class ClientManager {
 
     public LocalClient addClient(String address, int port, int pairingKey){
 
-        System.out.println("Content : ");
-
-        for(int i = 0; i < clients.size(); i++){
-
-            System.out.println(i + " : " + clients.get(i).getClient().getAddress() + " " + clients.get(i).getClient().getPort());
-
-        }
-
         cleanup();
 
         for(int i = 0; i < clients.size(); i++){
 
             if(clients.get(i).getClient().getAddress().equals(address) && clients.get(i).getClient().getPort() == port){
 
-                ToastManager.makeToast("Déjà connecté");
+                ToastManager.makeToast("Already connected");
 
                 return null;
 
