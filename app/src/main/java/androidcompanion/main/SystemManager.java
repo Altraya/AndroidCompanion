@@ -1,5 +1,11 @@
 package androidcompanion.main;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v4.content.LocalBroadcastManager;
+
 import androidcompanion.data.SaveManager;
 import androidcompanion.netcode.Client;
 import androidcompanion.netcode.ClientManager;
@@ -9,7 +15,7 @@ import androidcompanion.notifications.NotifyFactory;
 /**
  * Created by Jo on 24/04/2017.
  */
-
+// TODO disconnect device if server shut down
 public class SystemManager {
 
     //Singleton
@@ -43,7 +49,29 @@ public class SystemManager {
         saveManager = new SaveManager();
         permissionManager = new PermissionManager();
 
+        LocalBroadcastManager.getInstance(MyApp.getContext()).registerReceiver(onNotice, new IntentFilter("Msg"));
+
     }
+
+    private BroadcastReceiver onNotice= new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String pack = intent.getStringExtra("package");
+            String title = intent.getStringExtra("title");
+            String ticker = intent.getStringExtra("ticker");
+            String text = intent.getStringExtra("text");
+
+            if(ticker != null) //if the ticker is not null that means it's a message
+            {
+                //here we will send the right message and not only "you have 2 messages"
+                SystemManager.getInstance().getClientManager().notifyAll(pack, ticker, text);
+            }
+            else {
+                SystemManager.getInstance().getClientManager().notifyAll(pack, title, text);
+            }
+        }
+    };
 
     public NotifyFactory getNotifyFactory() {
         return notifyFactory;
@@ -84,4 +112,5 @@ public class SystemManager {
     public void setPermissionManager(PermissionManager permissionManager) {
         this.permissionManager = permissionManager;
     }
+
 }

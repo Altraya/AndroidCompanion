@@ -3,6 +3,7 @@ package androidcompanion.netcode;
 import java.util.ArrayList;
 
 import androidcompanion.main.SystemManager;
+import androidcompanion.main.ToastManager;
 
 /**
  * Created by Jo on 28/04/2017.
@@ -26,17 +27,21 @@ public class LocalClient {
             @Override
             public void connectedEvent(ClientEvent event) {
                 //Sends connection message to the server
+                ToastManager.makeToast("Connexion établie");
                 SystemManager.getInstance().getNotifyFactory().connect(thisObj);
             }
 
             @Override
             public void messageReceivedEvent(ClientEvent event, String message) {
+                System.out.println("Message recu du serveur "+message);
                 //Interprets incomming json string
+                ToastManager.makeToast("Message reçu du serveur");
                 SystemManager.getInstance().getNotificationInterpretor().interpretNotify(thisObj,message);
             }
 
             @Override
             public void disconnectedEvent(ClientEvent event) {
+                ToastManager.makeToast("Appareil deconnecté");
                 SystemManager.getInstance().getClientManager().getClients().remove(thisObj);
             }
         });
