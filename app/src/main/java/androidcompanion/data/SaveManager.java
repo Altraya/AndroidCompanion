@@ -45,7 +45,7 @@ public class SaveManager {
     public String loadJSONFromAsset(String asset_name) {
         String json = null;
         try {
-            File jsonFile = new File(MyApp.getInstance().getExternalFilesDir(null).getPath(), asset_name);
+            File jsonFile = new File(MyApp.getInstance().getFilesDir(), asset_name);
             InputStream is = new FileInputStream(jsonFile);
             int size = is.available();
             byte[] buffer = new byte[size];
@@ -86,7 +86,7 @@ public class SaveManager {
                     // Append
                     devices.put(newJSONobj);
                     // Save new data in file
-                    File JSONFile = new File(MyApp.getInstance().getExternalFilesDir(null).getPath(),asset_name);
+                    File JSONFile = new File(MyApp.getInstance().getFilesDir(),asset_name);
                     OutputStream out = new FileOutputStream(JSONFile);
                     JsonWriter writer = new JsonWriter(new OutputStreamWriter(out,"UTF-8"));
                     writer.setIndent("  ");
@@ -147,7 +147,7 @@ public class SaveManager {
                 // Array of devices
                 devices = prevJSONObj.getJSONArray("devices");
                 // Save new data (w/o the device removed) in file
-                File JSONFile = new File(MyApp.getInstance().getExternalFilesDir(null).getPath(),asset_name);
+                File JSONFile = new File(MyApp.getInstance().getFilesDir(),asset_name);
                 OutputStream out = new FileOutputStream(JSONFile);
                 JsonWriter writer = new JsonWriter(new OutputStreamWriter(out,"UTF-8"));
                 writer.setIndent("  ");
@@ -192,7 +192,7 @@ public class SaveManager {
     }
 
     /**
-     * Copy files from Assets folder to External Storage
+     * Copy files from Assets folder to Internal Storage
      */
     public void copyAssets() {
         AssetManager assetManager = MyApp.getInstance().getAssets();
@@ -208,7 +208,7 @@ public class SaveManager {
                 OutputStream out = null;
                 try {
                     in = assetManager.open(filename);
-                    File outFile = new File(MyApp.getInstance().getExternalFilesDir(null), filename);
+                    File outFile = new File(MyApp.getInstance().getFilesDir(), filename);
                     out = new FileOutputStream(outFile);
                     copyFile(in, out);
                 } catch (Exception e) {

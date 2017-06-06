@@ -29,7 +29,7 @@ public class MyApp extends Application {
         if(instance == null){
             instance = new MyApp();
         }
-        
+
         return instance;
     }
 
