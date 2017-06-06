@@ -40,7 +40,7 @@ public class SaveManager {
     /**
      * Fetch data from json file (asset)
      * @param asset_name
-     * @return JSONObject instance containing the data
+     * @return string containing the json data
      */
     public String loadJSONFromAsset(String asset_name) {
         String json = null;
@@ -203,30 +203,33 @@ public class SaveManager {
             Log.e("tag", "Failed to get asset file list.", e);
         }
         if (files != null) for (String filename : files) {
-            InputStream in = null;
-            OutputStream out = null;
-            try {
-                in = assetManager.open(filename);
-                File outFile = new File(MyApp.getInstance().getExternalFilesDir(null), filename);
-                out = new FileOutputStream(outFile);
-                copyFile(in, out);
-            } catch (IOException e) {
-                Log.e("tag", "Failed to copy asset file: " + filename, e);
-            } finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        Log.e("tag", "Failed to close asset file.", e);
+            if(filename.equals("device_list.json")){
+                InputStream in = null;
+                OutputStream out = null;
+                try {
+                    in = assetManager.open(filename);
+                    File outFile = new File(MyApp.getInstance().getExternalFilesDir(null), filename);
+                    out = new FileOutputStream(outFile);
+                    copyFile(in, out);
+                } catch (Exception e) {
+                    Log.e("tag", "Failed to copy asset file: " + filename, e);
+                } finally {
+                    if (in != null) {
+                        try {
+                            in.close();
+                        } catch (IOException e) {
+                            Log.e("tag", "Failed to close asset file.", e);
+                        }
+                    }
+                    if (out != null) {
+                        try {
+                            out.close();
+                        } catch (IOException e) {
+                            Log.e("tag", "Failed to close FileOuputStream.", e);
+                        }
                     }
                 }
-                if (out != null) {
-                    try {
-                        out.close();
-                    } catch (IOException e) {
-                        Log.e("tag", "Failed to close FileOuputStream.", e);
-                    }
-                }
+                break;
             }
         }
     }
