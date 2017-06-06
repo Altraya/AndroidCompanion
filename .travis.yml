@@ -2,6 +2,10 @@ language: android
 sudo: required
 jdk: oraclejdk8
 
+env:
+  global:
+    - ADB_INSTALL_TIMEOUT=8 # minutes (2 minutes by default)
+
 # Emulator Management: Create, Start and Wait
 before_script:
   - echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a --skin 480x800
@@ -10,7 +14,7 @@ before_script:
   - adb shell input keyevent 82 &
 
 script:
-  - ./gradlew clean build connectedCheck
+  - ./gradlew clean build connectedCheck --stacktrace
 
 android:
   components:
