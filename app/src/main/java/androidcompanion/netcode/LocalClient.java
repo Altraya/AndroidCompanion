@@ -2,6 +2,7 @@ package androidcompanion.netcode;
 
 import java.util.ArrayList;
 
+import androidcompanion.device.DeviceListingActivity;
 import androidcompanion.main.SystemManager;
 import androidcompanion.main.ToastManager;
 
@@ -43,6 +44,12 @@ public class LocalClient {
             public void disconnectedEvent(ClientEvent event) {
                 ToastManager.makeToast("Appareil deconnecté");
                 SystemManager.getInstance().getClientManager().getClients().remove(thisObj);
+                SystemManager.getInstance().getSaveManager().removeDeviceFromJsonFile("device_list.json",
+                        thisObj.getClient().getAddress(),
+                        Integer.toString(thisObj.getClient().getPort()),
+                        Integer.toString(thisObj.getPairingKey()));
+                // The following instruction causes the app to crash. Due to thread issue?
+                //SystemManager.getInstance().getSaveManager().loadConnectedDevices(DeviceListingActivity.deviceAdapter);
             }
         });
 
