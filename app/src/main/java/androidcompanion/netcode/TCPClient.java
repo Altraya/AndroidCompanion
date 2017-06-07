@@ -108,11 +108,14 @@ public class TCPClient {
 
         client.setActive(false);
 
-        try {
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(socket != null){
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
         client.getClientEventManager().fireDisconnectedEvent();
     }
 

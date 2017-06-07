@@ -63,7 +63,7 @@ public class PermissionManager {
     {
         // check for permission (call)
         int callPermissionCheck = ContextCompat.checkSelfPermission(activity,
-                Manifest.permission.SEND_SMS);
+                Manifest.permission.CALL_PHONE);
 
         // Check if permission granted
         if (callPermissionCheck != PackageManager.PERMISSION_GRANTED)
