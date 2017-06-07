@@ -28,7 +28,9 @@ public class SystemManager {
         if(instance == null) {
             instance = new SystemManager();
             instance.instanciate();
+            instance.checkBroadCastReceiver();
         }
+
         return instance;
     }
 
@@ -40,6 +42,10 @@ public class SystemManager {
     private SaveManager saveManager;
     private PermissionManager permissionManager;
 
+    private Context context;
+
+    private boolean isNotificationListenerRegistered = false;
+
     //Set up function
     public void instanciate(){
 
@@ -49,7 +55,13 @@ public class SystemManager {
         saveManager = new SaveManager();
         permissionManager = new PermissionManager();
 
-        LocalBroadcastManager.getInstance(MyApp.getContext()).registerReceiver(onNotice, new IntentFilter("Msg"));
+    }
+
+    public void checkBroadCastReceiver(){
+
+        if(context != null && !isNotificationListenerRegistered){
+            LocalBroadcastManager.getInstance(instance.getContext()).registerReceiver(onNotice, new IntentFilter("Msg"));
+        }
 
     }
 
@@ -113,4 +125,19 @@ public class SystemManager {
         this.permissionManager = permissionManager;
     }
 
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public boolean isNotificationListenerRegistered() {
+        return isNotificationListenerRegistered;
+    }
+
+    public void setNotificationListenerRegistered(boolean notificationListenerRegistered) {
+        isNotificationListenerRegistered = notificationListenerRegistered;
+    }
 }

@@ -15,7 +15,7 @@ public class ToastManager {
         UIHandler.post(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(MyApp.getContext(), toastMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(SystemManager.getInstance().getContext(), toastMessage, Toast.LENGTH_SHORT).show();
             }
         });
     }

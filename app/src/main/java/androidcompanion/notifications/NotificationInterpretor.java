@@ -1,28 +1,22 @@
 package androidcompanion.notifications;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.SmsManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
 import java.util.List;
 
-import androidcompanion.main.MyApp;
 import androidcompanion.main.SystemManager;
 import androidcompanion.main.ToastManager;
 import androidcompanion.netcode.LocalClient;
-import androidcompanion.notifications.json.JsonObject;
 import androidcompanion.notifications.json.Message;
 import androidcompanion.notifications.json.NumberToCall;
 import androidcompanion.notifications.json.SmsToSend;
@@ -108,7 +102,7 @@ public class NotificationInterpretor {
             try {
                 Intent callIntent = new Intent(Intent.ACTION_CALL);
                 callIntent.setData(Uri.parse("tel:"+subMessageObject.getNumber()));
-                Context currentContext = MyApp.getInstance().getContext();
+                Context currentContext = SystemManager.getInstance().getContext();
                 if (ActivityCompat.checkSelfPermission(currentContext,
                         Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     return;

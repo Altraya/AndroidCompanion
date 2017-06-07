@@ -1,11 +1,8 @@
 package androidcompanion.data;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.util.JsonWriter;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,16 +17,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import androidcompanion.device.DeviceInformationActivity;
-import androidcompanion.device.DeviceListingActivity;
 import androidcompanion.device.DeviceListingAdaptater;
-import androidcompanion.main.MyApp;
 import androidcompanion.main.SystemManager;
-import androidcompanion.netcode.LocalClient;
 
 /**
  * Created by dmarck on 12/05/2017.
@@ -45,7 +36,7 @@ public class SaveManager {
     public String loadJSONFromAsset(String asset_name) {
         String json = null;
         try {
-            File jsonFile = new File(MyApp.getInstance().getExternalFilesDir(null).getPath(), asset_name);
+            File jsonFile = new File(SystemManager.getInstance().getContext().getExternalFilesDir(null).getPath(), asset_name);
             InputStream is = new FileInputStream(jsonFile);
             int size = is.available();
             byte[] buffer = new byte[size];
@@ -86,7 +77,7 @@ public class SaveManager {
                     // Append
                     devices.put(newJSONobj);
                     // Save new data in file
-                    File JSONFile = new File(MyApp.getInstance().getExternalFilesDir(null).getPath(),asset_name);
+                    File JSONFile = new File(SystemManager.getInstance().getContext().getExternalFilesDir(null).getPath(),asset_name);
                     OutputStream out = new FileOutputStream(JSONFile);
                     JsonWriter writer = new JsonWriter(new OutputStreamWriter(out,"UTF-8"));
                     writer.setIndent("  ");
@@ -147,7 +138,7 @@ public class SaveManager {
                 // Array of devices
                 devices = prevJSONObj.getJSONArray("devices");
                 // Save new data (w/o the device removed) in file
-                File JSONFile = new File(MyApp.getInstance().getExternalFilesDir(null).getPath(),asset_name);
+                File JSONFile = new File(SystemManager.getInstance().getContext().getExternalFilesDir(null).getPath(),asset_name);
                 OutputStream out = new FileOutputStream(JSONFile);
                 JsonWriter writer = new JsonWriter(new OutputStreamWriter(out,"UTF-8"));
                 writer.setIndent("  ");
@@ -195,7 +186,7 @@ public class SaveManager {
      * Copy files from Assets folder to External Storage
      */
     public void copyAssets() {
-        AssetManager assetManager = MyApp.getInstance().getAssets();
+        AssetManager assetManager = SystemManager.getInstance().getContext().getAssets();
         String[] files = null;
         try {
             files = assetManager.list("");
@@ -208,7 +199,7 @@ public class SaveManager {
                 OutputStream out = null;
                 try {
                     in = assetManager.open(filename);
-                    File outFile = new File(MyApp.getInstance().getExternalFilesDir(null), filename);
+                    File outFile = new File(SystemManager.getInstance().getContext().getExternalFilesDir(null), filename);
                     out = new FileOutputStream(outFile);
                     copyFile(in, out);
                 } catch (Exception e) {
