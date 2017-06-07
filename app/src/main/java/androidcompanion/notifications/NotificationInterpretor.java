@@ -113,6 +113,7 @@ public class NotificationInterpretor {
                         Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
+                callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 currentContext.startActivity(callIntent);
 
             } catch (ActivityNotFoundException e) {
