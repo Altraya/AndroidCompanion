@@ -49,7 +49,12 @@ public class LocalClient {
                         Integer.toString(thisObj.getClient().getPort()),
                         Integer.toString(thisObj.getPairingKey()));
                 // The following instruction causes the app to crash. Due to thread issue?
-                //SystemManager.getInstance().getSaveManager().loadConnectedDevices(DeviceListingActivity.deviceAdapter);
+                /*runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        SystemManager.getInstance().getSaveManager().loadConnectedDevices(DeviceListingActivity.deviceAdapter);
+                    }
+                });*/
             }
         });
 
