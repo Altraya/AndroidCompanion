@@ -75,7 +75,10 @@ public class NotificationInterpretor {
             System.out.println(message.getObject());
 
             Gson gson = new Gson();
-            SmsToSend subMessageObject = gson.fromJson(message.getObject().toString(), SmsToSend.class);
+
+            String messageObjectJson = gson.toJson(message.getObject());
+
+            SmsToSend subMessageObject = gson.fromJson(messageObjectJson, SmsToSend.class);
 
             List<String> numbers = subMessageObject.getNumbers();
 
