@@ -60,7 +60,7 @@ public class LocalClient {
                         SystemManager.getInstance().getSaveManager().loadConnectedDevices(DeviceListingActivity.deviceAdapter);
                     }
                 });*/
-                new Thread(new Runnable()
+                /*new Thread(new Runnable()
                 {
                     @Override
                     public void run()
@@ -72,7 +72,7 @@ public class LocalClient {
                             }
                         });
                     }
-                }).start();
+                }).start();*/
             }
         });
 
