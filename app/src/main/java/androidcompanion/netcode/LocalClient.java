@@ -2,6 +2,7 @@ package androidcompanion.netcode;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -46,13 +47,20 @@ public class LocalClient {
 
             @Override
             public void disconnectedEvent(ClientEvent event) {
-                ToastManager.makeToast("Appareil deconnecté");
-                SystemManager.getInstance().getClientManager().getClients().remove(thisObj);
-                // TODO Remove from file and adapter when click on disconnect button only. Other than that just disable disconnect button and allow re-connection somehow
-                SystemManager.getInstance().getSaveManager().removeDeviceFromJsonFile("device_list.json",
-                        thisObj.getClient().getAddress(),
-                        Integer.toString(thisObj.getClient().getPort()),
-                        Integer.toString(thisObj.getPairingKey()));
+
+                try {
+                    SystemManager.getInstance().getClientManager().getClients().remove(thisObj);
+                    // TODO Remove from file and adapter when click on disconnect button only. Other than that just disable disconnect button and allow re-connection somehow
+                    SystemManager.getInstance().getSaveManager().removeDeviceFromJsonFile("device_list.json",
+                            thisObj.getClient().getAddress(),
+                            Integer.toString(thisObj.getClient().getPort()),
+                            Integer.toString(thisObj.getPairingKey()));
+                    ToastManager.makeToast("Appareil deconnecté");
+                }catch (Exception e)
+                {
+                    Log.e("Error", e.toString());
+                }
+
                 // The following instruction causes the app to crash. Due to thread issue?
                 /*DeviceListingActivity.this.runOnUiThread(new Runnable() {
                     @Override

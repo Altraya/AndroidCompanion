@@ -8,6 +8,8 @@ import android.service.notification.StatusBarNotification;
 import android.util.Log;
 import android.support.v4.content.LocalBroadcastManager;
 
+import androidcompanion.main.MyApp;
+
 /**
  * Created by Karakayn on 24/04/2017.
  */
@@ -21,7 +23,7 @@ public class NotificationService extends NotificationListenerService {
     public void onCreate() {
 
         super.onCreate();
-        context = getApplicationContext();
+        context = MyApp.getContext();
 
     }
     @Override

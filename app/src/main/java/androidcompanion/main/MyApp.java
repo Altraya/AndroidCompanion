@@ -22,7 +22,7 @@ import androidcompanion.netcode.LocalClient;
  */
 // TODO disconnect devices if app killed?
 public class MyApp extends Application {
-    private static MyApp instance;
+    private static MyApp instance = null;
 
     public static MyApp getInstance() {
 
@@ -34,7 +34,7 @@ public class MyApp extends Application {
     }
 
     public static Context getContext(){
-        return instance.getApplicationContext();
+        return getInstance().getApplicationContext();
     }
 
     @Override

@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.SmsManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 

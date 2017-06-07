@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.util.JsonWriter;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -23,8 +23,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,6 +31,7 @@ import java.util.ArrayList;
 
 import androidcompanion.main.MyApp;
 import androidcompanion.main.SystemManager;
+import androidcompanion.main.ToastManager;
 import androidcompanion.netcode.LocalClient;
 import project.androidcompanion.R;
 
@@ -146,11 +145,11 @@ public class DeviceListingActivity extends AppCompatActivity{
                 // If the data is approved, we add it to our JSON file
                 if(deviceIPAdress.equals("none") && devicePort.equals("none"))
                 {
-                    //Toast.makeText(getApplicationContext(),"The QR code didn't hold any device informations.",Toast.LENGTH_SHORT).show();
+                    ToastManager.makeToast("The QR code didn't hold any device informations.");
                 }
                 else if(deviceIPAdress.equals("cancelled") && devicePort.equals("cancelled"))
                 {
-                    //Toast.makeText(getApplicationContext(),"Adding device cancelled.",Toast.LENGTH_SHORT).show();
+                    ToastManager.makeToast("Adding device cancelled.");
                 }
                 else
                 {

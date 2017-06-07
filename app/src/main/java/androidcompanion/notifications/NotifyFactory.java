@@ -1,5 +1,7 @@
 package androidcompanion.notifications;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.jaredrummler.android.device.DeviceName;
 
@@ -34,11 +36,16 @@ public class NotifyFactory {
 
     public void notify(LocalClient localClient,String app,String title,String text){
 
-        final Date d = new Date();
+        try {
+            final Date d = new Date();
 
-        Notify notifyObject = new Notify(app,title,text,d.toString());
+            Notify notifyObject = new Notify(app, title, text, d.toString());
 
-        localClient.getClient().sendMessage(getJson(localClient,"Notification",notifyObject));
+            localClient.getClient().sendMessage(getJson(localClient, "Notification", notifyObject));
+        }catch(Exception e)
+        {
+            Log.e("Error", e.toString());
+        }
 
     }
 
