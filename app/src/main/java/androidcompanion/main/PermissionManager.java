@@ -13,7 +13,7 @@ import androidcompanion.device.ReadQRCodeActivity;
 /**
  * Created by dmarck on 14/05/2017.
  */
-
+// TODO change permission handling way. (add bool methods? See how to add description on a one time multiple permission request)
 public class PermissionManager {
 
     private final int MY_PERMISSIONS_REQUEST_CAMERA = 0;

@@ -41,6 +41,8 @@ public class DeviceListingActivity extends AppCompatActivity{
     // Request code(s)
     static final int DEVICE_INFO_REQUEST = 1;
 
+    private static final int ASK_MULTIPLE_PERMISSION_REQUEST_CODE = 123;
+
     //intent static variables
     // used to retrieve text values
     public final static String EXTRA_DEVICE_IP_ADRESS = "androidcompanion.DEVICE_IP_ADRESS";
@@ -57,12 +59,18 @@ public class DeviceListingActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_listing);
 
-        // We request the camera permission
+        /*// We request the camera permission
         SystemManager.getInstance().getPermissionManager().requestCameraPermission(DeviceListingActivity.this);
         // We request the smstosend permission
         SystemManager.getInstance().getPermissionManager().requestSMSToSendPermission(DeviceListingActivity.this);
 
-        SystemManager.getInstance().getPermissionManager().requestCallPermission(DeviceListingActivity.this);
+        SystemManager.getInstance().getPermissionManager().requestCallPermission(DeviceListingActivity.this);*/
+
+        requestPermissions(new String[]{
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.SEND_SMS,
+                        Manifest.permission.CALL_PHONE},
+                ASK_MULTIPLE_PERMISSION_REQUEST_CODE);
 
         // We ask the user to grant notification access to the app
         if(!isNotificationServiceRunning())
