@@ -1,0 +1,17 @@
+digraph "androidcompanion.main.SystemManager.getSaveManager"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node59 [label="androidcompanion.main.System\lManager.getSaveManager",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node59 -> Node60 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node60 [label="androidcompanion.device.\lDeviceListingActivity.onCreate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1device_1_1_device_listing_activity.html#af088218f7a3913bc881ce8893fb0d582"];
+  Node59 -> Node61 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node61 [label="androidcompanion.device.\lDeviceListingActivity.onActivity\lResult",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1device_1_1_device_listing_activity.html#ad899e3ff2c3b424464a5114328b3234b"];
+  Node59 -> Node62 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node62 [label="androidcompanion.device.\lDeviceListingAdaptater.getView",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1device_1_1_device_listing_adaptater.html#a76ab899b207cdcbaa61433de6dadbc17"];
+  Node59 -> Node63 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node63 [label="androidcompanion.main.My\lApp.onCreate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1main_1_1_my_app.html#aa99f4ac60eea3ab3da475bfdfc96ce95"];
+  Node59 -> Node64 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node64 [label="androidcompanion.netcode.\lLocalClient.LocalClient",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1netcode_1_1_local_client.html#a2751233da0c797655acf10e41d7e26ba"];
+}

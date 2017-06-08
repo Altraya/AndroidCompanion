@@ -1,0 +1,37 @@
+digraph "androidcompanion.main.SystemManager.instanciate"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node65 [label="androidcompanion.main.System\lManager.instanciate",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node65 -> Node66 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node66 [label="androidcompanion.main.My\lApp.getContext",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1main_1_1_my_app.html#abc2ffe7c456d42db2a763af0aa2753b0"];
+  Node66 -> Node67 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node67 [label="androidcompanion.main.My\lApp.getInstance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1main_1_1_my_app.html#a3e5733343ca4778771632282f1507197"];
+  Node65 -> Node68 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node68 [label="androidcompanion.main.System\lManager.getInstance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1main_1_1_system_manager.html#a405e1e4153c59461f783495b9065df1a"];
+  Node68 -> Node69 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node69 [label="androidcompanion.main.System\lManager.SystemManager",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1main_1_1_system_manager.html#a69abe1de095a5ed5761eb1f9562b44d9"];
+  Node68 -> Node65 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node65 -> Node70 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node70 [label="androidcompanion.main.System\lManager.getClientManager",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1main_1_1_system_manager.html#a87d5ee4334dc1de9febd3305fe546668"];
+  Node65 -> Node71 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node71 [label="androidcompanion.netcode.\lClientManager.notifyAll",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1netcode_1_1_client_manager.html#ab26255e3f70eaf969f46c502ef4b40dc"];
+  Node71 -> Node68 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node71 -> Node72 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node72 [label="androidcompanion.main.System\lManager.getNotifyFactory",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1main_1_1_system_manager.html#a43b33a24830bff8487347471558c5906"];
+  Node71 -> Node73 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node73 [label="androidcompanion.notifications.\lNotifyFactory.notify",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1notifications_1_1_notify_factory.html#a49e79b834ad1fd6bf6935ec169461c40"];
+  Node73 -> Node74 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node74 [label="androidcompanion.netcode.\lLocalClient.getClient",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1netcode_1_1_local_client.html#a1086a3b786b863f37663bd629373c581"];
+  Node73 -> Node75 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node75 [label="androidcompanion.netcode.\lClient.sendMessage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1netcode_1_1_client.html#a9c2cf7d2afde921349682ded8f80b14f"];
+  Node75 -> Node76 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node76 [label="androidcompanion.netcode.\lTCPClient.sendMessage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1netcode_1_1_t_c_p_client.html#a8b49cf40b9ed3fdb25c77b30a999762a"];
+  Node73 -> Node77 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node77 [label="androidcompanion.netcode.\lClient.getAddress",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1netcode_1_1_client.html#a2bbe7f9215a4865d11808027c3c109c1"];
+  Node73 -> Node78 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node78 [label="androidcompanion.netcode.\lClient.getPort",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1netcode_1_1_client.html#a4f2724f0b51d762a7fa5bf5a0b1919d8"];
+  Node73 -> Node79 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node79 [label="androidcompanion.netcode.\lLocalClient.getPairingKey",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1netcode_1_1_local_client.html#afcc0704e24ab7ced59a3cea55c130bd1"];
+}
