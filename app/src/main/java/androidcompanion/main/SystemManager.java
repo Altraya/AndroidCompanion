@@ -39,6 +39,7 @@ public class SystemManager {
     private ClientManager clientManager;
     private SaveManager saveManager;
     private PermissionManager permissionManager;
+    private NotificationReceiver nReceiver;
 
     //Set up function
     public void instanciate(){
@@ -49,14 +50,19 @@ public class SystemManager {
         saveManager = new SaveManager();
         permissionManager = new PermissionManager();
 
-        LocalBroadcastManager.getInstance(MyApp.getContext()).registerReceiver(onNotice, new IntentFilter("Msg"));
+        nReceiver = new NotificationReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("androidcompanion.notifications.NOTIFICATION_EVENT");
+        MyApp.getContext().registerReceiver(nReceiver,filter);
 
     }
 
-    private BroadcastReceiver onNotice= new BroadcastReceiver() {
+    class NotificationReceiver extends BroadcastReceiver{
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            System.out.println("NEW NOTIF !!!");
+
             String pack = intent.getStringExtra("package");
             String title = intent.getStringExtra("title");
             String ticker = intent.getStringExtra("ticker");
@@ -71,7 +77,7 @@ public class SystemManager {
                 SystemManager.getInstance().getClientManager().notifyAll(pack, title, text);
             }
         }
-    };
+    }
 
     public NotifyFactory getNotifyFactory() {
         return notifyFactory;
