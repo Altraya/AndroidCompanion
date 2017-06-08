@@ -9,9 +9,9 @@ public class Message extends JsonObject{
     String type;
     String conn;
     String author;
-    JsonObject object;
+    Object object;
 
-    public Message(String type,String conn,String author,JsonObject object){
+    public Message(String type,String conn,String author,Object object){
 
         super();
 
@@ -46,11 +46,11 @@ public class Message extends JsonObject{
         this.author = author;
     }
 
-    public JsonObject getObject() {
+    public Object getObject() {
         return object;
     }
 
-    public void setObject(JsonObject object) {
+    public void setObject(Object object) {
         this.object = object;
     }
 

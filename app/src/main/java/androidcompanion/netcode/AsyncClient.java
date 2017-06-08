@@ -24,7 +24,7 @@ public class AsyncClient extends AsyncTask<String, String, TCPClient> {
 
         tcpClient.run();
 
-        return null;
+        return tcpClient;
 
     }
 

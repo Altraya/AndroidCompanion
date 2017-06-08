@@ -19,7 +19,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
@@ -39,7 +38,6 @@ import project.androidcompanion.R;
 
 public class ReadQRCodeActivity extends AppCompatActivity {
 
-    private final int MY_PERMISSIONS_REQUEST_CAMERA = 0;
 
     private SurfaceView cameraView;
     private TextView barcodeInfo;
@@ -52,7 +50,6 @@ public class ReadQRCodeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read_qrcode);
 
-        //SystemManager.getInstance().getPermissionManager().requestCameraPermission(this);
 
         cameraView = (SurfaceView)findViewById(R.id.camera_view);
         barcodeInfo = (TextView)findViewById(R.id.code_info);

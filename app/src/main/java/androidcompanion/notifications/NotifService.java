@@ -1,33 +1,20 @@
 package androidcompanion.notifications;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
-import android.support.v4.content.LocalBroadcastManager;
 
-/**
- * Created by Karakayn on 24/04/2017.
- */
+import androidcompanion.main.SystemManager;
 
-public class NotificationService extends NotificationListenerService {
-
-    Context context;
+public class NotifService extends NotificationListenerService {
 
     @Override
-
-    public void onCreate() {
-
-        super.onCreate();
-        context = getApplicationContext();
-
-    }
-    @Override
-
     public void onNotificationPosted(StatusBarNotification sbn) {
-
 
         String pack = sbn.getPackageName();
         String ticker = "";
@@ -43,21 +30,25 @@ public class NotificationService extends NotificationListenerService {
         Log.i("Title",title);
         Log.i("Text",text);
 
-        Intent msgrcv = new Intent("Msg");
+        Intent msgrcv = new Intent("androidcompanion.notifications.NOTIFICATION_EVENT");
         msgrcv.putExtra("package", pack);
         msgrcv.putExtra("ticker", ticker);
         msgrcv.putExtra("title", title);
         msgrcv.putExtra("text", text);
 
-        LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
-
-
-    }
-
-    @Override
-
-    public void onNotificationRemoved(StatusBarNotification sbn) {
-        Log.i("Msg","Notification Removed");
+        sendBroadcast(msgrcv);
 
     }
+
+    //WHEN A NOTIF IS REMOVED
+    //    @Override
+    //    public void onNotificationRemoved(StatusBarNotification sbn) {
+    //        Log.i(TAG,"********** onNOtificationRemoved");
+    //        Log.i(TAG,"ID :" + sbn.getId() + "\t" + sbn.getNotification().tickerText +"\t" + sbn.getPackageName());
+    //        Intent i = new  Intent("androidcompanion.notifications.NOTIFICATION_LISTENER_EXAMPLE");
+    //        i.putExtra("notification_event","onNotificationRemoved :" + sbn.getPackageName() + "\n");
+    //
+    //        sendBroadcast(i);
+    //    }
+
 }

@@ -13,6 +13,8 @@ public class Client {
     private String address;
     private int port;
 
+    private boolean isActive = true;
+
     public Client(String address, int port){
 
         this.address = address;
@@ -24,13 +26,7 @@ public class Client {
 
     public void connect(){
 
-        tcpClient = new TCPClient(this,new TCPClient.OnMessageReceived() {
-            @Override
-            //here the messageReceived method is implemented
-            public void messageReceived(String message) {
-                clientEventManager.fireMessageReceivedEvent(message);
-            }
-        });
+        tcpClient = new TCPClient(this);
 
         asyncClient = new AsyncClient(tcpClient);
 
@@ -104,5 +100,13 @@ public class Client {
 
     public void setClientEventManager(ClientEventManager clientEventManager) {
         this.clientEventManager = clientEventManager;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }

@@ -23,8 +23,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,6 +31,7 @@ import java.util.ArrayList;
 
 import androidcompanion.main.MyApp;
 import androidcompanion.main.SystemManager;
+import androidcompanion.main.ToastManager;
 import androidcompanion.netcode.LocalClient;
 import project.androidcompanion.R;
 
@@ -41,6 +40,8 @@ public class DeviceListingActivity extends AppCompatActivity{
 
     // Request code(s)
     static final int DEVICE_INFO_REQUEST = 1;
+
+    private static final int ASK_MULTIPLE_PERMISSION_REQUEST_CODE = 123;
 
     //intent static variables
     // used to retrieve text values
@@ -58,8 +59,18 @@ public class DeviceListingActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_listing);
 
-        // We request the camera permission
+        /*// We request the camera permission
         SystemManager.getInstance().getPermissionManager().requestCameraPermission(DeviceListingActivity.this);
+        // We request the smstosend permission
+        SystemManager.getInstance().getPermissionManager().requestSMSToSendPermission(DeviceListingActivity.this);
+
+        SystemManager.getInstance().getPermissionManager().requestCallPermission(DeviceListingActivity.this);*/
+
+        requestPermissions(new String[]{
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.SEND_SMS,
+                        Manifest.permission.CALL_PHONE},
+                ASK_MULTIPLE_PERMISSION_REQUEST_CODE);
 
         // We ask the user to grant notification access to the app
         if(!isNotificationServiceRunning())
@@ -86,21 +97,6 @@ public class DeviceListingActivity extends AppCompatActivity{
         setSupportActionBar(myToolbar);
         myToolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setTitle(R.string.title_activity_managment);
-
-        // We copy the assets to the external storage(in order to be able to write in them)
-        SharedPreferences settings = getSharedPreferences("PREFS_NAME", 0);
-        boolean isFirstLaunch = settings.getBoolean("FIRST_RUN", false);
-        if (!isFirstLaunch) {
-            // do the thing for the first time
-            // here we copy the assets to the internal storage
-            SystemManager.getInstance().getSaveManager().copyAssets();
-            settings = getSharedPreferences("PREFS_NAME", 0);
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putBoolean("FIRST_RUN", true);
-            editor.commit();
-        } else {
-            // other time your app loads
-        }
 
         deviceAdapter = new DeviceListingAdaptater(this, listDevice);
         // Attach the adapter to a ListView
@@ -153,26 +149,27 @@ public class DeviceListingActivity extends AppCompatActivity{
                 // Scanned a QRCode and got device infos
                 String deviceIPAdress = data.getStringExtra(EXTRA_DEVICE_IP_ADRESS);
                 String devicePort = data.getStringExtra(EXTRA_DEVICE_PORT);
-                String pairingKey = data.getStringExtra(EXTRA_PAIRING_KEY);
+                String devicePairingKey = data.getStringExtra(EXTRA_PAIRING_KEY);
                 // If the data is approved, we add it to our JSON file
                 if(deviceIPAdress.equals("none") && devicePort.equals("none"))
                 {
-                    //Toast.makeText(getApplicationContext(),"The QR code didn't hold any device informations.",Toast.LENGTH_SHORT).show();
+                    ToastManager.makeToast("The QR code didn't hold any device informations.");
                 }
                 else if(deviceIPAdress.equals("cancelled") && devicePort.equals("cancelled"))
                 {
-                    //Toast.makeText(getApplicationContext(),"Adding device cancelled.",Toast.LENGTH_SHORT).show();
+                    ToastManager.makeToast("Adding device cancelled.");
                 }
                 else
                 {
-                    LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("Msg"));
 
                     // Connection to the device using the infos previously provided
-                    LocalClient newClient = SystemManager.getInstance().getClientManager().addClient(deviceIPAdress,Integer.parseInt(devicePort),Integer.parseInt(pairingKey));
+                    LocalClient newClient = SystemManager.getInstance().getClientManager().addClient(deviceIPAdress,Integer.parseInt(devicePort),Integer.parseInt(devicePairingKey));
                     // effective connection to the client (socket)
-                    newClient.connect();
+                    if(newClient!=null){
+                        newClient.connect();
+                    }
                     //Toast.makeText(getApplicationContext(),"Device successfully connected!",Toast.LENGTH_SHORT).show();
-                    SystemManager.getInstance().getSaveManager().addDeviceToJsonFile("device_list.json",deviceIPAdress,devicePort);
+                    SystemManager.getInstance().getSaveManager().addDeviceToJsonFile("device_list.json",deviceIPAdress,devicePort,devicePairingKey);
                     SystemManager.getInstance().getSaveManager().loadConnectedDevices(deviceAdapter);
                 }
                 //deviceAdapter.add(new DeviceInformationActivity(deviceIPAdress,devicePort));
@@ -196,58 +193,12 @@ public class DeviceListingActivity extends AppCompatActivity{
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS));
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
-
-    /**
-     * Load the connected devices list
-     */
-    private void loadConnectedDevices() {
-        deviceAdapter.clear();
-        try
-        {
-            JSONObject jsonObj = new JSONObject(SystemManager.getInstance().getSaveManager().loadJSONFromAsset("device_list.json"));
-            if(!jsonObj.isNull("devices"))
-            {
-                JSONArray devices = jsonObj.getJSONArray("devices");
-                for(int i = 0; i < devices.length(); i++)
-                {
-                    JSONObject device = devices.getJSONObject(i);
-                    String deviceIPAdress = device.getString("ip_adress");
-                    String devicePort = device.getString("port");
-                    deviceAdapter.add(new DeviceInformationActivity(deviceIPAdress,devicePort));
-                }
-            }
-        }
-        catch (JSONException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    //called by NotificationService with onNotificationPosted function
-    private BroadcastReceiver onNotice= new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String pack = intent.getStringExtra("package");
-            String title = intent.getStringExtra("title");
-            String ticker = intent.getStringExtra("ticker");
-            String text = intent.getStringExtra("text");
-
-            if(ticker != null) //if the ticker is not null that means it's a message
-            {
-                //here we will send the right message and not only "you have 2 messages"
-                SystemManager.getInstance().getClientManager().notifyAll(pack, ticker, text);
-            }
-            else {
-                SystemManager.getInstance().getClientManager().notifyAll(pack, title, text);
-            }
-        }
-    };
 
     /**
      * This method tests if the application has notification access enabled

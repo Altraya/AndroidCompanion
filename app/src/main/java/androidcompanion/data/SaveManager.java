@@ -1,9 +1,10 @@
 package androidcompanion.data;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.util.JsonWriter;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,12 +19,16 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import androidcompanion.device.DeviceInformationActivity;
 import androidcompanion.device.DeviceListingActivity;
 import androidcompanion.device.DeviceListingAdaptater;
 import androidcompanion.main.MyApp;
 import androidcompanion.main.SystemManager;
+import androidcompanion.netcode.LocalClient;
 
 /**
  * Created by dmarck on 12/05/2017.
@@ -34,12 +39,12 @@ public class SaveManager {
     /**
      * Fetch data from json file (asset)
      * @param asset_name
-     * @return JSONObject instance containing the data
+     * @return string containing the json data
      */
     public String loadJSONFromAsset(String asset_name) {
         String json = null;
         try {
-            File jsonFile = new File(MyApp.getInstance().getExternalFilesDir(null).getPath(), asset_name);
+            File jsonFile = new File(MyApp.getInstance().getFilesDir(), asset_name);
             InputStream is = new FileInputStream(jsonFile);
             int size = is.available();
             byte[] buffer = new byte[size];
@@ -56,8 +61,11 @@ public class SaveManager {
     /**
      * Retrieve current data from JSON file and add entry to it
      * @param asset_name
+     * @param ipAdress ip adress of the device to add
+     * @param port port number of the device to add
+     * @param pairingKey numeric key corresponding to the device to add
      */
-    public void addDeviceToJsonFile(String asset_name, String ipAdress, String port) {
+    public void addDeviceToJsonFile(String asset_name, String ipAdress, String port, String pairingKey) {
         if(isNewDevice(ipAdress,port))
         {
             try {
@@ -73,10 +81,11 @@ public class SaveManager {
                     // Adding data
                     newJSONobj.put("ip_adress",ipAdress);
                     newJSONobj.put("port",port);
+                    newJSONobj.put("pairing_key",pairingKey);
                     // Append
                     devices.put(newJSONobj);
                     // Save new data in file
-                    File JSONFile = new File(MyApp.getInstance().getExternalFilesDir(null).getPath(),asset_name);
+                    File JSONFile = new File(MyApp.getInstance().getFilesDir(),asset_name);
                     OutputStream out = new FileOutputStream(JSONFile);
                     JsonWriter writer = new JsonWriter(new OutputStreamWriter(out,"UTF-8"));
                     writer.setIndent("  ");
@@ -87,9 +96,11 @@ public class SaveManager {
                         JSONObject device = devices.getJSONObject(i);
                         String deviceIPAdress = device.getString("ip_adress");
                         String devicePort = device.getString("port");
+                        String devicePairingKey = device.getString("pairing_key");
                         writer.beginObject();
                         writer.name("ip_adress").value(deviceIPAdress);
                         writer.name("port").value(devicePort);
+                        writer.name("pairing_key").value(pairingKey);
                         writer.endObject();
                     }
                     writer.endArray();
@@ -118,8 +129,11 @@ public class SaveManager {
     /**
      * Retrieve current data from JSON file and remove entry from it
      * @param asset_name
+     * @param ipAdress ip adress of the device to remove
+     * @param port port number of the device to remove
+     * @param pairingKey numeric key corresponding to the device to remove
      */
-    public void removeDeviceFromJsonFile(String asset_name, String ipAdress, String port) {
+    public void removeDeviceFromJsonFile(String asset_name, String ipAdress, String port, String pairingKey) {
         try
         {
             // Already existing JSON object
@@ -132,7 +146,7 @@ public class SaveManager {
                 // Array of devices
                 devices = prevJSONObj.getJSONArray("devices");
                 // Save new data (w/o the device removed) in file
-                File JSONFile = new File(MyApp.getInstance().getExternalFilesDir(null).getPath(),asset_name);
+                File JSONFile = new File(MyApp.getInstance().getFilesDir(),asset_name);
                 OutputStream out = new FileOutputStream(JSONFile);
                 JsonWriter writer = new JsonWriter(new OutputStreamWriter(out,"UTF-8"));
                 writer.setIndent("  ");
@@ -143,7 +157,8 @@ public class SaveManager {
                     JSONObject device = devices.getJSONObject(i);
                     String deviceIPAdress = device.getString("ip_adress");
                     String devicePort = device.getString("port");
-                    if(deviceIPAdress.equals(ipAdress) && devicePort.equals(port))
+                    String devicePairingKey = device.getString("pairing_key");
+                    if(deviceIPAdress.equals(ipAdress) && devicePort.equals(port) && devicePairingKey.equals(pairingKey))
                     {
                         continue;
                     }
@@ -152,6 +167,7 @@ public class SaveManager {
                         writer.beginObject();
                         writer.name("ip_adress").value(deviceIPAdress);
                         writer.name("port").value(devicePort);
+                        writer.name("pairing_key").value(devicePairingKey);
                         writer.endObject();
                     }
                 }
@@ -175,7 +191,7 @@ public class SaveManager {
     }
 
     /**
-     * Copy files from Assets folder to External Storage
+     * Copy files from Assets folder to Internal Storage
      */
     public void copyAssets() {
         AssetManager assetManager = MyApp.getInstance().getAssets();
@@ -186,30 +202,33 @@ public class SaveManager {
             Log.e("tag", "Failed to get asset file list.", e);
         }
         if (files != null) for (String filename : files) {
-            InputStream in = null;
-            OutputStream out = null;
-            try {
-                in = assetManager.open(filename);
-                File outFile = new File(MyApp.getInstance().getExternalFilesDir(null), filename);
-                out = new FileOutputStream(outFile);
-                copyFile(in, out);
-            } catch (IOException e) {
-                Log.e("tag", "Failed to copy asset file: " + filename, e);
-            } finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        Log.e("tag", "Failed to close asset file.", e);
+            if(filename.equals("device_list.json")){
+                InputStream in = null;
+                OutputStream out = null;
+                try {
+                    in = assetManager.open(filename);
+                    File outFile = new File(MyApp.getInstance().getFilesDir(), filename);
+                    out = new FileOutputStream(outFile);
+                    copyFile(in, out);
+                } catch (Exception e) {
+                    Log.e("tag", "Failed to copy asset file: " + filename, e);
+                } finally {
+                    if (in != null) {
+                        try {
+                            in.close();
+                        } catch (IOException e) {
+                            Log.e("tag", "Failed to close asset file.", e);
+                        }
+                    }
+                    if (out != null) {
+                        try {
+                            out.close();
+                        } catch (IOException e) {
+                            Log.e("tag", "Failed to close FileOuputStream.", e);
+                        }
                     }
                 }
-                if (out != null) {
-                    try {
-                        out.close();
-                    } catch (IOException e) {
-                        Log.e("tag", "Failed to close FileOuputStream.", e);
-                    }
-                }
+                break;
             }
         }
     }
@@ -231,7 +250,8 @@ public class SaveManager {
                     JSONObject device = devices.getJSONObject(i);
                     String deviceIPAdress = device.getString("ip_adress");
                     String devicePort = device.getString("port");
-                    deviceAdapter.add(new DeviceInformationActivity(deviceIPAdress,devicePort));
+                    String devicePairingKey = device.getString("pairing_key");
+                    deviceAdapter.add(new DeviceInformationActivity(deviceIPAdress,devicePort,devicePairingKey));
                 }
             }
         }

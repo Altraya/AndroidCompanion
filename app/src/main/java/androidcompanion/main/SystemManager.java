@@ -1,5 +1,11 @@
 package androidcompanion.main;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v4.content.LocalBroadcastManager;
+
 import androidcompanion.data.SaveManager;
 import androidcompanion.netcode.Client;
 import androidcompanion.netcode.ClientManager;
@@ -9,7 +15,7 @@ import androidcompanion.notifications.NotifyFactory;
 /**
  * Created by Jo on 24/04/2017.
  */
-
+// TODO disconnect device if server shut down
 public class SystemManager {
 
     //Singleton
@@ -33,6 +39,7 @@ public class SystemManager {
     private ClientManager clientManager;
     private SaveManager saveManager;
     private PermissionManager permissionManager;
+    private NotificationReceiver nReceiver;
 
     //Set up function
     public void instanciate(){
@@ -43,6 +50,33 @@ public class SystemManager {
         saveManager = new SaveManager();
         permissionManager = new PermissionManager();
 
+        nReceiver = new NotificationReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("androidcompanion.notifications.NOTIFICATION_EVENT");
+        MyApp.getContext().registerReceiver(nReceiver,filter);
+
+    }
+
+    class NotificationReceiver extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            System.out.println("NEW NOTIF !!!");
+
+            String pack = intent.getStringExtra("package");
+            String title = intent.getStringExtra("title");
+            String ticker = intent.getStringExtra("ticker");
+            String text = intent.getStringExtra("text");
+
+            if(ticker != null) //if the ticker is not null that means it's a message
+            {
+                //here we will send the right message and not only "you have 2 messages"
+                SystemManager.getInstance().getClientManager().notifyAll(pack, ticker, text);
+            }
+            else {
+                SystemManager.getInstance().getClientManager().notifyAll(pack, title, text);
+            }
+        }
     }
 
     public NotifyFactory getNotifyFactory() {
@@ -84,4 +118,5 @@ public class SystemManager {
     public void setPermissionManager(PermissionManager permissionManager) {
         this.permissionManager = permissionManager;
     }
+
 }
