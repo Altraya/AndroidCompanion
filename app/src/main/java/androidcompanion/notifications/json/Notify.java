@@ -1,9 +1,10 @@
 package androidcompanion.notifications.json;
 
 /**
+ * Represent a notification (can be all notification type)
+ * @author Phillippine & Josselin
  * Created by Jo on 25/04/2017.
  */
-
 public class Notify extends JsonObject{
 
     String application;
@@ -15,9 +16,13 @@ public class Notify extends JsonObject{
 
         super();
 
+        //application name from intent package like : com.google.com.app.messaging
         this.application = application;
+        //title of the notification popup
         this.title = title;
+        //message receive
         this.message = message;
+        //the datetime when we received it
         this.heureDate = heureDate;
 
     }

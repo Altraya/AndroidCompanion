@@ -14,6 +14,8 @@ import androidcompanion.notifications.json.Message;
 import androidcompanion.notifications.json.Notify;
 
 /**
+ * Notification factory to react to send json message
+ * @author Josselin
  * Created by Jo on 24/04/2017.
  */
 
