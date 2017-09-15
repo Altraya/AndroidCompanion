@@ -29,6 +29,17 @@ public class ClientManager {
 
     }
 
+    //send battery notification
+    public void notifyBattery(float pourcent, boolean isCharging){
+
+        for(int i = 0; i < clients.size(); i++){
+
+            SystemManager.getInstance().getNotifyFactory().notifyBattery(clients.get(i),pourcent, isCharging);
+
+        }
+
+    }
+
     public LocalClient addClient(String address, int port, int pairingKey){
 
         cleanup();

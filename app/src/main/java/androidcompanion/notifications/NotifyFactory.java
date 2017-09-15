@@ -9,6 +9,7 @@ import java.util.Date;
 
 import androidcompanion.main.SystemManager;
 import androidcompanion.netcode.LocalClient;
+import androidcompanion.notifications.json.BatteryState;
 import androidcompanion.notifications.json.JsonObject;
 import androidcompanion.notifications.json.Message;
 import androidcompanion.notifications.json.Notify;
@@ -33,6 +34,22 @@ public class NotifyFactory {
         localClient.getClient().sendMessage(getJson(localClient,"disconnect",null));
 
     }
+
+    public void notifyBattery(LocalClient localClient,float pourcent, boolean isCharging){
+        /**/
+        try {
+            final Date d = new Date();
+
+            BatteryState batteryObject = new BatteryState(pourcent, isCharging);
+
+            localClient.getClient().sendMessage(getJson(localClient, "BatteryState", batteryObject));
+        }catch(Exception e)
+        {
+            Log.e("Error", e.toString());
+        }
+
+    }
+
 
     public void notify(LocalClient localClient,String app,String title,String text){
 
