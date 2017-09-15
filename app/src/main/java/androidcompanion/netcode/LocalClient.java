@@ -1,5 +1,8 @@
 package androidcompanion.netcode;
 
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.BatteryManager;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -35,6 +38,16 @@ public class LocalClient {
                 //Sends connection message to the server
                 ToastManager.makeToast("Connexion établie");
                 SystemManager.getInstance().getNotifyFactory().connect(thisObj);
+
+                IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+                Intent batteryStatus = MyApp.getContext().registerReceiver(null, ifilter);
+                int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+                int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+
+                float batteryPct = level / (float)scale;
+                boolean isCharging = true;
+                SystemManager.getInstance().getNotifyFactory().notifyBattery(thisObj,batteryPct, isCharging);
+                
             }
 
             @Override

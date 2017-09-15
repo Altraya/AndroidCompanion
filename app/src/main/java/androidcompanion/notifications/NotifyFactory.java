@@ -38,7 +38,6 @@ public class NotifyFactory {
     public void notifyBattery(LocalClient localClient,float pourcent, boolean isCharging){
         /**/
         try {
-            final Date d = new Date();
 
             BatteryState batteryObject = new BatteryState(pourcent, isCharging);
 
