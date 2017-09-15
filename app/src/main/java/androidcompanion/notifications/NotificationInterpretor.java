@@ -56,6 +56,10 @@ public class NotificationInterpretor {
                     System.out.println("The client " + source.toString() + " will be diconnected");
                     interpretDisconnectionConfirmation(source);
                     break;
+                case "requestContacts":
+                    System.out.println("A contact payload will be generated");
+                    interpretContactRequest(source);
+                    break;
                 default:
                     break;
             }
@@ -131,6 +135,9 @@ public class NotificationInterpretor {
 
     }
 
+    private void interpretContactRequest(LocalClient source){
+
+    }
 
     private void interpretDisconnectionConfirmation(LocalClient source){
 
