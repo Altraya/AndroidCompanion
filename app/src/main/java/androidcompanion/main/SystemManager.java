@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
+import androidcompanion.contact.ContactManager;
 import androidcompanion.data.SaveManager;
 import androidcompanion.netcode.Client;
 import androidcompanion.netcode.ClientManager;
@@ -40,6 +41,7 @@ public class SystemManager {
     private SaveManager saveManager;
     private PermissionManager permissionManager;
     private NotificationReceiver nReceiver;
+    private ContactManager contactManager;
 
     //Set up function
     public void instanciate(){
@@ -49,6 +51,7 @@ public class SystemManager {
         clientManager = new ClientManager();
         saveManager = new SaveManager();
         permissionManager = new PermissionManager();
+        contactManager = new ContactManager();
 
         nReceiver = new NotificationReceiver();
         IntentFilter filter = new IntentFilter();
@@ -119,4 +122,11 @@ public class SystemManager {
         this.permissionManager = permissionManager;
     }
 
+    public ContactManager getContactManager() {
+        return contactManager;
+    }
+
+    public void setContactManager(ContactManager contactManager) {
+        this.contactManager = contactManager;
+    }
 }

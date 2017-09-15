@@ -69,7 +69,8 @@ public class DeviceListingActivity extends AppCompatActivity{
         requestPermissions(new String[]{
                         Manifest.permission.CAMERA,
                         Manifest.permission.SEND_SMS,
-                        Manifest.permission.CALL_PHONE},
+                        Manifest.permission.CALL_PHONE,
+                        Manifest.permission.READ_CONTACTS},
                 ASK_MULTIPLE_PERMISSION_REQUEST_CODE);
 
         // We ask the user to grant notification access to the app
@@ -128,6 +129,7 @@ public class DeviceListingActivity extends AppCompatActivity{
                 if((ContextCompat.checkSelfPermission(DeviceListingActivity.this,
                         Manifest.permission.CAMERA)) == PackageManager.PERMISSION_GRANTED)
                 {
+                    //Open camera activity
                     Intent intent = new Intent(DeviceListingActivity.this, ReadQRCodeActivity.class);
                     startActivityForResult(intent,DEVICE_INFO_REQUEST);
                 }

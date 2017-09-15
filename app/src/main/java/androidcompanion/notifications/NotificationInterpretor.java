@@ -60,8 +60,6 @@ public class NotificationInterpretor {
                     System.out.println("A contact payload will be generated");
                     interpretContactRequest(source);
                     break;
-                default:
-                    break;
             }
         }catch(Exception e)
         {
@@ -126,16 +124,18 @@ public class NotificationInterpretor {
                 Log.e("error call", "Call failed", e);
             }
 
-        }catch(Exception e)
-        {
+        }catch(Exception e) {
             Log.e("Error :", e.toString());
         }
-
-
 
     }
 
     private void interpretContactRequest(LocalClient source){
+
+        //Refresh contact list
+        SystemManager.getInstance().getContactManager().refreshContactList();
+        //Send contact list
+        //TODO
 
     }
 
