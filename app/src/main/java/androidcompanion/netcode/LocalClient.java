@@ -1,15 +1,18 @@
 package androidcompanion.netcode;
 
+import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
 import java.util.ArrayList;
 
+import androidcompanion.device.DeviceInformationActivity;
 import androidcompanion.device.DeviceListingActivity;
 import androidcompanion.main.MyApp;
 import androidcompanion.main.SystemManager;
 import androidcompanion.main.ToastManager;
+import project.androidcompanion.R;
 
 /**
  * Created by Jo on 28/04/2017.
@@ -33,15 +36,21 @@ public class LocalClient {
             @Override
             public void connectedEvent(ClientEvent event) {
                 //Sends connection message to the server
-                ToastManager.makeToast("Connexion établie");
                 SystemManager.getInstance().getNotifyFactory().connect(thisObj);
+                /*((DeviceListingActivity)(DeviceListingActivity.context)).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        DeviceListingActivity.deviceAdapter.getItem(DeviceListingActivity.deviceAdapter.getPosition(new DeviceInformationActivity(thisObj.getClient().getAddress(),Integer.toString(thisObj.getClient().getPort()),Integer.toString(thisObj.getPairingKey())))).setDeviceIsConnected(true);
+                    }
+                });*/
+                ToastManager.makeToast("Connexion établie");
             }
 
             @Override
             public void messageReceivedEvent(ClientEvent event, String message) {
-                System.out.println("Message recu du serveur "+message);
-                //Interprets incomming json string
-                ToastManager.makeToast("Message reçu du serveur");
+                System.out.println("Message reçu du serveur " + message);
+                //Interprets incoming json string
+                ToastManager.makeToast("Message reçu du serveur" + message);
                 SystemManager.getInstance().getNotificationInterpretor().interpretNotify(thisObj,message);
             }
 
@@ -50,11 +59,19 @@ public class LocalClient {
 
                 try {
                     SystemManager.getInstance().getClientManager().getClients().remove(thisObj);
+                    getClient().setActive(false);
                     // TODO Remove from file and adapter when click on disconnect button only. Other than that just disable disconnect button and allow re-connection somehow
-                    SystemManager.getInstance().getSaveManager().removeDeviceFromJsonFile("device_list.json",
+                    /*SystemManager.getInstance().getSaveManager().removeDeviceFromJsonFile("device_list.json",
                             thisObj.getClient().getAddress(),
                             Integer.toString(thisObj.getClient().getPort()),
-                            Integer.toString(thisObj.getPairingKey()));
+                            Integer.toString(thisObj.getPairingKey()));*/
+                    ((DeviceListingActivity)(DeviceListingActivity.context)).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Reset the view cache by resetting the ListView adapter
+                            DeviceListingActivity.listView.setAdapter(DeviceListingActivity.listView.getAdapter());
+                        }
+                    });
                     ToastManager.makeToast("Appareil deconnecté");
                 }catch (Exception e)
                 {

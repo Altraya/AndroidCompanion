@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import androidcompanion.main.SystemManager;
+import androidcompanion.netcode.Client;
 import androidcompanion.netcode.LocalClient;
 import project.androidcompanion.R;
 
@@ -26,7 +27,7 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
 
     // View lookup cache
     private static class ViewHolder {
-        Button btnDelete;
+        Button btnConnectDisconnect;
         TextView deviceIPAdress;
         TextView devicePort;
     }
@@ -35,7 +36,20 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
     @Override
     public View getView(int position, View convertView, final ViewGroup parent) {
         // Get the data item for this position
-        DeviceInformationActivity deviceInformationActivity = getItem(position);
+        DeviceInformationActivity deviceInformation = getItem(position);
+        // We get the Client corresponding to the device infos
+        // TODO Set client attribute in DeviceInformationActivity? getClient() method? Relevant?
+        Client client = null;
+        for(LocalClient localClient : SystemManager.getInstance().getClientManager().getClients())
+        {
+            if(localClient.getClient().getAddress().equals(deviceInformation.getDeviceIPAdress())
+                && (new String(localClient.getClient().getPort() + "").equals(deviceInformation.getDevicePort()))
+                && (new String(localClient.getPairingKey() + "").equals(deviceInformation.getDevicePairingKey())))
+            {
+                client = localClient.getClient();
+                break;
+            }
+        }
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
         if (convertView == null) {
@@ -43,7 +57,24 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.device_listing_row, parent, false);
-            viewHolder.btnDelete = (Button) convertView.findViewById(R.id.btn_disconnect);
+            viewHolder.btnConnectDisconnect = (Button) convertView.findViewById(R.id.btn_connect_disconnect);
+            // Check if device connected or not and set button text accordingly
+            if(client == null)
+            {
+                viewHolder.btnConnectDisconnect.setText(R.string.connect_device);
+            }
+            else
+            {
+                // See when the client is considered active or not...
+                if(client.isActive())
+                {
+                    viewHolder.btnConnectDisconnect.setText(R.string.disconnect_device);
+                }
+                else
+                {
+                    viewHolder.btnConnectDisconnect.setText(R.string.connect_device);
+                }
+            }
             viewHolder.deviceIPAdress = (TextView) convertView.findViewById(R.id.textView_deviceIP);
             viewHolder.devicePort = (TextView) convertView.findViewById(R.id.textView_devicePort);
             // Cache the viewHolder object inside the fresh view
@@ -54,10 +85,10 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
         }
         // Populate the data from the data object via the viewHolder object
         // into the template view.
-        viewHolder.deviceIPAdress.setText("IP Adress : " + deviceInformationActivity.getDeviceIPAdress());
-        viewHolder.devicePort.setText("Port : " + deviceInformationActivity.getDevicePort());
-        viewHolder.btnDelete.setTag(position);
-        viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
+        viewHolder.deviceIPAdress.setText("IP Adress : " + deviceInformation.getDeviceIPAdress());
+        viewHolder.devicePort.setText("Port : " + deviceInformation.getDevicePort());
+        viewHolder.btnConnectDisconnect.setTag(position);
+        viewHolder.btnConnectDisconnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int position = (Integer) view.getTag();

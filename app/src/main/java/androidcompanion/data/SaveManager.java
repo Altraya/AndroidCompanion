@@ -127,7 +127,7 @@ public class SaveManager {
     }
 
     /**
-     * Retrieve current data from JSON file and remove entry from it
+     * Retrieve current data from JSON file and remove device from it
      * @param asset_name
      * @param ipAdress ip adress of the device to remove
      * @param port port number of the device to remove

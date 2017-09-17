@@ -9,6 +9,7 @@ public class DeviceInformationActivity extends AppCompatActivity{
     private String deviceIPAdress = "";
     private String devicePort = "";
     private String devicePairingKey = "";
+    private boolean deviceIsConnected;
 
     public DeviceInformationActivity(String deviceIPAdress, String devicePort, String devicePairingKey) {
         this.deviceIPAdress = deviceIPAdress;

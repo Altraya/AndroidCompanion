@@ -16,7 +16,6 @@ import androidcompanion.notifications.NotifyFactory;
 /**
  * Created by Jo on 24/04/2017.
  */
-// TODO disconnect device if server shut down
 public class SystemManager {
 
     //Singleton

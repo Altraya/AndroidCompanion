@@ -51,13 +51,17 @@ public class DeviceListingActivity extends AppCompatActivity{
 
     ArrayList<DeviceInformationActivity> listDevice = new ArrayList<DeviceInformationActivity>();
     public static DeviceListingAdaptater deviceAdapter;
-    ListView listView;
+    public static ListView listView;
+
+    public static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_listing);
+
+        context = this;
 
         /*// We request the camera permission
         SystemManager.getInstance().getPermissionManager().requestCameraPermission(DeviceListingActivity.this);
@@ -204,7 +208,7 @@ public class DeviceListingActivity extends AppCompatActivity{
 
     /**
      * This method tests if the application has notification access enabled
-     * @return true if notification access enabled
+     * @return true if notification access is enabled
      */
     private boolean isNotificationServiceRunning()
     {

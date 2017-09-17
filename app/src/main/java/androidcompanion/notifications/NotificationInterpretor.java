@@ -53,7 +53,7 @@ public class NotificationInterpretor {
                     interpretNumberToCall(message);
                     break;
                 case "disconnectionAcknowledged":
-                    System.out.println("The client " + source.toString() + " will be diconnected");
+                    System.out.println("The client " + source.toString() + " will be disconnected");
                     interpretDisconnectionConfirmation(source);
                     break;
                 case "requestContacts":
