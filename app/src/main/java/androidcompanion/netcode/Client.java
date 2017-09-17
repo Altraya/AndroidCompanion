@@ -13,7 +13,7 @@ public class Client {
     private String address;
     private int port;
 
-    private boolean isActive = true;
+    private boolean isActive = false;
 
     public Client(String address, int port){
 

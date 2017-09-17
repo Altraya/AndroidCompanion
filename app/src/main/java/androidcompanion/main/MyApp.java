@@ -77,7 +77,6 @@ public class MyApp extends Application {
                     if(newClient != null){
                         newClient.connect();
                     }
-                    //Toast.makeText(getApplicationContext(),"Device successfully connected!",Toast.LENGTH_SHORT).show();
                 }
             }
         }

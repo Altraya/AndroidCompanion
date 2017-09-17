@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import androidcompanion.main.MyApp;
 import androidcompanion.main.SystemManager;
 import androidcompanion.netcode.Client;
 import androidcompanion.netcode.LocalClient;
@@ -51,7 +52,7 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
             }
         }
         // Check if an existing view is being reused, otherwise inflate the view
-        ViewHolder viewHolder; // view lookup cache stored in tag
+        final ViewHolder viewHolder; // view lookup cache stored in tag
         if (convertView == null) {
             // If there's no view to re-use, inflate a brand new view for row
             viewHolder = new ViewHolder();
@@ -96,17 +97,38 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
                 DeviceInformationActivity device = getItem(position);
                 // Do what you want here...
                 //remove(device);
-                // We look for the local client to disconnect
-                for(LocalClient localClient : SystemManager.getInstance().getClientManager().getClients())
+                if(viewHolder.btnConnectDisconnect.getText().toString().equals(MyApp.getInstance().getResources().getString(R.string.disconnect_device)))
                 {
-                    if(localClient.getClient().getAddress().equals(device.getDeviceIPAdress())
+                    // We look for the local client to connect/disconnect
+                    for (LocalClient localClient : SystemManager.getInstance().getClientManager().getClients())
+                    {
+                        if (localClient.getClient().getAddress().equals(device.getDeviceIPAdress())
                             && (new String(localClient.getClient().getPort() + "").equals(device.getDevicePort()))
                             && (new String(localClient.getPairingKey() + "").equals(device.getDevicePairingKey())))
+                        {
+                            SystemManager.getInstance().getNotifyFactory().disconnect(localClient);
+                            SystemManager.getInstance().getSaveManager().removeDeviceFromJsonFile("device_list.json", device.getDeviceIPAdress(), device.getDevicePort(), device.getDevicePairingKey());
+                            SystemManager.getInstance().getSaveManager().loadConnectedDevices(DeviceListingActivity.deviceAdapter);
+                            break;
+                        }
+                    }
+                }
+                else if(viewHolder.btnConnectDisconnect.getText().toString().equals(MyApp.getInstance().getResources().getString(R.string.connect_device)))
+                {
+                    // TODO handle exceptions (UI events?)
+                    try
                     {
-                        SystemManager.getInstance().getNotifyFactory().disconnect(localClient);
-                        SystemManager.getInstance().getSaveManager().removeDeviceFromJsonFile("device_list.json",device.getDeviceIPAdress(),device.getDevicePort(),device.getDevicePairingKey());
-                        SystemManager.getInstance().getSaveManager().loadConnectedDevices(DeviceListingActivity.deviceAdapter);
-                        break;
+                        // Connection to the device held by the row
+                        LocalClient newClient = SystemManager.getInstance().getClientManager().addClient(getItem(position).getDeviceIPAdress(),Integer.parseInt(getItem(position).getDevicePort()),Integer.parseInt(getItem(position).getDevicePairingKey()));
+                        // effective connection to the client (socket)
+                        if(newClient!=null)
+                        {
+                            newClient.connect();
+                        }
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
                     }
                 }
             }

@@ -37,12 +37,14 @@ public class LocalClient {
             public void connectedEvent(ClientEvent event) {
                 //Sends connection message to the server
                 SystemManager.getInstance().getNotifyFactory().connect(thisObj);
-                /*((DeviceListingActivity)(DeviceListingActivity.context)).runOnUiThread(new Runnable() {
+                thisObj.getClient().setActive(true);
+                ((DeviceListingActivity)(DeviceListingActivity.context)).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        DeviceListingActivity.deviceAdapter.getItem(DeviceListingActivity.deviceAdapter.getPosition(new DeviceInformationActivity(thisObj.getClient().getAddress(),Integer.toString(thisObj.getClient().getPort()),Integer.toString(thisObj.getPairingKey())))).setDeviceIsConnected(true);
+                        // Reset the view cache by resetting the ListView adapter
+                        DeviceListingActivity.listView.setAdapter(DeviceListingActivity.listView.getAdapter());
                     }
-                });*/
+                });
                 ToastManager.makeToast("Connexion établie");
             }
 
@@ -60,11 +62,6 @@ public class LocalClient {
                 try {
                     SystemManager.getInstance().getClientManager().getClients().remove(thisObj);
                     getClient().setActive(false);
-                    // TODO Remove from file and adapter when click on disconnect button only. Other than that just disable disconnect button and allow re-connection somehow
-                    /*SystemManager.getInstance().getSaveManager().removeDeviceFromJsonFile("device_list.json",
-                            thisObj.getClient().getAddress(),
-                            Integer.toString(thisObj.getClient().getPort()),
-                            Integer.toString(thisObj.getPairingKey()));*/
                     ((DeviceListingActivity)(DeviceListingActivity.context)).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
