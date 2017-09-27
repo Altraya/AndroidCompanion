@@ -1,6 +1,8 @@
 package androidcompanion.device;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +12,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import androidcompanion.main.MyApp;
 import androidcompanion.main.SystemManager;
 import androidcompanion.netcode.LocalClient;
+import project.androidcompanion.ConfigurationActivity;
 import project.androidcompanion.R;
 
 // improved adapter using viewholder : https://github.com/codepath/android_guides/wiki/Using-an-ArrayAdapter-with-ListView
@@ -27,6 +31,7 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
     // View lookup cache
     private static class ViewHolder {
         Button btnDelete;
+        Button btnSettings;
         TextView deviceIPAdress;
         TextView devicePort;
     }
@@ -44,6 +49,7 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.device_listing_row, parent, false);
             viewHolder.btnDelete = (Button) convertView.findViewById(R.id.btn_disconnect);
+            viewHolder.btnSettings = (Button) convertView.findViewById(R.id.btn_device_settings);
             viewHolder.deviceIPAdress = (TextView) convertView.findViewById(R.id.textView_deviceIP);
             viewHolder.devicePort = (TextView) convertView.findViewById(R.id.textView_devicePort);
             // Cache the viewHolder object inside the fresh view
@@ -80,6 +86,24 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
                 }
             }
         });
+
+        viewHolder.btnSettings.setTag(position);
+        viewHolder.btnSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = (Integer) view.getTag();
+                // Access the row position here to get the correct data item
+                DeviceInformationActivity device = getItem(position);
+                Intent intent = new Intent(getContext(), ConfigurationActivity.class);
+                // passing parameters to the conf activity
+                Bundle b = new Bundle();
+                b.putString("deviceId", device.getDeviceIPAdress() + ":" + device.getDevicePort());
+                intent.putExtras(b);
+                getContext().startActivity(intent);
+            }
+        });
+
+
         // Return the completed view to render on screen
         return convertView;
     }

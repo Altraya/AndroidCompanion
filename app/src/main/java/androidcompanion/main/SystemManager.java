@@ -8,6 +8,7 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import androidcompanion.contact.ContactManager;
 import androidcompanion.data.SaveManager;
+import androidcompanion.device.settings.DeviceSettingsManager;
 import androidcompanion.netcode.Client;
 import androidcompanion.netcode.ClientManager;
 import androidcompanion.notifications.NotificationInterpretor;
@@ -44,6 +45,7 @@ public class SystemManager {
     private PermissionManager permissionManager;
     private NotificationReceiver nReceiver;
     private ContactManager contactManager;
+    private DeviceSettingsManager deviceSettingsManager;
 
     //Set up function
     public void instanciate(){
@@ -118,6 +120,11 @@ public class SystemManager {
 
     public PermissionManager getPermissionManager() {
         return permissionManager;
+    }
+
+    public DeviceSettingsManager getDeviceSettingsManager () {
+        if(deviceSettingsManager == null) deviceSettingsManager = new DeviceSettingsManager();
+        return deviceSettingsManager;
     }
 
     public void setPermissionManager(PermissionManager permissionManager) {

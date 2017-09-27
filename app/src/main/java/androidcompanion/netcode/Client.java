@@ -109,4 +109,8 @@ public class Client {
     public void setActive(boolean active) {
         isActive = active;
     }
+
+    public String getDeviceId() {
+        return address + ':' + port;
+    }
 }
