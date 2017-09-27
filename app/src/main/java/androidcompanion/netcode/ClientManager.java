@@ -48,6 +48,8 @@ public class ClientManager {
         LocalClient localClient = new LocalClient(address,port, pairingKey);
 
         clients.add(localClient);
+        // adding new device settings
+        SystemManager.getInstance().getDeviceSettingsManager().createDeviceSetting(localClient.getClient().getDeviceId());
 
         return localClient;
 

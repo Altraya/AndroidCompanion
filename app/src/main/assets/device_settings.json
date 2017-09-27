@@ -1,0 +1,9 @@
+{
+    "default": {
+        "sendCallNotifications": "true",
+        "sendSmsNotifications": "true",
+        "sendOtherNotifications": "false",
+        "receiveCallNotifications": "true",
+        "receiveSmsNotifications": "true"
+    }
+}
