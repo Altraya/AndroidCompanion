@@ -3,16 +3,20 @@ package androidcompanion.notifications.json;
 import java.util.List;
 
 /**
+ * One subobject of message
+ * Represent a message (sms / mms or something from a messaging app)
+ * @author Phillippine & Josselin
  * Created by Jo on 25/04/2017.
  */
 
 public class SmsToSend extends JsonObject{
 
+    //application name from intent package like : com.google.com.app.messaging -> not used here now @todo
     String application;
     List<String> numbers;
     String message;
 
-    public SmsToSend(String type,String conn,String author,String application,List<String> numbers, String message){
+    public SmsToSend(String application,List<String> numbers, String message){
 
         super();
 

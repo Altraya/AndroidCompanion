@@ -1,0 +1,17 @@
+digraph "androidcompanion.device.DeviceListingActivity"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node2 [label="androidcompanion.device.\lDeviceListingActivity",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="AppCompatActivity",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" listDevice" ,fontname="Helvetica"];
+  Node4 [label="ArrayList\< androidcompanion.device.\lDeviceInformationActivity \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node5 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" listView" ,fontname="Helvetica"];
+  Node5 [label="ListView",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node6 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" deviceAdapter" ,fontname="Helvetica"];
+  Node6 [label="androidcompanion.device.\lDeviceListingAdaptater",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1device_1_1_device_listing_adaptater.html"];
+  Node7 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="android::widget::ArrayAdapter\l\< DeviceInformationActivity \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

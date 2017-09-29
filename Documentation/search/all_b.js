@@ -1,0 +1,11 @@
+var searchData=
+[
+  ['onactivityresult',['onActivityResult',['../classandroidcompanion_1_1device_1_1_device_listing_activity.html#ad899e3ff2c3b424464a5114328b3234b',1,'androidcompanion::device::DeviceListingActivity']]],
+  ['oncreate',['onCreate',['../classandroidcompanion_1_1device_1_1add_device_to_list_activity.html#a41dbb5db30ec30e2e4e03835104af4e0',1,'androidcompanion.device.addDeviceToListActivity.onCreate()'],['../classandroidcompanion_1_1device_1_1_device_listing_activity.html#af088218f7a3913bc881ce8893fb0d582',1,'androidcompanion.device.DeviceListingActivity.onCreate()'],['../classandroidcompanion_1_1device_1_1_display_device_information_activity.html#a008cc25f9a70b61103e7fde57b313c99',1,'androidcompanion.device.DisplayDeviceInformationActivity.onCreate()'],['../classandroidcompanion_1_1device_1_1_read_q_r_code_activity.html#a4db113b25dfb9fb87da9ddce2db10592',1,'androidcompanion.device.ReadQRCodeActivity.onCreate()'],['../classandroidcompanion_1_1main_1_1_my_app.html#aa99f4ac60eea3ab3da475bfdfc96ce95',1,'androidcompanion.main.MyApp.onCreate()']]],
+  ['oncreateoptionsmenu',['onCreateOptionsMenu',['../classandroidcompanion_1_1device_1_1_device_listing_activity.html#acd1e4d6f561994867319254d6d5ecc7c',1,'androidcompanion::device::DeviceListingActivity']]],
+  ['ondestroy',['onDestroy',['../classandroidcompanion_1_1device_1_1_read_q_r_code_activity.html#a2dc13ee302d35d7915560ab631efc17b',1,'androidcompanion::device::ReadQRCodeActivity']]],
+  ['onnotificationposted',['onNotificationPosted',['../classandroidcompanion_1_1notifications_1_1_notif_service.html#a4f8303f31d9f73602b8eaec5ffd6c1e2',1,'androidcompanion::notifications::NotifService']]],
+  ['onoptionsitemselected',['onOptionsItemSelected',['../classandroidcompanion_1_1device_1_1_device_listing_activity.html#aebf85eb7eeb65d9fb690bf7aef87421f',1,'androidcompanion::device::DeviceListingActivity']]],
+  ['onprogressupdate',['onProgressUpdate',['../classandroidcompanion_1_1netcode_1_1_async_client.html#a97c33e3823ce35cade1ff436580dd507',1,'androidcompanion::netcode::AsyncClient']]],
+  ['onrequestpermissionsresult',['onRequestPermissionsResult',['../classandroidcompanion_1_1main_1_1_permission_manager.html#a608b11a563b44c40d9c8ce3c052c9ddf',1,'androidcompanion::main::PermissionManager']]]
+];

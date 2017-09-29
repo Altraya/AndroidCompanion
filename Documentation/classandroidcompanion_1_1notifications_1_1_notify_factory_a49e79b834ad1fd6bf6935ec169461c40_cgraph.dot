@@ -1,0 +1,19 @@
+digraph "androidcompanion.notifications.NotifyFactory.notify"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node14 [label="androidcompanion.notifications.\lNotifyFactory.notify",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node14 -> Node15 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="androidcompanion.netcode.\lLocalClient.getClient",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1netcode_1_1_local_client.html#a1086a3b786b863f37663bd629373c581"];
+  Node14 -> Node16 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="androidcompanion.netcode.\lClient.sendMessage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1netcode_1_1_client.html#a9c2cf7d2afde921349682ded8f80b14f"];
+  Node16 -> Node17 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="androidcompanion.netcode.\lTCPClient.sendMessage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1netcode_1_1_t_c_p_client.html#a8b49cf40b9ed3fdb25c77b30a999762a"];
+  Node14 -> Node18 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="androidcompanion.netcode.\lClient.getAddress",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1netcode_1_1_client.html#a2bbe7f9215a4865d11808027c3c109c1"];
+  Node14 -> Node19 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node19 [label="androidcompanion.netcode.\lClient.getPort",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1netcode_1_1_client.html#a4f2724f0b51d762a7fa5bf5a0b1919d8"];
+  Node14 -> Node20 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 [label="androidcompanion.netcode.\lLocalClient.getPairingKey",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1netcode_1_1_local_client.html#afcc0704e24ab7ced59a3cea55c130bd1"];
+}

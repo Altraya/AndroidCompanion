@@ -14,6 +14,8 @@ import androidcompanion.notifications.NotificationInterpretor;
 import androidcompanion.notifications.NotifyFactory;
 
 /**
+ * System manager who manage all other Factory, Manager and Receiver
+ * @author Josselin
  * Created by Jo on 24/04/2017.
  */
 // TODO disconnect device if server shut down
