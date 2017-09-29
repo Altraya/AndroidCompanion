@@ -68,12 +68,14 @@ public class DeviceListingActivity extends AppCompatActivity{
 
         SystemManager.getInstance().getPermissionManager().requestCallPermission(DeviceListingActivity.this);*/
 
-        requestPermissions(new String[]{
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.SEND_SMS,
-                        Manifest.permission.CALL_PHONE,
-                        Manifest.permission.READ_CONTACTS},
-                ASK_MULTIPLE_PERMISSION_REQUEST_CODE);
+        if (android.os.Build.VERSION.SDK_INT >= 23) {
+            requestPermissions(new String[]{
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.SEND_SMS,
+                            Manifest.permission.CALL_PHONE,
+                            Manifest.permission.READ_CONTACTS},
+                    ASK_MULTIPLE_PERMISSION_REQUEST_CODE);
+        }
 
         // We ask the user to grant notification access to the app
         if(!isNotificationServiceRunning())
