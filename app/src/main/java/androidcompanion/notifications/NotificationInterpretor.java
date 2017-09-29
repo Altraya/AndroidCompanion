@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import java.util.List;
 
 import androidcompanion.main.MyApp;
+import androidcompanion.main.SystemManager;
 import androidcompanion.main.ToastManager;
 import androidcompanion.netcode.LocalClient;
 import androidcompanion.notifications.json.Message;
