@@ -8,7 +8,7 @@ import androidcompanion.contact.Contact;
  * Created by Jo on 15/09/2017.
  */
 
-public class ContactList {
+public class ContactList extends JsonObject{
 
     private ArrayList<Contact> contacts;
 

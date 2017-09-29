@@ -134,8 +134,7 @@ public class NotificationInterpretor {
 
         //Refresh contact list
         SystemManager.getInstance().getContactManager().refreshContactList();
-        //Send contact list
-        //TODO
+        SystemManager.getInstance().getNotifyFactory().sendContact(source);
 
     }
 
