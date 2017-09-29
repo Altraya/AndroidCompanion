@@ -11,11 +11,6 @@ import android.util.Log;
 
 import androidcompanion.main.SystemManager;
 
-/**
- * Notification listener service
- * Broadcast message to PC
- * @author Phillippine
- * */
 public class NotifService extends NotificationListenerService {
 
     @Override

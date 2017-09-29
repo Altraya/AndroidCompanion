@@ -11,8 +11,6 @@ import androidcompanion.device.DeviceListingActivity;
 import androidcompanion.device.ReadQRCodeActivity;
 
 /**
- * Class to handle permission right and asking it to user
- * @author David
  * Created by dmarck on 14/05/2017.
  */
 // TODO change permission handling way. (add bool methods? See how to add description on a one time multiple permission request)

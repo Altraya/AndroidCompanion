@@ -35,9 +35,7 @@ import androidcompanion.main.ToastManager;
 import androidcompanion.netcode.LocalClient;
 import project.androidcompanion.R;
 
-/**
- * Startup activity
- */
+
 public class DeviceListingActivity extends AppCompatActivity{
 
     // Request code(s)

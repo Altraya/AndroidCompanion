@@ -1,9 +1,0 @@
-digraph "androidcompanion.data.SaveManager.addDeviceToJsonFile"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node3 [label="androidcompanion.data.Save\lManager.addDeviceToJsonFile",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node4 [label="androidcompanion.device.\lDeviceListingActivity.onActivity\lResult",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1device_1_1_device_listing_activity.html#ad899e3ff2c3b424464a5114328b3234b"];
-}

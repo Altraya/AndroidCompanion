@@ -1,9 +1,0 @@
-digraph "androidcompanion.netcode.TCPClient.run"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node11 [label="androidcompanion.netcode.\lTCPClient.run",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node11 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node12 [label="androidcompanion.netcode.\lAsyncClient.doInBackground",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1netcode_1_1_async_client.html#a01001f3ddbf96ae8fca097437b30c4ae"];
-}

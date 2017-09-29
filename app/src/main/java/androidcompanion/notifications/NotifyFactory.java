@@ -9,14 +9,11 @@ import java.util.Date;
 
 import androidcompanion.main.SystemManager;
 import androidcompanion.netcode.LocalClient;
-import androidcompanion.notifications.json.ContactList;
 import androidcompanion.notifications.json.JsonObject;
 import androidcompanion.notifications.json.Message;
 import androidcompanion.notifications.json.Notify;
 
 /**
- * Notification factory to react to send json message
- * @author Josselin
  * Created by Jo on 24/04/2017.
  */
 
@@ -45,21 +42,6 @@ public class NotifyFactory {
             Notify notifyObject = new Notify(app, title, text, d.toString());
 
             localClient.getClient().sendMessage(getJson(localClient, "Notification", notifyObject));
-        }catch(Exception e)
-        {
-            Log.e("Error", e.toString());
-        }
-
-    }
-
-    public void sendContact(LocalClient localClient){
-
-        try {
-            final Date d = new Date();
-
-            ContactList contactList = new ContactList(SystemManager.getInstance().getContactManager().getListeContacts());
-
-            localClient.getClient().sendMessage(getJson(localClient, "Notification", contactList));
         }catch(Exception e)
         {
             Log.e("Error", e.toString());

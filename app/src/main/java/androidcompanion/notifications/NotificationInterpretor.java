@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
@@ -17,18 +18,18 @@ import com.google.gson.Gson;
 import java.util.List;
 
 import androidcompanion.main.MyApp;
+import androidcompanion.main.SystemManager;
 import androidcompanion.main.ToastManager;
 import androidcompanion.netcode.LocalClient;
+import androidcompanion.notifications.json.JsonObject;
 import androidcompanion.notifications.json.Message;
 import androidcompanion.notifications.json.NumberToCall;
 import androidcompanion.notifications.json.SmsToSend;
 
 /**
- * Class to interpret and parse notification (by json input)
- * and do some work after that
- * @author Josselin
  * Created by Jo on 28/04/2017.
  */
+
 public class NotificationInterpretor {
 
     public NotificationInterpretor() {
@@ -133,7 +134,8 @@ public class NotificationInterpretor {
 
         //Refresh contact list
         SystemManager.getInstance().getContactManager().refreshContactList();
-        SystemManager.getInstance().getNotifyFactory().sendContact(source);
+        //Send contact list
+        //TODO
 
     }
 

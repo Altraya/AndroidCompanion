@@ -1,10 +1,9 @@
 package androidcompanion.notifications.json;
 
 /**
- * Represent a message to send to PC
- * @author Phillippine & Josselin
  * Created by Jo on 25/04/2017.
  */
+
 public class Message extends JsonObject{
 
     String type;
