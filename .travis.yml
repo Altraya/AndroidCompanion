@@ -26,7 +26,7 @@ android:
     - build-tools-25.0.2
     - android-25
     - extra-android-m2repository
-    - sys-img-armeabi-v7a-android-25$
+    - sys-img-armeabi-v7a-google_apis-25
   licenses:
     - android-sdk-license-.+
     - '.+'
