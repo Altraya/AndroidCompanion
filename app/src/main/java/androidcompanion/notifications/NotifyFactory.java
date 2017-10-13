@@ -39,12 +39,20 @@ public class NotifyFactory {
 
     public void notify(LocalClient localClient,String app,String title,String text){
 
+        System.out.println("App : " + app + " Title : " + title + " Text : " + text);
+
         try {
+
             final Date d = new Date();
 
             Notify notifyObject = new Notify(app, title, text, d.toString());
 
-            localClient.getClient().sendMessage(getJson(localClient, "Notification", notifyObject));
+            String jsonData = getJson(localClient, "Notification", notifyObject);
+
+            System.out.println(jsonData);
+
+            localClient.getClient().sendMessage(jsonData);
+
         }catch(Exception e)
         {
             Log.e("Error", e.toString());
@@ -59,7 +67,7 @@ public class NotifyFactory {
 
             ContactList contactList = new ContactList(SystemManager.getInstance().getContactManager().getListeContacts());
 
-            localClient.getClient().sendMessage(getJson(localClient, "Notification", contactList));
+            localClient.getClient().sendMessage(getJson(localClient, "contacts", contactList));
         }catch(Exception e)
         {
             Log.e("Error", e.toString());

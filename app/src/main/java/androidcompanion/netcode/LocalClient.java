@@ -33,6 +33,7 @@ public class LocalClient {
             @Override
             public void connectedEvent(ClientEvent event) {
                 //Sends connection message to the server
+                System.out.println("Connected to " + client.getAddress());
                 ToastManager.makeToast("Connexion établie");
                 SystemManager.getInstance().getNotifyFactory().connect(thisObj);
             }
@@ -47,6 +48,8 @@ public class LocalClient {
 
             @Override
             public void disconnectedEvent(ClientEvent event) {
+
+                System.out.println("Disconnected : " + client.getAddress() );
 
                 try {
                     SystemManager.getInstance().getClientManager().getClients().remove(thisObj);
