@@ -42,7 +42,7 @@ public class MyApp extends Application {
 
         // We copy the assets to the external storage
         SharedPreferences settings = getSharedPreferences("PREFS_NAME", 0);
-        boolean isFirstLaunch = settings.getBoolean("FIRST_RUN", false);
+        boolean isFirstLaunch = settings.getBoolean("FIRST_RUN",true);
         if (isFirstLaunch) {
             // do the thing for the first time
             // here we copy the assets to the external storage
