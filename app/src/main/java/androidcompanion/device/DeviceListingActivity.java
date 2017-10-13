@@ -168,11 +168,13 @@ public class DeviceListingActivity extends AppCompatActivity{
                 }
                 else
                 {
-
+                    System.out.println("Preparing connexion to " + deviceIPAdress + "...");
                     // Connection to the device using the infos previously provided
                     LocalClient newClient = SystemManager.getInstance().getClientManager().addClient(deviceIPAdress,Integer.parseInt(devicePort),Integer.parseInt(devicePairingKey));
                     // effective connection to the client (socket)
+                    System.out.println("Connexion prepared");
                     if(newClient!=null){
+                        System.out.println("Connecting to " + deviceIPAdress + "...");
                         newClient.connect();
                     }
                     //Toast.makeText(getApplicationContext(),"Device successfully connected!",Toast.LENGTH_SHORT).show();

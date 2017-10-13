@@ -20,7 +20,11 @@ public class AsyncClient extends AsyncTask<String, String, TCPClient> {
 
         //we create a TCPClient object and
 
+        System.out.println("do in BG started");
+
         if(tcpClient == null)return null;
+
+        System.out.println("run tcpClient");
 
         tcpClient.run();
 

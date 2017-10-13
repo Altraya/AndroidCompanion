@@ -15,7 +15,8 @@ public class Client {
     private String address;
     private int port;
 
-    private boolean isActive = true;
+    private boolean isActive = false;
+    private boolean isTargetForDeletion = false;
 
     public Client(String address, int port){
 
@@ -28,6 +29,8 @@ public class Client {
     }
 
     public void connect(){
+
+        isActive = true;
 
         tcpClient = new TCPClient(this);
 
@@ -42,6 +45,8 @@ public class Client {
         tcpClient.terminateConnection();
 
         asyncClient.cancel(true);
+
+        isActive = false;
 
     }
 
@@ -109,8 +114,12 @@ public class Client {
         return isActive;
     }
 
-    public void setActive(boolean active) {
-        isActive = active;
+    public boolean isTargetForDeletion() {
+        return isTargetForDeletion;
+    }
+
+    public void setTargetForDeletion(boolean targetForDeletion) {
+        isTargetForDeletion = targetForDeletion;
     }
 
     public String getDeviceId() {
