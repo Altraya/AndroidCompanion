@@ -35,6 +35,7 @@ public class TCPClient {
         System.out.println("TO SEND : " + message);
         if (out != null && !out.checkError()) {
 
+            //TODO in async
             System.out.println("DIB execution for : " + message);
 
             try {
@@ -42,11 +43,12 @@ public class TCPClient {
                 out.println(message);
                 out.flush();
 
-            }catch (Exception e){
+            }catch (Exception e) {
 
                 e.printStackTrace();
 
             }
+            //TODO end of async part
 
             System.out.println("confirm order given");
         }
