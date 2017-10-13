@@ -26,9 +26,7 @@ public class NotifyFactory {
     }
 
     public void connect(LocalClient localClient){
-
         localClient.getClient().sendMessage(getJson(localClient,"connect",null));
-
     }
 
     public void disconnect(LocalClient localClient){
@@ -59,7 +57,7 @@ public class NotifyFactory {
 
             ContactList contactList = new ContactList(SystemManager.getInstance().getContactManager().getListeContacts());
 
-            localClient.getClient().sendMessage(getJson(localClient, "Notification", contactList));
+            localClient.getClient().sendMessage(getJson(localClient, "contacts", contactList));
         }catch(Exception e)
         {
             Log.e("Error", e.toString());

@@ -1,5 +1,7 @@
 package androidcompanion.netcode;
 
+import java.util.Enumeration;
+
 /**
  * Created by Maxime & Josselin on 24/04/2017.
  */
@@ -9,7 +11,7 @@ public class Client {
 
     private AsyncClient asyncClient;
     private TCPClient tcpClient;
-
+    private ConnectionState connectionState;
     private String address;
     private int port;
 
@@ -19,6 +21,7 @@ public class Client {
 
         this.address = address;
         this.port = port;
+        this.connectionState = ConnectionState.PENDING;
 
         clientEventManager = new ClientEventManager();
 
@@ -112,5 +115,18 @@ public class Client {
 
     public String getDeviceId() {
         return address + ':' + port;
+    }
+    public void connectionAccepted() {
+        connectionState = connectionState.ACCEPTED;
+    }
+
+    public void connectionRefused() {
+        connectionState = connectionState.REFUSED;
+    }
+
+    public enum ConnectionState {
+        ACCEPTED,
+        PENDING,
+        REFUSED
     }
 }
