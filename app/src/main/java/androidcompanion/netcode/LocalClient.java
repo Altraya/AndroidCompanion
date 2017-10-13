@@ -53,6 +53,8 @@ public class LocalClient {
 
                 try {
                     SystemManager.getInstance().getClientManager().getClients().remove(thisObj);
+                    // removing device settings
+                    SystemManager.getInstance().getDeviceSettingsManager().removeDeviceSetting(Integer.toString(thisObj.getPairingKey()));
                     // TODO Remove from file and adapter when click on disconnect button only. Other than that just disable disconnect button and allow re-connection somehow
                     SystemManager.getInstance().getSaveManager().removeDeviceFromJsonFile("device_list.json",
                             thisObj.getClient().getAddress(),

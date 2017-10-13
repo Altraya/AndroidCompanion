@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import androidcompanion.device.DeviceListingActivity;
+import androidcompanion.device.settings.DeviceSetting;
 import androidcompanion.netcode.LocalClient;
 
 /**
@@ -42,14 +43,13 @@ public class MyApp extends Application {
 
         // We copy the assets to the external storage
         SharedPreferences settings = getSharedPreferences("PREFS_NAME", 0);
-        boolean isFirstLaunch = settings.getBoolean("FIRST_RUN", false);
-        if (!isFirstLaunch) {
+        boolean isFirstLaunch = settings.getBoolean("FIRST_RUN", true);
+        if (isFirstLaunch) {
             // do the thing for the first time
             // here we copy the assets to the external storage
             SystemManager.getInstance().getSaveManager().copyAssets();
-            settings = getSharedPreferences("PREFS_NAME", 0);
             SharedPreferences.Editor editor = settings.edit();
-            editor.putBoolean("FIRST_RUN", true);
+            editor.putBoolean("FIRST_RUN", false);
             editor.commit();
         } else {
             // other time the app loads

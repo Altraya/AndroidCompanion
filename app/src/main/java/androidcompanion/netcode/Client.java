@@ -118,4 +118,8 @@ public class Client {
     public void setTargetForDeletion(boolean targetForDeletion) {
         isTargetForDeletion = targetForDeletion;
     }
+
+    public String getDeviceId() {
+        return address + ':' + port;
+    }
 }

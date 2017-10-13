@@ -33,6 +33,7 @@ import androidcompanion.main.MyApp;
 import androidcompanion.main.SystemManager;
 import androidcompanion.main.ToastManager;
 import androidcompanion.netcode.LocalClient;
+import project.androidcompanion.ConfigurationActivity;
 import project.androidcompanion.R;
 
 /**
@@ -202,6 +203,14 @@ public class DeviceListingActivity extends AppCompatActivity{
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             startActivity(new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS));
+            return true;
+        } else if (id == R.id.action_configuration){
+            Intent intent = new Intent(this, ConfigurationActivity.class);
+            // passing parameters to the conf activity
+            Bundle b = new Bundle();
+            b.putString("deviceId", "default");
+            intent.putExtras(b);
+            startActivity(intent);
             return true;
         }
 
