@@ -47,7 +47,7 @@ public class LocalClient {
                 float batteryPct = level / (float)scale;
                 boolean isCharging = true;
                 SystemManager.getInstance().getNotifyFactory().notifyBattery(thisObj,batteryPct, isCharging);
-                
+
             }
 
             @Override
