@@ -48,6 +48,8 @@ public class LocalClient {
                 boolean isCharging = true;
                 SystemManager.getInstance().getNotifyFactory().notifyBattery(thisObj,batteryPct, isCharging);
 
+
+
             }
 
             @Override
