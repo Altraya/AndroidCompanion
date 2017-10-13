@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
+import androidcompanion.contact.ContactManager;
 import androidcompanion.data.SaveManager;
 import androidcompanion.netcode.Client;
 import androidcompanion.netcode.ClientManager;
@@ -13,6 +14,8 @@ import androidcompanion.notifications.NotificationInterpretor;
 import androidcompanion.notifications.NotifyFactory;
 
 /**
+ * System manager who manage all other Factory, Manager and Receiver
+ * @author Josselin
  * Created by Jo on 24/04/2017.
  */
 // TODO disconnect device if server shut down
@@ -40,6 +43,7 @@ public class SystemManager {
     private SaveManager saveManager;
     private PermissionManager permissionManager;
     private NotificationReceiver nReceiver;
+    private ContactManager contactManager;
 
     //Set up function
     public void instanciate(){
@@ -49,6 +53,7 @@ public class SystemManager {
         clientManager = new ClientManager();
         saveManager = new SaveManager();
         permissionManager = new PermissionManager();
+        contactManager = new ContactManager();
 
         nReceiver = new NotificationReceiver();
         IntentFilter filter = new IntentFilter();
@@ -119,4 +124,11 @@ public class SystemManager {
         this.permissionManager = permissionManager;
     }
 
+    public ContactManager getContactManager() {
+        return contactManager;
+    }
+
+    public void setContactManager(ContactManager contactManager) {
+        this.contactManager = contactManager;
+    }
 }

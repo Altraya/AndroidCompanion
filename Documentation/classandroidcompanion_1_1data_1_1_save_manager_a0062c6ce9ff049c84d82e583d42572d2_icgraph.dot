@@ -1,0 +1,25 @@
+digraph "androidcompanion.data.SaveManager.loadJSONFromAsset"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node18 [label="androidcompanion.data.Save\lManager.loadJSONFromAsset",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node18 -> Node19 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node19 [label="androidcompanion.data.Save\lManager.addDeviceToJsonFile",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1data_1_1_save_manager.html#a219c44cb12af0e0af5f70e2d5d4155b4"];
+  Node19 -> Node20 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 [label="androidcompanion.device.\lDeviceListingActivity.onActivity\lResult",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1device_1_1_device_listing_activity.html#ad899e3ff2c3b424464a5114328b3234b"];
+  Node18 -> Node21 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node21 [label="androidcompanion.data.Save\lManager.removeDeviceFromJsonFile",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1data_1_1_save_manager.html#ab99488cc41a2ff1e82526a7c4cf46296"];
+  Node21 -> Node22 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node22 [label="androidcompanion.device.\lDeviceListingAdaptater.getView",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1device_1_1_device_listing_adaptater.html#a76ab899b207cdcbaa61433de6dadbc17"];
+  Node21 -> Node23 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node23 [label="androidcompanion.netcode.\lLocalClient.LocalClient",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1netcode_1_1_local_client.html#a2751233da0c797655acf10e41d7e26ba"];
+  Node18 -> Node24 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node24 [label="androidcompanion.data.Save\lManager.loadConnectedDevices",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1data_1_1_save_manager.html#a4e71b3bbcae995f16f4e01f4f3ec5df0"];
+  Node24 -> Node25 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node25 [label="androidcompanion.device.\lDeviceListingActivity.onCreate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1device_1_1_device_listing_activity.html#af088218f7a3913bc881ce8893fb0d582"];
+  Node24 -> Node20 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node24 -> Node22 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 -> Node26 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node26 [label="androidcompanion.main.My\lApp.onCreate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1main_1_1_my_app.html#aa99f4ac60eea3ab3da475bfdfc96ce95"];
+}

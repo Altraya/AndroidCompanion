@@ -9,12 +9,15 @@ import java.util.Date;
 
 import androidcompanion.main.SystemManager;
 import androidcompanion.netcode.LocalClient;
-import androidcompanion.notifications.json.BatteryState;
+
+import androidcompanion.notifications.json.ContactList;
 import androidcompanion.notifications.json.JsonObject;
 import androidcompanion.notifications.json.Message;
 import androidcompanion.notifications.json.Notify;
 
 /**
+ * Notification factory to react to send json message
+ * @author Josselin
  * Created by Jo on 24/04/2017.
  */
 
@@ -35,21 +38,6 @@ public class NotifyFactory {
 
     }
 
-    public void notifyBattery(LocalClient localClient,float pourcent, boolean isCharging){
-        /**/
-        try {
-
-            BatteryState batteryObject = new BatteryState(pourcent, isCharging);
-
-            localClient.getClient().sendMessage(getJson(localClient, "BatteryState", batteryObject));
-        }catch(Exception e)
-        {
-            Log.e("Error", e.toString());
-        }
-
-    }
-
-
     public void notify(LocalClient localClient,String app,String title,String text){
 
         try {
@@ -58,6 +46,21 @@ public class NotifyFactory {
             Notify notifyObject = new Notify(app, title, text, d.toString());
 
             localClient.getClient().sendMessage(getJson(localClient, "Notification", notifyObject));
+        }catch(Exception e)
+        {
+            Log.e("Error", e.toString());
+        }
+
+    }
+
+    public void sendContact(LocalClient localClient){
+
+        try {
+            final Date d = new Date();
+
+            ContactList contactList = new ContactList(SystemManager.getInstance().getContactManager().getListeContacts());
+
+            localClient.getClient().sendMessage(getJson(localClient, "Notification", contactList));
         }catch(Exception e)
         {
             Log.e("Error", e.toString());

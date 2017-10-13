@@ -5,6 +5,9 @@ import android.os.Looper;
 import android.widget.Toast;
 
 /**
+ * The best have in a project, a super toast manager. Who manage... toast, obviously.
+ * Allow us to have toast everywhere in our app without the thread inconvenient
+ * @author Maxime
  * Created by Maxime on 01/06/2017.
  */
 

@@ -1,0 +1,34 @@
+digraph "androidcompanion.netcode.LocalClient.getClient"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node53 [label="androidcompanion.netcode.\lLocalClient.getClient",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node53 -> Node54 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node54 [label="androidcompanion.netcode.\lLocalClient.LocalClient",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1netcode_1_1_local_client.html#a2751233da0c797655acf10e41d7e26ba"];
+  Node53 -> Node55 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node55 [label="androidcompanion.notifications.\lNotifyFactory.connect",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1notifications_1_1_notify_factory.html#afd3037bbdef16f9b76675fb69f914b6d"];
+  Node55 -> Node54 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node53 -> Node56 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node56 [label="androidcompanion.notifications.\lNotifyFactory.disconnect",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1notifications_1_1_notify_factory.html#a04f11e88660356027aeb525aad0c2db6"];
+  Node56 -> Node57 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node57 [label="androidcompanion.device.\lDeviceListingAdaptater.getView",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1device_1_1_device_listing_adaptater.html#a76ab899b207cdcbaa61433de6dadbc17"];
+  Node53 -> Node58 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node58 [label="androidcompanion.notifications.\lNotifyFactory.notify",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1notifications_1_1_notify_factory.html#a49e79b834ad1fd6bf6935ec169461c40"];
+  Node58 -> Node59 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node59 [label="androidcompanion.netcode.\lClientManager.notifyAll",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1netcode_1_1_client_manager.html#ab26255e3f70eaf969f46c502ef4b40dc"];
+  Node59 -> Node60 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node60 [label="androidcompanion.main.System\lManager.instanciate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1main_1_1_system_manager.html#ae20ddab3b72f139dd7817ed6244f4c44"];
+  Node60 -> Node61 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node61 [label="androidcompanion.main.System\lManager.getInstance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1main_1_1_system_manager.html#a405e1e4153c59461f783495b9065df1a"];
+  Node61 -> Node62 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node62 [label="androidcompanion.device.\lDeviceListingActivity.onCreate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1device_1_1_device_listing_activity.html#af088218f7a3913bc881ce8893fb0d582"];
+  Node61 -> Node63 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node63 [label="androidcompanion.device.\lDeviceListingActivity.onActivity\lResult",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1device_1_1_device_listing_activity.html#ad899e3ff2c3b424464a5114328b3234b"];
+  Node61 -> Node57 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node61 -> Node64 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node64 [label="androidcompanion.main.My\lApp.onCreate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1main_1_1_my_app.html#aa99f4ac60eea3ab3da475bfdfc96ce95"];
+  Node61 -> Node60 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node61 -> Node59 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node61 -> Node54 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

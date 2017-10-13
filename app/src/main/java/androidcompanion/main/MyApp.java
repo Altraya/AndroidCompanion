@@ -14,9 +14,7 @@ import androidcompanion.netcode.LocalClient;
 /**
  * Created by dmarck on 12/05/2017.
  * Class to get context of the application exerywhere
- */
-
-/**
+ *
  * Own Application class
  * Use of the singleton design pattern
  */
@@ -45,13 +43,13 @@ public class MyApp extends Application {
         // We copy the assets to the external storage
         SharedPreferences settings = getSharedPreferences("PREFS_NAME", 0);
         boolean isFirstLaunch = settings.getBoolean("FIRST_RUN", false);
-        if (!isFirstLaunch) {
+        if (isFirstLaunch) {
             // do the thing for the first time
             // here we copy the assets to the external storage
             SystemManager.getInstance().getSaveManager().copyAssets();
             settings = getSharedPreferences("PREFS_NAME", 0);
             SharedPreferences.Editor editor = settings.edit();
-            editor.putBoolean("FIRST_RUN", true);
+            editor.putBoolean("FIRST_RUN", false);
             editor.commit();
         } else {
             // other time the app loads

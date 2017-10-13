@@ -1,0 +1,29 @@
+digraph "androidcompanion.main.SystemManager.getClientManager"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node11 [label="androidcompanion.main.System\lManager.getClientManager",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node11 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="androidcompanion.device.\lDeviceListingActivity.onActivity\lResult",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1device_1_1_device_listing_activity.html#ad899e3ff2c3b424464a5114328b3234b"];
+  Node11 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="androidcompanion.device.\lDeviceListingAdaptater.getView",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1device_1_1_device_listing_adaptater.html#a76ab899b207cdcbaa61433de6dadbc17"];
+  Node11 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="androidcompanion.main.My\lApp.onCreate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1main_1_1_my_app.html#aa99f4ac60eea3ab3da475bfdfc96ce95"];
+  Node11 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="androidcompanion.main.System\lManager.instanciate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1main_1_1_system_manager.html#ae20ddab3b72f139dd7817ed6244f4c44"];
+  Node15 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="androidcompanion.main.System\lManager.getInstance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1main_1_1_system_manager.html#a405e1e4153c59461f783495b9065df1a"];
+  Node16 -> Node17 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="androidcompanion.device.\lDeviceListingActivity.onCreate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1device_1_1_device_listing_activity.html#af088218f7a3913bc881ce8893fb0d582"];
+  Node16 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 -> Node18 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="androidcompanion.netcode.\lClientManager.notifyAll",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1netcode_1_1_client_manager.html#ab26255e3f70eaf969f46c502ef4b40dc"];
+  Node18 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 -> Node19 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node19 [label="androidcompanion.netcode.\lLocalClient.LocalClient",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classandroidcompanion_1_1netcode_1_1_local_client.html#a2751233da0c797655acf10e41d7e26ba"];
+  Node11 -> Node19 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}
