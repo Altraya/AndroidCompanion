@@ -5,19 +5,19 @@ package androidcompanion.notifications.json;
  */
 
 public class BatteryState extends JsonObject{
-    private float pourcent;
+    private float percent;
     private boolean isCharging;
 
     public BatteryState(float pourcent, boolean isCharging) {
-        this.pourcent = pourcent;
+        this.percent = pourcent;
         this.isCharging = isCharging;
     }
-    public float getPourcent() {
-        return pourcent;
+    public float getPercent() {
+        return percent;
     }
 
-    public void setPourcent(float pourcent) {
-        this.pourcent = pourcent;
+    public void setPercent(float percent) {
+        this.percent = percent;
     }
 
     public boolean isCharging() {

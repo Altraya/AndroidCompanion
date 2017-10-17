@@ -3,13 +3,8 @@ package androidcompanion.netcode;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 
-import java.util.ArrayList;
-
-import androidcompanion.device.DeviceListingActivity;
 import androidcompanion.main.MyApp;
 import androidcompanion.main.SystemManager;
 import androidcompanion.main.ToastManager;
@@ -48,9 +43,6 @@ public class LocalClient {
                 float batteryPct = level;
                 boolean isCharging = true;
                 SystemManager.getInstance().getNotifyFactory().notifyBattery(thisObj,batteryPct, isCharging);
-
-
-
             }
 
             @Override

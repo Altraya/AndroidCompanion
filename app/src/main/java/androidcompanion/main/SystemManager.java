@@ -4,11 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.support.v4.content.LocalBroadcastManager;
 
 import androidcompanion.contact.ContactManager;
 import androidcompanion.data.SaveManager;
-import androidcompanion.netcode.Client;
 import androidcompanion.netcode.ClientManager;
 import androidcompanion.notifications.NotificationInterpretor;
 import androidcompanion.notifications.NotifyFactory;

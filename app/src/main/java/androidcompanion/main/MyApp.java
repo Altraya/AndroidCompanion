@@ -1,15 +1,16 @@
 package androidcompanion.main;
 
 import android.app.Application;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import androidcompanion.device.DeviceListingActivity;
 import androidcompanion.netcode.LocalClient;
+import androidcompanion.notifications.BatteryStateJobService;
 
 /**
  * Created by dmarck on 12/05/2017.
@@ -21,6 +22,8 @@ import androidcompanion.netcode.LocalClient;
 // TODO disconnect devices if app killed?
 public class MyApp extends Application {
     private static MyApp instance = null;
+
+    private JobScheduler jobScheduler;
 
     public static MyApp getInstance() {
 
@@ -53,6 +56,26 @@ public class MyApp extends Application {
             editor.commit();
         } else {
             // other time the app loads
+        }
+
+        // JobScheduler object that will be used to schedule our job(s)
+        jobScheduler = (JobScheduler) getSystemService(getContext().JOB_SCHEDULER_SERVICE);
+        // We create job info for a BatteryStateJobService
+        ComponentName serviceComponent = new ComponentName(getContext(), BatteryStateJobService.class);
+        JobInfo.Builder builder = new JobInfo.Builder(0, serviceComponent);
+        builder.setPeriodic(10000);
+        //builder.setMinimumLatency(10000); // wait at least before start
+        //builder.setOverrideDeadline(60000); // maximum delay before start
+        builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY); // require any network
+        //builder.setRequiresDeviceIdle(true); // device should be idle
+        builder.setRequiresCharging(false); // we don't care if the device is charging or not
+        //builder.setPersisted(true); // we want the service to still exist after the device has been rebooted
+        JobInfo jobInfo = builder.build();
+        // We schedule the job
+        if(jobScheduler.schedule(jobInfo) <= 0)
+        {
+            // if something goes wrong
+            jobScheduler.cancelAll();
         }
 
         try
