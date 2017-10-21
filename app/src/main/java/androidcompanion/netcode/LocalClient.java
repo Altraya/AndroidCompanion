@@ -20,14 +20,14 @@ public class LocalClient {
     private Client client;
     private LocalClient thisObj;
     private int pairingKey;
+    private ConnectionState connectionState;
 
-    public LocalClient(String address,int port, int pairingKey){
+    public LocalClient(String address, int port, int pairingKey){
 
         thisObj = this;
-
         client = new Client(address,port);
-
         this.pairingKey = pairingKey;
+        this.connectionState = ConnectionState.DISCONNECT;
 
         client.addClientEventListener(new ClientEvent.ClientEventListener() {
             @Override
@@ -40,7 +40,7 @@ public class LocalClient {
 
             @Override
             public void messageReceivedEvent(ClientEvent event, String message) {
-                System.out.println("Message recu du serveur !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+message);
+                System.out.println(""+message);
                 //Interprets incomming json string
                 ToastManager.makeToast("Message reçu du serveur");
                 SystemManager.getInstance().getNotificationInterpretor().interpretNotify(thisObj,message);
@@ -94,6 +94,7 @@ public class LocalClient {
     public void connect(){
 
         client.connect();
+        setConnectionState(ConnectionState.PENDING);
 
     }
 
@@ -117,5 +118,29 @@ public class LocalClient {
 
     public void setPairingKey(int pairingKey) {
         this.pairingKey = pairingKey;
+    }
+
+    public ConnectionState getConnectionState() {
+        return connectionState;
+    }
+
+    public void setConnectionState(ConnectionState connectionState) {
+        this.connectionState = connectionState;
+
+        switch (connectionState) {
+            case ACCEPTED:
+                break;
+            case PENDING:
+                break;
+            case REFUSED:
+                break;
+        }
+    }
+
+    public enum ConnectionState {
+        ACCEPTED,
+        PENDING,
+        REFUSED,
+        DISCONNECT
     }
 }

@@ -16,6 +16,8 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
+import androidcompanion.device.DeviceListingActivity;
+import androidcompanion.device.DeviceListingAdaptater;
 import androidcompanion.main.MyApp;
 import androidcompanion.main.SystemManager;
 import androidcompanion.main.ToastManager;
@@ -32,6 +34,8 @@ import androidcompanion.notifications.json.SmsToSend;
  */
 public class NotificationInterpretor {
 
+    public static DeviceListingAdaptater deviceAdapter;
+
     public NotificationInterpretor() {
 
     }
@@ -44,11 +48,19 @@ public class NotificationInterpretor {
             Message message = gson.fromJson(jsonString, Message.class);
 
             switch (message.getType()) {
+                case "connectionAccepted":
+                    ToastManager.makeToast("Connexion validée");
+                    source.setConnectionState(LocalClient.ConnectionState.ACCEPTED);
+                    SystemManager.getInstance().getSaveManager();
+
                 case "connectionRefused":
                     ToastManager.makeToast("Connexion refusée");
-                    interpretDisconnectionConfirmation(source);
+                    source.setConnectionState(LocalClient.ConnectionState.REFUSED);
+                    SystemManager.getInstance().getSaveManager().loadConnectedDevices(deviceAdapter);
 
                 case "smsToSend":
+                    source.setConnectionState(LocalClient.ConnectionState.ACCEPTED);
+                    SystemManager.getInstance().getSaveManager().loadConnectedDevices(deviceAdapter);
                     System.out.println("Will send a message " + message);
                     interpretSmsToSend(message);
                     break;

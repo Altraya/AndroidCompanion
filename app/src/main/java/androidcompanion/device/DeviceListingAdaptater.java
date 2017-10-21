@@ -2,6 +2,7 @@ package androidcompanion.device;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +13,12 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import androidcompanion.main.MyApp;
 import androidcompanion.main.SystemManager;
 import androidcompanion.netcode.LocalClient;
 import project.androidcompanion.ConfigurationActivity;
 import project.androidcompanion.R;
+
+import static androidcompanion.netcode.LocalClient.ConnectionState.PENDING;
 
 // improved adapter using viewholder : https://github.com/codepath/android_guides/wiki/Using-an-ArrayAdapter-with-ListView
 
@@ -34,6 +36,7 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
         Button btnSettings;
         TextView deviceIPAdress;
         TextView devicePort;
+        TextView DeviceConnectionState;
     }
 
 
@@ -52,6 +55,7 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
             viewHolder.btnSettings = (Button) convertView.findViewById(R.id.btn_device_settings);
             viewHolder.deviceIPAdress = (TextView) convertView.findViewById(R.id.textView_deviceIP);
             viewHolder.devicePort = (TextView) convertView.findViewById(R.id.textView_devicePort);
+            viewHolder.DeviceConnectionState = (TextView) convertView.findViewById(R.id.textView_ConnectionState);
             // Cache the viewHolder object inside the fresh view
             convertView.setTag(viewHolder);
         } else {
@@ -62,6 +66,21 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
         // into the template view.
         viewHolder.deviceIPAdress.setText("IP Adress : " + deviceInformationActivity.getDeviceIPAdress());
         viewHolder.devicePort.setText("Port : " + deviceInformationActivity.getDevicePort());
+
+        switch (getConnectionState(deviceInformationActivity)) {
+            case PENDING:
+                viewHolder.DeviceConnectionState.setText("Pending...");
+                viewHolder.DeviceConnectionState.setTextColor(Color.rgb(255, 165, 0));
+                break;
+            case ACCEPTED:
+                viewHolder.DeviceConnectionState.setText("Connection etablished");
+                viewHolder.DeviceConnectionState.setTextColor(Color.GREEN);
+                break;
+            case REFUSED:
+                viewHolder.DeviceConnectionState.setText("Connection Refused");
+                viewHolder.DeviceConnectionState.setTextColor(Color.RED);
+                break;
+        }
         viewHolder.btnDelete.setTag(position);
         viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,5 +125,11 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
 
         // Return the completed view to render on screen
         return convertView;
+    }
+
+    // This function return the connection state of the localClient
+    public LocalClient.ConnectionState getConnectionState(DeviceInformationActivity deviceInformation) {
+        LocalClient client = SystemManager.getInstance().getClientManager().getLocalClient(deviceInformation.getDeviceIPAdress(), Integer.parseInt(deviceInformation.getDevicePort()));
+        return client.getConnectionState();
     }
 }

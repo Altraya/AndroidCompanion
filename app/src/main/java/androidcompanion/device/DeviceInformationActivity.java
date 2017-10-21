@@ -1,6 +1,9 @@
 package androidcompanion.device;
 
 import android.support.v7.app.AppCompatActivity;
+
+import androidcompanion.netcode.LocalClient;
+
 /**
  * Created by Sakina on 04/04/2017.
  */
