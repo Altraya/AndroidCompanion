@@ -50,6 +50,14 @@ public class TCPClient {
             }
             //TODO end of async part
 
+            Thread t = new Thread(new Runnable() {
+                public void run(){
+                    System.out.println("TEST TEST TEST TEST TEST TEST TEST TEST TEST");
+                }
+            });
+
+            t.start();
+
             System.out.println("confirm order given");
         }
     }

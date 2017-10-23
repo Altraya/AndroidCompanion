@@ -18,21 +18,29 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.google.gson.Gson;
+import com.jaredrummler.android.device.DeviceName;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import androidcompanion.main.MyApp;
 import androidcompanion.main.SystemManager;
 import androidcompanion.main.ToastManager;
 import androidcompanion.netcode.LocalClient;
+import androidcompanion.notifications.json.ContactList;
+import androidcompanion.notifications.json.Message;
 import project.androidcompanion.ConfigurationActivity;
 import project.androidcompanion.R;
 
@@ -144,6 +152,7 @@ public class DeviceListingActivity extends AppCompatActivity{
                 }
             }
         });
+
     }
 
     @Override

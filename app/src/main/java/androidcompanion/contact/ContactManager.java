@@ -55,6 +55,8 @@ public class ContactManager {
 
                     Contact c = new Contact(name,numbers);
 
+                    listeContacts.add(c);
+
                     pCur.close();
                 }
             }
