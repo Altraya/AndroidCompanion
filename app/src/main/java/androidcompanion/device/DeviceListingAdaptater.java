@@ -18,8 +18,6 @@ import androidcompanion.netcode.LocalClient;
 import project.androidcompanion.ConfigurationActivity;
 import project.androidcompanion.R;
 
-import static androidcompanion.netcode.LocalClient.ConnectionState.PENDING;
-
 // improved adapter using viewholder : https://github.com/codepath/android_guides/wiki/Using-an-ArrayAdapter-with-ListView
 
 /**
@@ -64,7 +62,7 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
         }
         // Populate the data from the data object via the viewHolder object
         // into the template view.
-        viewHolder.deviceIPAdress.setText("IP Adress : " + deviceInformationActivity.getDeviceIPAdress());
+        viewHolder.deviceIPAdress.setText("IP Address : " + deviceInformationActivity.getDeviceIPAdress());
         viewHolder.devicePort.setText("Port : " + deviceInformationActivity.getDevicePort());
 
         switch (getConnectionState(deviceInformationActivity)) {
@@ -129,7 +127,7 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
 
     // This function return the connection state of the localClient
     public LocalClient.ConnectionState getConnectionState(DeviceInformationActivity deviceInformation) {
-        LocalClient client = SystemManager.getInstance().getClientManager().getLocalClient(deviceInformation.getDeviceIPAdress(), Integer.parseInt(deviceInformation.getDevicePort()));
+        LocalClient client = SystemManager.getInstance().getClientManager().getClient(deviceInformation.getDeviceIPAdress(), Integer.parseInt(deviceInformation.getDevicePort()));
         return client.getConnectionState();
     }
 }

@@ -54,13 +54,15 @@ public class DeviceListingActivity extends AppCompatActivity{
 
     ArrayList<DeviceInformationActivity> listDevice = new ArrayList<DeviceInformationActivity>();
     public static DeviceListingAdaptater deviceAdapter;
-    ListView listView;
+    public static Context context;
+    public static ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_listing);
+        context = this;
 
         /*// We request the camera permission
         SystemManager.getInstance().getPermissionManager().requestCameraPermission(DeviceListingActivity.this);

@@ -10,6 +10,7 @@ import androidcompanion.device.DeviceListingActivity;
 import androidcompanion.main.MyApp;
 import androidcompanion.main.SystemManager;
 import androidcompanion.main.ToastManager;
+import androidcompanion.notifications.NotificationInterpretor;
 
 /**
  * Created by Jo on 28/04/2017.
@@ -27,14 +28,13 @@ public class LocalClient {
         thisObj = this;
         client = new Client(address,port);
         this.pairingKey = pairingKey;
-        this.connectionState = ConnectionState.DISCONNECT;
+        this.connectionState = ConnectionState.PENDING;
 
         client.addClientEventListener(new ClientEvent.ClientEventListener() {
             @Override
             public void connectedEvent(ClientEvent event) {
                 //Sends connection message to the server
                 System.out.println("Connected to " + client.getAddress());
-                ToastManager.makeToast("Connexion établie");
                 SystemManager.getInstance().getNotifyFactory().connect(thisObj);
             }
 
@@ -92,10 +92,8 @@ public class LocalClient {
     }
 
     public void connect(){
-
         client.connect();
         setConnectionState(ConnectionState.PENDING);
-
     }
 
     public void disconnect(){
@@ -131,16 +129,27 @@ public class LocalClient {
             case ACCEPTED:
                 break;
             case PENDING:
+                // TODO le Timer de 10 secondes avant de passer en refused
+
                 break;
             case REFUSED:
+                // TODO le disconnect  pose des problèmes (ce dont on avait parlé  avec  Josselin)
+                //this.disconnect();
                 break;
         }
+
+        ((DeviceListingActivity)(DeviceListingActivity.context)).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // Reset the view cache by resetting the ListView adapter
+                DeviceListingActivity.listView.setAdapter(DeviceListingActivity.listView.getAdapter());
+            }
+        });
     }
 
     public enum ConnectionState {
         ACCEPTED,
         PENDING,
-        REFUSED,
-        DISCONNECT
+        REFUSED
     }
 }

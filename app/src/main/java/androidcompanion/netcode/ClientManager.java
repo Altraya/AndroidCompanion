@@ -68,7 +68,8 @@ public class ClientManager {
 
     }
 
-    public LocalClient getLocalClient(String address, int port) {
+    // This function return a LocalClient object
+    public LocalClient getClient(String address, int port) {
         for(int i = 0; i < clients.size(); i++){
             if(clients.get(i).getClient().getAddress().equals(address) && clients.get(i).getClient().getPort() == port){
                 return clients.get(i);
