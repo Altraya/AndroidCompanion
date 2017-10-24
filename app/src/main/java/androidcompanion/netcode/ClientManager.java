@@ -21,7 +21,13 @@ public class ClientManager {
 
     public void notifyAll(String pack,String title,String text){
 
+        System.out.println("Notify all : " + text);
+
+        System.out.println("Clients : " + clients.size());
+
         for(int i = 0; i < clients.size(); i++){
+
+            System.out.println("Notify : " + clients.get(i).getClient().getAddress());
 
             SystemManager.getInstance().getNotifyFactory().notify(clients.get(i),pack, title, text);
 
@@ -48,7 +54,14 @@ public class ClientManager {
 
             if(clients.get(i).getClient().getAddress().equals(address) && clients.get(i).getClient().getPort() == port){
 
-                ToastManager.makeToast("Already connected");
+
+
+                if(!clients.get(i).getClient().isActive()){
+                    clients.get(i).connect();
+                    ToastManager.makeToast("Reconnected");
+                }else{
+                    ToastManager.makeToast("Already connected");
+                }
 
                 return null;
 
@@ -59,6 +72,8 @@ public class ClientManager {
         LocalClient localClient = new LocalClient(address,port, pairingKey);
 
         clients.add(localClient);
+        // adding new device settings
+        SystemManager.getInstance().getDeviceSettingsManager().createDeviceSetting(localClient.getClient().getDeviceId());
 
         return localClient;
 
@@ -68,7 +83,7 @@ public class ClientManager {
 
         for(int i = 0; i < clients.size(); i++){
 
-            if(!clients.get(i).getClient().isActive()){
+            if(!clients.get(i).getClient().isTargetForDeletion()){
 
                 clients.remove(i);
 
@@ -78,6 +93,15 @@ public class ClientManager {
 
         }
 
+    }
+
+    public LocalClient getClientByUid(String uid){
+        for(int i = 0; i < clients.size(); i ++){
+            if(clients.get(i).getUid().toString().equals(uid)){
+                return clients.get(i);
+            }
+        }
+        return null;
     }
 
     public ArrayList<LocalClient> getClients() {

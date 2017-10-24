@@ -13,7 +13,8 @@ public class Client {
     private String address;
     private int port;
 
-    private boolean isActive = true;
+    private boolean isActive = false;
+    private boolean isTargetForDeletion = false;
 
     public Client(String address, int port){
 
@@ -25,6 +26,8 @@ public class Client {
     }
 
     public void connect(){
+
+        isActive = true;
 
         tcpClient = new TCPClient(this);
 
@@ -40,13 +43,23 @@ public class Client {
 
         asyncClient.cancel(true);
 
+        isActive = false;
+
     }
 
     public void sendMessage(String data){
 
-        tcpClient.sendMessage(data);
+        try{
 
-        System.out.println("SENDING DATA TO REMOTE : " + data);
+            tcpClient.sendMessage(data);
+
+            System.out.println("SENDING DATA TO REMOTE : " + data);
+
+        }catch(Exception e){
+
+            System.out.println("Failed to send data to server");
+
+        }
 
     }
 
@@ -106,7 +119,15 @@ public class Client {
         return isActive;
     }
 
-    public void setActive(boolean active) {
-        isActive = active;
+    public boolean isTargetForDeletion() {
+        return isTargetForDeletion;
+    }
+
+    public void setTargetForDeletion(boolean targetForDeletion) {
+        isTargetForDeletion = targetForDeletion;
+    }
+
+    public String getDeviceId() {
+        return address + ':' + port;
     }
 }

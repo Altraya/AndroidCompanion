@@ -5,6 +5,8 @@ import android.content.IntentFilter;
 import android.os.BatteryManager;
 import android.util.Log;
 
+import java.util.UUID;
+
 import androidcompanion.main.MyApp;
 import androidcompanion.main.SystemManager;
 import androidcompanion.main.ToastManager;
@@ -17,13 +19,21 @@ public class LocalClient {
 
     private Client client;
     private LocalClient thisObj;
+
+    private ClientSettings clientSettings;
+
     private int pairingKey;
+    private UUID uid;
 
     public LocalClient(String address,int port, int pairingKey){
+
+        uid = UUID.randomUUID();
 
         thisObj = this;
 
         client = new Client(address,port);
+
+        clientSettings = new ClientSettings();
 
         this.pairingKey = pairingKey;
 
@@ -31,6 +41,7 @@ public class LocalClient {
             @Override
             public void connectedEvent(ClientEvent event) {
                 //Sends connection message to the server
+                System.out.println("Connected to " + client.getAddress());
                 ToastManager.makeToast("Connexion établie");
                 SystemManager.getInstance().getNotifyFactory().connect(thisObj);
 
@@ -56,8 +67,12 @@ public class LocalClient {
             @Override
             public void disconnectedEvent(ClientEvent event) {
 
+                System.out.println("Disconnected : " + client.getAddress() );
+
                 try {
                     SystemManager.getInstance().getClientManager().getClients().remove(thisObj);
+                    // removing device settings
+                    SystemManager.getInstance().getDeviceSettingsManager().removeDeviceSetting(Integer.toString(thisObj.getPairingKey()));
                     // TODO Remove from file and adapter when click on disconnect button only. Other than that just disable disconnect button and allow re-connection somehow
                     SystemManager.getInstance().getSaveManager().removeDeviceFromJsonFile("device_list.json",
                             thisObj.getClient().getAddress(),
@@ -120,5 +135,21 @@ public class LocalClient {
 
     public void setPairingKey(int pairingKey) {
         this.pairingKey = pairingKey;
+    }
+
+    public ClientSettings getClientSettings() {
+        return clientSettings;
+    }
+
+    public void setClientSettings(ClientSettings clientSettings) {
+        this.clientSettings = clientSettings;
+    }
+
+    public String getUid() {
+        return uid.toString();
+    }
+
+    public void setUid(String uid) {
+        this.uid = UUID.fromString(uid);
     }
 }

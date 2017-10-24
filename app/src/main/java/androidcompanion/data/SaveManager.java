@@ -21,9 +21,9 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
-import androidcompanion.device.DeviceInformationActivity;
 import androidcompanion.device.DeviceListingActivity;
 import androidcompanion.device.DeviceListingAdaptater;
 import androidcompanion.main.MyApp;
@@ -202,34 +202,32 @@ public class SaveManager {
             Log.e("tag", "Failed to get asset file list.", e);
         }
         if (files != null) for (String filename : files) {
-            if(filename.equals("device_list.json")){
-                InputStream in = null;
-                OutputStream out = null;
-                try {
-                    in = assetManager.open(filename);
-                    File outFile = new File(MyApp.getInstance().getFilesDir(), filename);
-                    out = new FileOutputStream(outFile);
-                    copyFile(in, out);
-                } catch (Exception e) {
-                    Log.e("tag", "Failed to copy asset file: " + filename, e);
-                } finally {
-                    if (in != null) {
-                        try {
-                            in.close();
-                        } catch (IOException e) {
-                            Log.e("tag", "Failed to close asset file.", e);
-                        }
-                    }
-                    if (out != null) {
-                        try {
-                            out.close();
-                        } catch (IOException e) {
-                            Log.e("tag", "Failed to close FileOuputStream.", e);
-                        }
+            InputStream in = null;
+            OutputStream out = null;
+            try {
+                in = assetManager.open(filename);
+                File outFile = new File(MyApp.getInstance().getFilesDir(), filename);
+                out = new FileOutputStream(outFile);
+                copyFile(in, out);
+            } catch (Exception e) {
+                Log.e("tag", "Failed to copy asset file: " + filename, e);
+            } finally {
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                        Log.e("tag", "Failed to close asset file.", e);
                     }
                 }
-                break;
+                if (out != null) {
+                    try {
+                        out.close();
+                    } catch (IOException e) {
+                        Log.e("tag", "Failed to close FileOuputStream.", e);
+                    }
+                }
             }
+            //break;
         }
     }
 
@@ -251,7 +249,7 @@ public class SaveManager {
                     String deviceIPAdress = device.getString("ip_adress");
                     String devicePort = device.getString("port");
                     String devicePairingKey = device.getString("pairing_key");
-                    deviceAdapter.add(new DeviceInformationActivity(deviceIPAdress,devicePort,devicePairingKey));
+                    SystemManager.getInstance().getClientManager().addClient(deviceIPAdress,Integer.parseInt(devicePort),Integer.parseInt(devicePairingKey));
                 }
             }
         }

@@ -6,9 +6,13 @@ import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import androidcompanion.device.DeviceListingActivity;
+import androidcompanion.device.settings.DeviceSetting;
 import androidcompanion.netcode.LocalClient;
 import androidcompanion.notifications.BatteryStateJobService;
 
@@ -50,7 +54,6 @@ public class MyApp extends Application {
             // do the thing for the first time
             // here we copy the assets to the external storage
             SystemManager.getInstance().getSaveManager().copyAssets();
-            settings = getSharedPreferences("PREFS_NAME", 0);
             SharedPreferences.Editor editor = settings.edit();
             editor.putBoolean("FIRST_RUN", false);
             editor.commit();
@@ -93,11 +96,12 @@ public class MyApp extends Application {
                     String devicePort = device.getString("port");
                     String devicePairingKey = device.getString("pairing_key");
                     // Connection to the device using the infos previously provided
-                    LocalClient newClient = SystemManager.getInstance().getClientManager().addClient(deviceIPAdress,Integer.parseInt(devicePort),Integer.parseInt(devicePairingKey));
+                    //TODO REACTIVATE SAVE
+                    //LocalClient newClient = SystemManager.getInstance().getClientManager().addClient(deviceIPAdress,Integer.parseInt(devicePort),Integer.parseInt(devicePairingKey));
                     // effective connection to the client (socket)
-                    if(newClient != null){
-                        newClient.connect();
-                    }
+                    //if(newClient != null){
+                    //    newClient.connect();
+                    //}
                     //Toast.makeText(getApplicationContext(),"Device successfully connected!",Toast.LENGTH_SHORT).show();
                 }
             }

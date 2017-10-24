@@ -41,6 +41,9 @@ public class NotifService extends NotificationListenerService {
         msgrcv.putExtra("title", title);
         msgrcv.putExtra("text", text);
 
+        System.out.println("Notification caught by service");
+        System.out.println("Title : " + title + " Text : " + text);
+
         sendBroadcast(msgrcv);
 
     }
