@@ -196,14 +196,6 @@ public class DeviceListingActivity extends AppCompatActivity{
         if (id == R.id.action_settings) {
             startActivity(new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS));
             return true;
-        } else if (id == R.id.action_configuration){
-            Intent intent = new Intent(this, ConfigurationActivity.class);
-            // passing parameters to the conf activity
-            Bundle b = new Bundle();
-            b.putString("deviceId", "default");
-            intent.putExtras(b);
-            startActivity(intent);
-            return true;
         }
 
         return super.onOptionsItemSelected(item);

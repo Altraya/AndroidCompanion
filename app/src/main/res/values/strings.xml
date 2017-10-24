@@ -20,6 +20,5 @@
     <string name="receive_call_order">Recevoir ordre d\'appel</string>
     <string name="receive_sms_order">Recevoir ordre d\'envoi SMS</string>
     <string name="enable_notifs">Activate notifications</string>
-    <string name="action_configuration">Configuration par défaut des appareils</string>
     <string name="device_settings">Settings</string>
 </resources>
