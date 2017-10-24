@@ -2,6 +2,7 @@ package androidcompanion.device;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,8 +22,9 @@ import project.androidcompanion.R;
 /**
  * Created by Sakina on 06/04/2017.
  */
-public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivity> {
-    public DeviceListingAdaptater(Context context, ArrayList<DeviceInformationActivity> devicesLists) {
+public class DeviceListingAdaptater extends ArrayAdapter<LocalClient> {
+
+    public DeviceListingAdaptater(Context context, ArrayList<LocalClient> devicesLists) {
         super(context, 0, devicesLists);
     }
 
@@ -38,7 +40,7 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
     @Override
     public View getView(int position, View convertView, final ViewGroup parent) {
         // Get the data item for this position
-        DeviceInformationActivity deviceInformationActivity = getItem(position);
+        final LocalClient device = SystemManager.getInstance().getClientManager().getClients().get(position);
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
         if (convertView == null) {
@@ -58,27 +60,24 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
         }
         // Populate the data from the data object via the viewHolder object
         // into the template view.
-        viewHolder.deviceIPAdress.setText("IP Adress : " + deviceInformationActivity.getDeviceIPAdress());
-        viewHolder.devicePort.setText("Port : " + deviceInformationActivity.getDevicePort());
+        viewHolder.deviceIPAdress.setText("IP Adress : " + device.getClient().getAddress());
+        viewHolder.devicePort.setText("Port : " + device.getClient().getPort());
         viewHolder.btnDelete.setTag(position);
         viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int position = (Integer) view.getTag();
-                // Access the row position here to get the correct data item
-                DeviceInformationActivity device = getItem(position);
                 // Do what you want here...
                 //remove(device);
                 // We look for the local client to disconnect
                 for(LocalClient localClient : SystemManager.getInstance().getClientManager().getClients())
                 {
-                    if(localClient.getClient().getAddress().equals(device.getDeviceIPAdress())
-                            && (new String(localClient.getClient().getPort() + "").equals(device.getDevicePort()))
-                            && (new String(localClient.getPairingKey() + "").equals(device.getDevicePairingKey())))
+                    if(localClient.getUid().equals(device.getUid()))
                     {
-                        SystemManager.getInstance().getNotifyFactory().disconnect(localClient);
-                        SystemManager.getInstance().getSaveManager().removeDeviceFromJsonFile("device_list.json",device.getDeviceIPAdress(),device.getDevicePort(),device.getDevicePairingKey());
-                        SystemManager.getInstance().getSaveManager().loadConnectedDevices(DeviceListingActivity.deviceAdapter);
+                        //TODO REACTIVATE SAVE
+                        //SystemManager.getInstance().getNotifyFactory().disconnect(localClient);
+                        //SystemManager.getInstance().getSaveManager().removeDeviceFromJsonFile("device_list.json",device.getClient().getAddress(),""+device.getClient().getPort(),device.getUid());
+                        //SystemManager.getInstance().getSaveManager().loadConnectedDevices(DeviceListingActivity.deviceAdapter);
                         break;
                     }
                 }
@@ -90,12 +89,10 @@ public class DeviceListingAdaptater extends ArrayAdapter<DeviceInformationActivi
             @Override
             public void onClick(View view) {
                 int position = (Integer) view.getTag();
-                // Access the row position here to get the correct data item
-                DeviceInformationActivity device = getItem(position);
                 Intent intent = new Intent(getContext(), ConfigurationActivity.class);
                 // passing parameters to the conf activity
                 Bundle b = new Bundle();
-                b.putString("deviceId", device.getDeviceIPAdress() + ":" + device.getDevicePort());
+                b.putString("UID", device.getUid());
                 intent.putExtras(b);
                 getContext().startActivity(intent);
             }

@@ -24,7 +24,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import androidcompanion.device.DeviceInformationActivity;
 import androidcompanion.device.DeviceListingActivity;
 import androidcompanion.device.DeviceListingAdaptater;
 import androidcompanion.main.MyApp;
@@ -250,7 +249,7 @@ public class SaveManager {
                     String deviceIPAdress = device.getString("ip_adress");
                     String devicePort = device.getString("port");
                     String devicePairingKey = device.getString("pairing_key");
-                    deviceAdapter.add(new DeviceInformationActivity(deviceIPAdress,devicePort,devicePairingKey));
+                    SystemManager.getInstance().getClientManager().addClient(deviceIPAdress,Integer.parseInt(devicePort),Integer.parseInt(devicePairingKey));
                 }
             }
         }

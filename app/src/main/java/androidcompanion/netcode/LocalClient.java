@@ -1,13 +1,9 @@
 package androidcompanion.netcode;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 
-import java.util.ArrayList;
+import java.util.UUID;
 
-import androidcompanion.device.DeviceListingActivity;
-import androidcompanion.main.MyApp;
 import androidcompanion.main.SystemManager;
 import androidcompanion.main.ToastManager;
 
@@ -19,13 +15,21 @@ public class LocalClient {
 
     private Client client;
     private LocalClient thisObj;
+
+    private ClientSettings clientSettings;
+
     private int pairingKey;
+    private UUID uid;
 
     public LocalClient(String address,int port, int pairingKey){
+
+        uid = UUID.randomUUID();
 
         thisObj = this;
 
         client = new Client(address,port);
+
+        clientSettings = new ClientSettings();
 
         this.pairingKey = pairingKey;
 
@@ -117,5 +121,21 @@ public class LocalClient {
 
     public void setPairingKey(int pairingKey) {
         this.pairingKey = pairingKey;
+    }
+
+    public ClientSettings getClientSettings() {
+        return clientSettings;
+    }
+
+    public void setClientSettings(ClientSettings clientSettings) {
+        this.clientSettings = clientSettings;
+    }
+
+    public String getUid() {
+        return uid.toString();
+    }
+
+    public void setUid(String uid) {
+        this.uid = UUID.fromString(uid);
     }
 }

@@ -49,9 +49,17 @@ public class Client {
 
     public void sendMessage(String data){
 
-        tcpClient.sendMessage(data);
+        try{
 
-        System.out.println("SENDING DATA TO REMOTE : " + data);
+            tcpClient.sendMessage(data);
+
+            System.out.println("SENDING DATA TO REMOTE : " + data);
+
+        }catch(Exception e){
+
+            System.out.println("Failed to send data to server");
+
+        }
 
     }
 

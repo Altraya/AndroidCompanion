@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="15dp"
-    tools:context="project.androidcompanion.androidcompanion.device.ConfigurationActivity">
+    tools:context="androidcompanion.device.ConfigurationActivity">
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-    >
+        tools:layout_editor_absoluteY="25dp"
+        tools:layout_editor_absoluteX="12dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,68 +21,18 @@
             >
 
             <TextView
-                android:id="@+id/send_call_notifications_text"
+                android:id="@+id/use_notifications_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/send_call_notifications"
-                android:textSize="20sp"
                 android:layout_weight="1"
-                />
+                android:text="@string/enable_notifs"
+                android:textSize="20sp" />
 
             <Switch
-                android:id="@+id/send_call_notifications_switch"
+                android:id="@+id/use_notifications_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="20dp"
-            >
-
-            <TextView
-                android:id="@+id/send_sms_notifications_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/send_sms_notifications"
-                android:textSize="20sp"
-                android:layout_weight="1"
-            />
-
-            <Switch
-                android:id="@+id/send_sms_notifications_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-            />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="20dp"
-            >
-
-            <TextView
-                android:id="@+id/send_other_notifications_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/send_notification_activated"
-                android:textSize="20sp"
-                android:layout_weight="1"
-                />
-
-            <Switch
-                android:id="@+id/send_other_notifications_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                />
+                android:layout_gravity="end" />
         </LinearLayout>
 
         <View
@@ -91,54 +42,12 @@
             android:layout_marginBottom="20dp"
         />
 
+        <ListView
+            android:id="@+id/app_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="20dp"
-            >
 
-            <TextView
-                android:id="@+id/receive_call_notifications_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/receive_call_order"
-                android:textSize="20sp"
-                android:layout_weight="1"
-                />
-
-            <Switch
-                android:id="@+id/receive_call_notifications_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="20dp"
-            >
-
-            <TextView
-                android:id="@+id/receive_sms_notifications_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/receive_sms_order"
-                android:textSize="20sp"
-                android:layout_weight="1"
-                />
-
-            <Switch
-                android:id="@+id/receive_sms_notifications_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                />
-        </LinearLayout>
     </LinearLayout>
 
 

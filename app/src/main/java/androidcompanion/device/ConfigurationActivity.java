@@ -1,81 +1,85 @@
 package androidcompanion.device;
 
+import android.app.ProgressDialog;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.CompoundButton;
+import android.widget.ListView;
 import android.widget.Switch;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import androidcompanion.device.settings.DeviceSetting;
 import androidcompanion.device.settings.DeviceSettingsManager;
 import androidcompanion.main.SystemManager;
+import androidcompanion.netcode.LocalClient;
 import project.androidcompanion.R;
 
 public class ConfigurationActivity extends AppCompatActivity {
     private DeviceSettingsManager deviceSettingsManager;
     private DeviceSetting editedDeviceSettings;
 
+    private PackageManager packageManager = null;
+    private List<ApplicationInfo> applist = null;
+    private AppListAdapter listadaptor = null;
+    private ListView applicationList = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        deviceSettingsManager = SystemManager.getInstance().getDeviceSettingsManager();
+        setContentView(R.layout.activity_configuration);
 
         // getting the device id parameter
         Bundle b = this.getIntent().getExtras();
-        String configuredDeviceId = b.getString("deviceId");
-        // to access the right device settings object
-        editedDeviceSettings = deviceSettingsManager.getDeviceSettings(configuredDeviceId);
+        String uid = b.getString("UID");
 
-        setContentView(R.layout.activity_configuration);
+        final LocalClient device = SystemManager.getInstance().getClientManager().getClientByUid(uid);
 
-        Switch switchSendCallNotification = (Switch) findViewById(R.id.send_call_notifications_switch);
-        switchSendCallNotification.setChecked(editedDeviceSettings.getSendCallNotifications());
-        switchSendCallNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                editedDeviceSettings.setSendCallNotifications(isChecked);
-                deviceSettingsManager.persistAllSettings();
-            }
-        });
+        Switch switchSendCallNotification = (Switch) findViewById(R.id.use_notifications_switch);
+        switchSendCallNotification.setChecked(true);
 
-        Switch switchSendSmsNotification = (Switch) findViewById(R.id.send_sms_notifications_switch);
-        switchSendSmsNotification.setChecked(editedDeviceSettings.getSendSmsNotifications());
-        switchSendSmsNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                editedDeviceSettings.setSendSmsNotifications(isChecked);
-                deviceSettingsManager.persistAllSettings();
-            }
-        });
+        if(device != null){
 
-        Switch switchSendOtherNotification = (Switch) findViewById(R.id.send_other_notifications_switch);
-        switchSendOtherNotification.setChecked(editedDeviceSettings.getSendOtherNotifications());
-        switchSendOtherNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                editedDeviceSettings.setSendOtherNotifications(isChecked);
-                deviceSettingsManager.persistAllSettings();
-            }
-        });
+            switchSendCallNotification.setChecked(device.getClientSettings().isNotificationAllowed());
+            switchSendCallNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    device.getClientSettings().setNotificationAllowed(isChecked);
+                    //deviceSettingsManager.persistAllSettings();
+                }
+            });
 
-        Switch switchReceiveCallNotification = (Switch) findViewById(R.id.receive_call_notifications_switch);
-        switchReceiveCallNotification.setChecked(editedDeviceSettings.getReceiveCallNotifications());
-        switchReceiveCallNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                editedDeviceSettings.setReceiveCallNotifications(isChecked);
-                deviceSettingsManager.persistAllSettings();
-            }
-        });
+        }
 
-        Switch switchReceiveSmsNotification = (Switch) findViewById(R.id.receive_sms_notifications_switch);
-        switchReceiveSmsNotification.setChecked(editedDeviceSettings.getReceiveSmsNotifications());
-        switchReceiveSmsNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                editedDeviceSettings.setReceiveSmsNotifications(isChecked);
-                deviceSettingsManager.persistAllSettings();
-            }
-        });
+        packageManager = getPackageManager();
+        applicationList = (ListView) findViewById(R.id.app_list);
+        applist = checkForLaunchIntent(packageManager.getInstalledApplications(PackageManager.GET_META_DATA));
+        listadaptor = new AppListAdapter(ConfigurationActivity.this, R.layout.app_list_row, applist,device);
+        applicationList.setAdapter(listadaptor);
+
+        deviceSettingsManager = SystemManager.getInstance().getDeviceSettingsManager();
+
+
     }
+
+    private List<ApplicationInfo> checkForLaunchIntent(List<ApplicationInfo> list) {
+        ArrayList<ApplicationInfo> applist = new ArrayList<ApplicationInfo>();
+        for (ApplicationInfo info : list) {
+            try {
+                if (null != packageManager.getLaunchIntentForPackage(info.packageName)) {
+                    applist.add(info);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return applist;
+    }
+
 }

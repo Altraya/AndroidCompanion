@@ -84,6 +84,15 @@ public class ClientManager {
 
     }
 
+    public LocalClient getClientByUid(String uid){
+        for(int i = 0; i < clients.size(); i ++){
+            if(clients.get(i).getUid().toString().equals(uid)){
+                return clients.get(i);
+            }
+        }
+        return null;
+    }
+
     public ArrayList<LocalClient> getClients() {
         return clients;
     }

@@ -41,8 +41,6 @@ public class DeviceListingActivity extends AppCompatActivity{
     public final static String EXTRA_DEVICE_IP_ADRESS = "androidcompanion.DEVICE_IP_ADRESS";
     public final static String EXTRA_DEVICE_PORT = "androidcompanion.DEVICE_PORT";
     public final static String EXTRA_PAIRING_KEY = "androidcompanion.KEY";
-
-    ArrayList<DeviceInformationActivity> listDevice = new ArrayList<DeviceInformationActivity>();
     public static DeviceListingAdaptater deviceAdapter;
     ListView listView;
 
@@ -94,7 +92,7 @@ public class DeviceListingActivity extends AppCompatActivity{
         myToolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setTitle(R.string.title_activity_managment);
 
-        deviceAdapter = new DeviceListingAdaptater(this, listDevice);
+        deviceAdapter = new DeviceListingAdaptater(this,SystemManager.getInstance().getClientManager().getClients());
         // Attach the adapter to a ListView
         listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(deviceAdapter);
@@ -112,7 +110,8 @@ public class DeviceListingActivity extends AppCompatActivity{
             }
         });
 
-        SystemManager.getInstance().getSaveManager().loadConnectedDevices(deviceAdapter);
+        //TODO REACTIVATE SAVE
+        //SystemManager.getInstance().getSaveManager().loadConnectedDevices(deviceAdapter);
 
         //click on add button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -168,9 +167,11 @@ public class DeviceListingActivity extends AppCompatActivity{
                         System.out.println("Connecting to " + deviceIPAdress + "...");
                         newClient.connect();
                     }
+                    deviceAdapter.notifyDataSetChanged();
                     //Toast.makeText(getApplicationContext(),"Device successfully connected!",Toast.LENGTH_SHORT).show();
-                    SystemManager.getInstance().getSaveManager().addDeviceToJsonFile("device_list.json",deviceIPAdress,devicePort,devicePairingKey);
-                    SystemManager.getInstance().getSaveManager().loadConnectedDevices(deviceAdapter);
+                    //TODO REACTIVATE SAVE
+                    //SystemManager.getInstance().getSaveManager().addDeviceToJsonFile("device_list.json",deviceIPAdress,devicePort,devicePairingKey);
+                    //SystemManager.getInstance().getSaveManager().loadConnectedDevices(deviceAdapter);
                 }
                 //deviceAdapter.add(new DeviceInformationActivity(deviceIPAdress,devicePort));
             }

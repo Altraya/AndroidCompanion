@@ -41,6 +41,14 @@ public class NotifyFactory {
 
         System.out.println("App : " + app + " Title : " + title + " Text : " + text);
 
+        if(!localClient.getClientSettings().isNotificationAllowed()){
+            return;
+        }
+
+        if(!localClient.getClientSettings().isAuthorized(app)){
+            return;
+        }
+
         try {
 
             final Date d = new Date();
