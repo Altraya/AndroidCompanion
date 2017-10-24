@@ -1,47 +1,29 @@
 package androidcompanion.device;
 
 import android.Manifest;
-import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.google.gson.Gson;
-import com.jaredrummler.android.device.DeviceName;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Date;
 
-import androidcompanion.main.MyApp;
 import androidcompanion.main.SystemManager;
 import androidcompanion.main.ToastManager;
 import androidcompanion.netcode.LocalClient;
-import androidcompanion.notifications.json.ContactList;
-import androidcompanion.notifications.json.Message;
-import project.androidcompanion.ConfigurationActivity;
 import project.androidcompanion.R;
 
 /**

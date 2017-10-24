@@ -12,10 +12,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import androidcompanion.main.MyApp;
 import androidcompanion.main.SystemManager;
 import androidcompanion.netcode.LocalClient;
-import project.androidcompanion.ConfigurationActivity;
 import project.androidcompanion.R;
 
 // improved adapter using viewholder : https://github.com/codepath/android_guides/wiki/Using-an-ArrayAdapter-with-ListView

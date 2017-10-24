@@ -45,7 +45,7 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".ConfigurationActivity"></activity>
+        <activity android:name="androidcompanion.device.ConfigurationActivity"></activity>
     </application>
 
 </manifest>

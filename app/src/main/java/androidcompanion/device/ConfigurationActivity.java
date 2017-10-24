@@ -1,4 +1,4 @@
-package project.androidcompanion;
+package androidcompanion.device;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,18 +8,18 @@ import android.widget.Switch;
 import androidcompanion.device.settings.DeviceSetting;
 import androidcompanion.device.settings.DeviceSettingsManager;
 import androidcompanion.main.SystemManager;
+import project.androidcompanion.R;
 
 public class ConfigurationActivity extends AppCompatActivity {
     private DeviceSettingsManager deviceSettingsManager;
     private DeviceSetting editedDeviceSettings;
 
-    ConfigurationActivity(){
-        deviceSettingsManager = SystemManager.getInstance().getDeviceSettingsManager();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        deviceSettingsManager = SystemManager.getInstance().getDeviceSettingsManager();
+
         // getting the device id parameter
         Bundle b = this.getIntent().getExtras();
         String configuredDeviceId = b.getString("deviceId");
