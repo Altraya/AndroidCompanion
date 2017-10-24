@@ -4,36 +4,64 @@
     android:layout_height="wrap_content"
     android:clickable="true">
 
-    <Button
-        android:id="@+id/btn_disconnect"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="5dp"
-        android:text="@string/disconnect_device" />
+        android:orientation="horizontal"
+        >
 
-    <TextView
-        android:id="@+id/textView_deviceIP"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@id/btn_disconnect"
-        android:layout_alignTop="@id/btn_disconnect"
-        android:paddingLeft="8dp"
-        android:text="IP Adress"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
 
-    <TextView
-        android:id="@+id/textView_devicePort"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@id/btn_disconnect"
-        android:layout_below="@+id/textView_deviceIP"
-        android:paddingLeft="8dp"
-        android:text="Port"
-        android:textSize="16sp"/>
+            <TextView
+                android:id="@+id/textView_deviceIP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:paddingLeft="8dp"
+                android:text="IP Adress"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView_devicePort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:paddingLeft="8dp"
+                android:text="Port"
+                android:textSize="16sp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentEnd="true"
+            >
+
+            <Button
+                android:id="@+id/btn_connect_disconnect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dp" />
+
+            <Button
+                android:id="@+id/btn_device_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:text="@string/device_settings" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
 
 </RelativeLayout>
 
