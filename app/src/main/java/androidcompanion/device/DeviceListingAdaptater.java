@@ -75,7 +75,9 @@ public class DeviceListingAdaptater extends ArrayAdapter<LocalClient> {
                     if(localClient.getUid().equals(device.getUid()))
                     {
                         //TODO REACTIVATE SAVE
-                        //SystemManager.getInstance().getNotifyFactory().disconnect(localClient);
+                        SystemManager.getInstance().getNotifyFactory().disconnect(localClient);
+                        SystemManager.getInstance().getClientManager().cleanup();
+                        notifyDataSetChanged();
                         //SystemManager.getInstance().getSaveManager().removeDeviceFromJsonFile("device_list.json",device.getClient().getAddress(),""+device.getClient().getPort(),device.getUid());
                         //SystemManager.getInstance().getSaveManager().loadConnectedDevices(DeviceListingActivity.deviceAdapter);
                         break;
