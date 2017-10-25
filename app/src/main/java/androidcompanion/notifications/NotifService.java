@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
@@ -19,7 +20,21 @@ import androidcompanion.main.SystemManager;
 public class NotifService extends NotificationListenerService {
 
     @Override
+    public void onCreate(){
+        System.out.println("NOTIFY SERVICE ACTIVE");
+        super.onCreate();
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        System.out.println("NOTIFY SERVICE BOUND");
+        return super.onBind(intent);
+    }
+
+    @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
+
+        System.out.println("NOTIFY SERVICE CATCH");
 
         String pack = sbn.getPackageName();
         String ticker = "";
@@ -29,11 +44,6 @@ public class NotifService extends NotificationListenerService {
         Bundle extras = sbn.getNotification().extras;
         String title = extras.getString("android.title");
         String text = extras.getCharSequence("android.text").toString();
-
-        Log.i("Package",pack);
-        Log.i("Ticker",ticker);
-        Log.i("Title",title);
-        Log.i("Text",text);
 
         Intent msgrcv = new Intent("androidcompanion.notifications.NOTIFICATION_EVENT");
         msgrcv.putExtra("package", pack);
@@ -47,16 +57,5 @@ public class NotifService extends NotificationListenerService {
         sendBroadcast(msgrcv);
 
     }
-
-    //WHEN A NOTIF IS REMOVED
-    //    @Override
-    //    public void onNotificationRemoved(StatusBarNotification sbn) {
-    //        Log.i(TAG,"********** onNOtificationRemoved");
-    //        Log.i(TAG,"ID :" + sbn.getId() + "\t" + sbn.getNotification().tickerText +"\t" + sbn.getPackageName());
-    //        Intent i = new  Intent("androidcompanion.notifications.NOTIFICATION_LISTENER_EXAMPLE");
-    //        i.putExtra("notification_event","onNotificationRemoved :" + sbn.getPackageName() + "\n");
-    //
-    //        sendBroadcast(i);
-    //    }
 
 }

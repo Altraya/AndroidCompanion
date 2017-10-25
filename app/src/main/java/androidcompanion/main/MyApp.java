@@ -9,7 +9,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import androidcompanion.device.DeviceListingActivity;
-import androidcompanion.device.settings.DeviceSetting;
 import androidcompanion.netcode.LocalClient;
 
 /**

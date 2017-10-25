@@ -7,6 +7,7 @@ import android.provider.ContactsContract;
 import java.util.ArrayList;
 
 import androidcompanion.main.MyApp;
+import androidcompanion.main.SystemManager;
 
 /**
  * Created by Jo on 15/09/2017.

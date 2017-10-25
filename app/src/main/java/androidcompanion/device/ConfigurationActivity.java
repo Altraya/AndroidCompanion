@@ -1,9 +1,7 @@
 package androidcompanion.device;
 
-import android.app.ProgressDialog;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.CompoundButton;
@@ -13,15 +11,11 @@ import android.widget.Switch;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidcompanion.device.settings.DeviceSetting;
-import androidcompanion.device.settings.DeviceSettingsManager;
 import androidcompanion.main.SystemManager;
 import androidcompanion.netcode.LocalClient;
 import project.androidcompanion.R;
 
 public class ConfigurationActivity extends AppCompatActivity {
-    private DeviceSettingsManager deviceSettingsManager;
-    private DeviceSetting editedDeviceSettings;
 
     private PackageManager packageManager = null;
     private List<ApplicationInfo> applist = null;
@@ -50,7 +44,7 @@ public class ConfigurationActivity extends AppCompatActivity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     device.getClientSettings().setNotificationAllowed(isChecked);
-                    //deviceSettingsManager.persistAllSettings();
+                    SystemManager.getInstance().getSaveManager().saveDevices();
                 }
             });
 
@@ -61,8 +55,6 @@ public class ConfigurationActivity extends AppCompatActivity {
         applist = checkForLaunchIntent(packageManager.getInstalledApplications(PackageManager.GET_META_DATA));
         listadaptor = new AppListAdapter(ConfigurationActivity.this, R.layout.app_list_row, applist,device);
         applicationList.setAdapter(listadaptor);
-
-        deviceSettingsManager = SystemManager.getInstance().getDeviceSettingsManager();
 
 
     }
