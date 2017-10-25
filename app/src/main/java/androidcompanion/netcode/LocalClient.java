@@ -42,7 +42,7 @@ public class LocalClient {
             public void connectedEvent(ClientEvent event) {
                 //Sends connection message to the server
                 System.out.println("Connected to " + client.getAddress());
-                ToastManager.makeToast("Connexion établie");
+                SystemManager.getInstance().getToastManager().makeToast("Connexion établie");
                 SystemManager.getInstance().getNotifyFactory().connect(thisObj);
 
                 IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
@@ -60,7 +60,7 @@ public class LocalClient {
             public void messageReceivedEvent(ClientEvent event, String message) {
                 System.out.println("Message recu du serveur "+message);
                 //Interprets incomming json string
-                ToastManager.makeToast("Message reçu du serveur");
+                SystemManager.getInstance().getToastManager().makeToast("Message reçu du serveur");
                 SystemManager.getInstance().getNotificationInterpretor().interpretNotify(thisObj,message);
             }
 
@@ -70,40 +70,12 @@ public class LocalClient {
                 System.out.println("Disconnected : " + client.getAddress() );
 
                 try {
-                    SystemManager.getInstance().getClientManager().getClients().remove(thisObj);
-                    // removing device settings
-                    SystemManager.getInstance().getDeviceSettingsManager().removeDeviceSetting(Integer.toString(thisObj.getPairingKey()));
-                    // TODO Remove from file and adapter when click on disconnect button only. Other than that just disable disconnect button and allow re-connection somehow
-                    SystemManager.getInstance().getSaveManager().removeDeviceFromJsonFile("device_list.json",
-                            thisObj.getClient().getAddress(),
-                            Integer.toString(thisObj.getClient().getPort()),
-                            Integer.toString(thisObj.getPairingKey()));
-                    ToastManager.makeToast("Appareil deconnecté");
+                    SystemManager.getInstance().getToastManager().makeToast("Appareil deconnecté");
                 }catch (Exception e)
                 {
                     Log.e("Error", e.toString());
                 }
 
-                // The following instruction causes the app to crash. Due to thread issue?
-                /*DeviceListingActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        SystemManager.getInstance().getSaveManager().loadConnectedDevices(DeviceListingActivity.deviceAdapter);
-                    }
-                });*/
-                /*new Thread(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        new Handler(Looper.getMainLooper()).post(new Runnable() { // Tried new Handler(Looper.myLopper()) also
-                            @Override
-                            public void run() {
-                                SystemManager.getInstance().getSaveManager().loadConnectedDevices(DeviceListingActivity.deviceAdapter);
-                            }
-                        });
-                    }
-                }).start();*/
             }
         });
 
@@ -118,6 +90,14 @@ public class LocalClient {
     public void disconnect(){
 
         client.disconnect();
+
+    }
+
+    public void remove(){
+
+        client.disconnect();
+        SystemManager.getInstance().getClientManager().getClients().remove(this);
+        SystemManager.getInstance().getSaveManager().saveDevices();
 
     }
 

@@ -4,13 +4,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.support.v4.content.LocalBroadcastManager;
+import android.content.SharedPreferences;
+import android.support.v7.app.AppCompatActivity;
 
 import androidcompanion.contact.ContactManager;
 import androidcompanion.data.SaveManager;
-import androidcompanion.device.settings.DeviceSettingsManager;
-import androidcompanion.netcode.Client;
 import androidcompanion.netcode.ClientManager;
+import androidcompanion.notifications.NotifService;
 import androidcompanion.notifications.NotificationInterpretor;
 import androidcompanion.notifications.NotifyFactory;
 
@@ -45,7 +45,10 @@ public class SystemManager {
     private PermissionManager permissionManager;
     private NotificationReceiver nReceiver;
     private ContactManager contactManager;
-    private DeviceSettingsManager deviceSettingsManager;
+    private ToastManager toastManager;
+
+    //Settings
+    private String deviceFileName = "device_list.json";
 
     //Set up function
     public void instanciate(){
@@ -56,13 +59,18 @@ public class SystemManager {
         saveManager = new SaveManager();
         permissionManager = new PermissionManager();
         contactManager = new ContactManager();
+        toastManager = new ToastManager();
 
+        //Set notif receiver
         nReceiver = new NotificationReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction("androidcompanion.notifications.NOTIFICATION_EVENT");
         MyApp.getContext().registerReceiver(nReceiver,filter);
 
+        saveManager.loadDevices();
+
     }
+
 
     class NotificationReceiver extends BroadcastReceiver{
 
@@ -122,11 +130,6 @@ public class SystemManager {
         return permissionManager;
     }
 
-    public DeviceSettingsManager getDeviceSettingsManager () {
-        if(deviceSettingsManager == null) deviceSettingsManager = new DeviceSettingsManager();
-        return deviceSettingsManager;
-    }
-
     public void setPermissionManager(PermissionManager permissionManager) {
         this.permissionManager = permissionManager;
     }
@@ -137,5 +140,21 @@ public class SystemManager {
 
     public void setContactManager(ContactManager contactManager) {
         this.contactManager = contactManager;
+    }
+
+    public String getDeviceFileName() {
+        return deviceFileName;
+    }
+
+    public void setDeviceFileName(String deviceFileName) {
+        this.deviceFileName = deviceFileName;
+    }
+
+    public ToastManager getToastManager() {
+        return toastManager;
+    }
+
+    public void setToastManager(ToastManager toastManager) {
+        this.toastManager = toastManager;
     }
 }

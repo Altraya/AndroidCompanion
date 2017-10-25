@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,10 +20,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-
 import androidcompanion.main.SystemManager;
-import androidcompanion.main.ToastManager;
 import androidcompanion.netcode.LocalClient;
 import project.androidcompanion.R;
 
@@ -45,17 +43,11 @@ public class DeviceListingActivity extends AppCompatActivity {
     ListView listView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_listing);
 
-        /*// We request the camera permission
-        SystemManager.getInstance().getPermissionManager().requestCameraPermission(DeviceListingActivity.this);
-        // We request the smstosend permission
-        SystemManager.getInstance().getPermissionManager().requestSMSToSendPermission(DeviceListingActivity.this);
-
-        SystemManager.getInstance().getPermissionManager().requestCallPermission(DeviceListingActivity.this);*/
+        System.out.println("APP ACTIVITY CREATED");
 
         if (android.os.Build.VERSION.SDK_INT >= 23) {
             requestPermissions(new String[]{
@@ -150,11 +142,11 @@ public class DeviceListingActivity extends AppCompatActivity {
                 // If the data is approved, we add it to our JSON file
                 if(deviceIPAdress.equals("none") && devicePort.equals("none"))
                 {
-                    ToastManager.makeToast("The QR code didn't hold any device informations.");
+                    SystemManager.getInstance().getToastManager().makeToast("The QR code didn't hold any device informations.");
                 }
                 else if(deviceIPAdress.equals("cancelled") && devicePort.equals("cancelled"))
                 {
-                    ToastManager.makeToast("Adding device cancelled.");
+                    SystemManager.getInstance().getToastManager().makeToast("Adding device cancelled.");
                 }
                 else
                 {

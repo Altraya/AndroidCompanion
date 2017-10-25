@@ -140,8 +140,6 @@ public class TCPClient {
 
     public void terminateConnection(){
 
-        client.setTargetForDeletion(true);
-
         if(socket != null){
             try {
                 socket.close();

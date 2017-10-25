@@ -14,6 +14,7 @@ import android.widget.Switch;
 
 import java.util.List;
 
+import androidcompanion.main.SystemManager;
 import androidcompanion.netcode.LocalClient;
 import project.androidcompanion.R;
 
@@ -77,6 +78,7 @@ public class AppListAdapter extends ArrayAdapter<ApplicationInfo> {
                         }else{
                             client.getClientSettings().ban(applicationInfo.packageName);
                         }
+                        SystemManager.getInstance().getSaveManager().saveDevices();
                     }
                 });
             }else{

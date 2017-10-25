@@ -1,8 +1,6 @@
 package androidcompanion.notifications;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -112,7 +110,7 @@ public class NotificationInterpretor {
             try {
                 Intent callIntent = new Intent(Intent.ACTION_CALL);
                 callIntent.setData(Uri.parse("tel:"+subMessageObject.getNumber()));
-                Context currentContext = MyApp.getInstance().getContext();
+                Context currentContext = MyApp.getContext();
                 if (ActivityCompat.checkSelfPermission(currentContext,
                         Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     return;
@@ -150,7 +148,7 @@ public class NotificationInterpretor {
 
             SmsManager smsManager = SmsManager.getDefault();
             smsManager.sendTextMessage(phoneNumber, null, message, null, null);
-            ToastManager.makeToast("You send a message to "+phoneNumber);
+            SystemManager.getInstance().getToastManager().makeToast("You send a message to "+phoneNumber);
 
         }catch (Exception e){
             Log.e("Error",e.toString());

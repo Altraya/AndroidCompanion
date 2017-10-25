@@ -12,9 +12,9 @@ import android.widget.Toast;
  */
 
 public class ToastManager {
-    public static Handler UIHandler = new Handler(Looper.getMainLooper());
 
-    public static void makeToast(final String toastMessage) {
+    public void makeToast(final String toastMessage) {
+        Handler UIHandler = new Handler(Looper.getMainLooper());
         UIHandler.post(new Runnable() {
             @Override
             public void run() {

@@ -30,8 +30,9 @@ public class DeviceListingAdaptater extends ArrayAdapter<LocalClient> {
 
     // View lookup cache
     private static class ViewHolder {
-        Button btnDelete;
+        Button btnDisconnect;
         Button btnSettings;
+        Button btnRemove;
         TextView deviceIPAdress;
         TextView devicePort;
     }
@@ -48,8 +49,9 @@ public class DeviceListingAdaptater extends ArrayAdapter<LocalClient> {
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.device_listing_row, parent, false);
-            viewHolder.btnDelete = (Button) convertView.findViewById(R.id.btn_disconnect);
+            viewHolder.btnDisconnect = (Button) convertView.findViewById(R.id.btn_disconnect);
             viewHolder.btnSettings = (Button) convertView.findViewById(R.id.btn_device_settings);
+            viewHolder.btnRemove = (Button) convertView.findViewById(R.id.btn_device_remove);
             viewHolder.deviceIPAdress = (TextView) convertView.findViewById(R.id.textView_deviceIP);
             viewHolder.devicePort = (TextView) convertView.findViewById(R.id.textView_devicePort);
             // Cache the viewHolder object inside the fresh view
@@ -62,24 +64,17 @@ public class DeviceListingAdaptater extends ArrayAdapter<LocalClient> {
         // into the template view.
         viewHolder.deviceIPAdress.setText("IP Adress : " + device.getClient().getAddress());
         viewHolder.devicePort.setText("Port : " + device.getClient().getPort());
-        viewHolder.btnDelete.setTag(position);
-        viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
+        viewHolder.btnDisconnect.setTag(position);
+        viewHolder.btnDisconnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int position = (Integer) view.getTag();
-                // Do what you want here...
-                //remove(device);
                 // We look for the local client to disconnect
                 for(LocalClient localClient : SystemManager.getInstance().getClientManager().getClients())
                 {
                     if(localClient.getUid().equals(device.getUid()))
                     {
-                        //TODO REACTIVATE SAVE
                         SystemManager.getInstance().getNotifyFactory().disconnect(localClient);
-                        SystemManager.getInstance().getClientManager().cleanup();
                         notifyDataSetChanged();
-                        //SystemManager.getInstance().getSaveManager().removeDeviceFromJsonFile("device_list.json",device.getClient().getAddress(),""+device.getClient().getPort(),device.getUid());
-                        //SystemManager.getInstance().getSaveManager().loadConnectedDevices(DeviceListingActivity.deviceAdapter);
                         break;
                     }
                 }
@@ -90,13 +85,20 @@ public class DeviceListingAdaptater extends ArrayAdapter<LocalClient> {
         viewHolder.btnSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int position = (Integer) view.getTag();
                 Intent intent = new Intent(getContext(), ConfigurationActivity.class);
                 // passing parameters to the conf activity
                 Bundle b = new Bundle();
                 b.putString("UID", device.getUid());
                 intent.putExtras(b);
                 getContext().startActivity(intent);
+            }
+        });
+
+        viewHolder.btnRemove.setTag(position);
+        viewHolder.btnRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                device.remove();
             }
         });
 

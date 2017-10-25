@@ -48,19 +48,15 @@ public class ClientManager {
 
     public LocalClient addClient(String address, int port, int pairingKey){
 
-        cleanup();
-
         for(int i = 0; i < clients.size(); i++){
 
             if(clients.get(i).getClient().getAddress().equals(address) && clients.get(i).getClient().getPort() == port){
 
-
-
                 if(!clients.get(i).getClient().isActive()){
                     clients.get(i).connect();
-                    ToastManager.makeToast("Reconnected");
+                    SystemManager.getInstance().getToastManager().makeToast("Reconnected");
                 }else{
-                    ToastManager.makeToast("Already connected");
+                    SystemManager.getInstance().getToastManager().makeToast("Already connected");
                 }
 
                 return null;
@@ -72,26 +68,9 @@ public class ClientManager {
         LocalClient localClient = new LocalClient(address,port, pairingKey);
 
         clients.add(localClient);
-        // adding new device settings
-        SystemManager.getInstance().getDeviceSettingsManager().createDeviceSetting(localClient.getClient().getDeviceId());
+        SystemManager.getInstance().getSaveManager().saveDevices();
 
         return localClient;
-
-    }
-
-    public void cleanup(){
-
-        for(int i = 0; i < clients.size(); i++){
-
-            if(!clients.get(i).getClient().isTargetForDeletion()){
-
-                clients.remove(i);
-
-                i--;
-
-            }
-
-        }
 
     }
 
