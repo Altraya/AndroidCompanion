@@ -5,15 +5,18 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import androidcompanion.main.MyApp;
 import androidcompanion.main.SystemManager;
 import androidcompanion.netcode.LocalClient;
 import project.androidcompanion.R;
@@ -31,11 +34,10 @@ public class DeviceListingAdaptater extends ArrayAdapter<LocalClient> {
 
     // View lookup cache
     private static class ViewHolder {
-        Button btnDisconnect;
-        Button btnSettings;
-        Button btnRemove;
+        ImageButton btnDisconnect;
+        ImageButton btnSettings;
+        ImageButton btnRemove;
         TextView deviceIPAdress;
-        TextView devicePort;
         TextView DeviceConnectionState;
     }
 
@@ -51,36 +53,46 @@ public class DeviceListingAdaptater extends ArrayAdapter<LocalClient> {
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.device_listing_row, parent, false);
-            viewHolder.btnDisconnect = (Button) convertView.findViewById(R.id.btn_disconnect);
-            viewHolder.btnSettings = (Button) convertView.findViewById(R.id.btn_device_settings);
-            viewHolder.btnRemove = (Button) convertView.findViewById(R.id.btn_device_remove);
+            viewHolder.btnDisconnect = (ImageButton) convertView.findViewById(R.id.btn_disconnect);
+            viewHolder.btnSettings = (ImageButton) convertView.findViewById(R.id.btn_device_settings);
+            viewHolder.btnRemove = (ImageButton) convertView.findViewById(R.id.btn_device_remove);
             viewHolder.deviceIPAdress = (TextView) convertView.findViewById(R.id.textView_deviceIP);
-            viewHolder.devicePort = (TextView) convertView.findViewById(R.id.textView_devicePort);
             viewHolder.DeviceConnectionState = (TextView) convertView.findViewById(R.id.textView_ConnectionState);
-            // Cache the viewHolder object inside the fresh view
             convertView.setTag(viewHolder);
         } else {
-            // View is being recycled, retrieve the viewHolder object from tag
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        // Populate the data from the data object via the viewHolder object
-        // into the template view.
-        viewHolder.deviceIPAdress.setText("IP Adress : " + device.getClient().getAddress());
-        viewHolder.devicePort.setText("Port : " + device.getClient().getPort());
+
+        viewHolder.deviceIPAdress.setText(device.getClient().getAddress());
         switch (device.getConnectionState()) {
             case PENDING:
                 viewHolder.DeviceConnectionState.setText("Pending...");
-                viewHolder.DeviceConnectionState.setTextColor(Color.rgb(255, 165, 0));
+                viewHolder.DeviceConnectionState.setTextColor(ContextCompat.getColor(MyApp.getContext(), R.color.ORANGE));
                 break;
             case ACCEPTED:
-                viewHolder.DeviceConnectionState.setText("Connection etablished");
-                viewHolder.DeviceConnectionState.setTextColor(Color.rgb(26, 182, 52));
+                viewHolder.DeviceConnectionState.setText("Connected");
+                viewHolder.DeviceConnectionState.setTextColor(ContextCompat.getColor(MyApp.getContext(), R.color.GREEN));
                 break;
             case REFUSED:
                 viewHolder.DeviceConnectionState.setText("Connection Refused");
-                viewHolder.DeviceConnectionState.setTextColor(Color.RED);
+                viewHolder.DeviceConnectionState.setTextColor(ContextCompat.getColor(MyApp.getContext(), R.color.RED));
+                break;
+            case DISCONNECTED:
+                viewHolder.DeviceConnectionState.setText("Disconnected");
+                viewHolder.DeviceConnectionState.setTextColor(ContextCompat.getColor(MyApp.getContext(), R.color.BLUE_GRAY));
+                break;
+            case CONNECTING:
+                viewHolder.DeviceConnectionState.setText("Connecting...");
+                viewHolder.DeviceConnectionState.setTextColor(ContextCompat.getColor(MyApp.getContext(), R.color.TEAL));
                 break;
         }
+
+        if(device.getClient().isActive()){
+            ((ImageButton) viewHolder.btnDisconnect).setImageResource(R.drawable.ic_phonelink_off_black_24dp);
+        }else{
+            ((ImageButton) viewHolder.btnDisconnect).setImageResource(R.drawable.ic_phonelink_black_24dp);
+        }
+
         viewHolder.btnDisconnect.setTag(position);
         viewHolder.btnDisconnect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,9 +102,13 @@ public class DeviceListingAdaptater extends ArrayAdapter<LocalClient> {
                 {
                     if(localClient.getUid().equals(device.getUid()))
                     {
-                        SystemManager.getInstance().getNotifyFactory().disconnect(localClient);
-                        notifyDataSetChanged();
-                        break;
+                        if(localClient.getClient().isActive()){
+                            SystemManager.getInstance().getNotifyFactory().disconnect(localClient);
+                            DeviceListingActivity.refreshListview();
+                            break;
+                        }else{
+                            localClient.connect();
+                        }
                     }
                 }
             }

@@ -9,4 +9,10 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
     <color name="white">#FFF</color>
+
+    <color name="GREEN">#4caf50</color>
+    <color name="RED">#f44336</color>
+    <color name="ORANGE">#ff9800</color>
+    <color name="BLUE_GRAY">#607d8b</color>
+    <color name="TEAL">#009688</color>
 </resources>

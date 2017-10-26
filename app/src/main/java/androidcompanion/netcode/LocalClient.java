@@ -35,7 +35,7 @@ public class LocalClient {
 
         client = new Client(address,port);
 
-        setConnectionState(ConnectionState.PENDING);
+        setConnectionState(ConnectionState.DISCONNECTED);
 
         clientSettings = new ClientSettings();
 
@@ -46,7 +46,6 @@ public class LocalClient {
             public void connectedEvent(ClientEvent event) {
                 //Sends connection message to the server
                 System.out.println("Connected to " + client.getAddress());
-                SystemManager.getInstance().getToastManager().makeToast("Connexion établie");
                 SystemManager.getInstance().getNotifyFactory().connect(thisObj);
 
                 IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
@@ -58,18 +57,22 @@ public class LocalClient {
                 float batteryPct = level;
                 boolean isCharging = true;
                 SystemManager.getInstance().getNotifyFactory().notifyBattery(thisObj,batteryPct, isCharging);
+
+                setConnectionState(ConnectionState.PENDING);
+
             }
 
             @Override
             public void messageReceivedEvent(ClientEvent event, String message) {
                 System.out.println("Message recu du serveur "+message);
                 //Interprets incomming json string
-                SystemManager.getInstance().getToastManager().makeToast("Message reçu du serveur");
                 SystemManager.getInstance().getNotificationInterpretor().interpretNotify(thisObj,message);
             }
 
             @Override
             public void disconnectedEvent(ClientEvent event) {
+
+                client.setActive(false);
 
                 System.out.println("Disconnected : " + client.getAddress() );
 
@@ -80,6 +83,8 @@ public class LocalClient {
                     Log.e("Error", e.toString());
                 }
 
+                setConnectionState(ConnectionState.DISCONNECTED);
+
             }
         });
 
@@ -88,6 +93,8 @@ public class LocalClient {
     public void connect(){
 
         client.connect();
+
+        setConnectionState(ConnectionState.CONNECTING);
 
     }
 
@@ -155,7 +162,7 @@ public class LocalClient {
                     @Override
                     public void run() {
 
-                        if (getConnectionState() == ConnectionState.PENDING) {
+                        if (getConnectionState() == ConnectionState.PENDING && client.isActive()) {
                             SystemManager.getInstance().getToastManager().makeToast("Délai d'attente dépassé");
                             setConnectionState(ConnectionState.REFUSED);
                         }
@@ -174,15 +181,20 @@ public class LocalClient {
 
                 break;
             case REFUSED:
-                this.disconnect();
+                client.disconnect();
                 break;
         }
+
         DeviceListingActivity.refreshListview();
+
+
     }
 
     public enum ConnectionState {
         ACCEPTED,
         PENDING,
-        REFUSED
+        REFUSED,
+        DISCONNECTED,
+        CONNECTING
     }
 }

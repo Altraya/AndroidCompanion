@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Looper;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -88,6 +89,8 @@ public class DeviceListingActivity extends AppCompatActivity {
         // Attach the adapter to a ListView
         listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(deviceAdapter);
+        View empty = findViewById(R.id.empty);
+        listView.setEmptyView(empty);
 
         //click on a deviceList item
         /**/listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -195,7 +198,14 @@ public class DeviceListingActivity extends AppCompatActivity {
 
     public static void refreshListview(){
         if(deviceAdapter != null){
-            deviceAdapter.notifyDataSetChanged();
+            android.os.Handler UIHandler = new android.os.Handler(Looper.getMainLooper());
+            UIHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    deviceAdapter.notifyDataSetChanged();
+                }
+            }, 100);
+
         }
     }
 

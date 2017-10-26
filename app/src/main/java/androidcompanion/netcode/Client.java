@@ -50,8 +50,6 @@ public class Client {
 
         asyncClient.cancel(true);
 
-        isActive = false;
-
     }
 
     public void sendMessage(String data){
@@ -128,5 +126,9 @@ public class Client {
 
     public String getDeviceId() {
         return address + ':' + port;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }
