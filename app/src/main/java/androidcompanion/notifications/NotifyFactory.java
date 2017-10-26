@@ -38,16 +38,19 @@ public class NotifyFactory {
         localClient.getClient().sendMessage(getJson(localClient,"disconnect",null));
 
     }
-    public void notifyBattery(LocalClient localClient,float pourcent, boolean isCharging){
-        /**/
+    public void notifyBattery(LocalClient localClient,float percent, boolean isCharging){
+
+        if(!localClient.getConnectionState().equals(LocalClient.ConnectionState.ACCEPTED)){
+            return;
+        }
+
         try {
 
-            BatteryState batteryObject = new BatteryState(pourcent, isCharging);
-
+            BatteryState batteryObject = new BatteryState(percent, isCharging);
             localClient.getClient().sendMessage(getJson(localClient, "BatteryState", batteryObject));
-        }catch(Exception e)
-        {
-            Log.e("Error", e.toString());
+
+        }catch(Exception e){
+            System.out.println("Could not send battery state");
         }
 
     }
@@ -64,36 +67,38 @@ public class NotifyFactory {
             return;
         }
 
+        if(!localClient.getConnectionState().equals(LocalClient.ConnectionState.ACCEPTED)){
+            return;
+        }
+
         try {
 
             final Date d = new Date();
-
             Notify notifyObject = new Notify(app, title, text, d.toString());
-
             String jsonData = getJson(localClient, "Notification", notifyObject);
-
             System.out.println(jsonData);
-
             localClient.getClient().sendMessage(jsonData);
 
-        }catch(Exception e)
-        {
-            Log.e("Error", e.toString());
+        }catch(Exception e){
+            System.out.println("Could not send notification");
         }
 
     }
 
     public void sendContact(LocalClient localClient){
 
+        if(!localClient.getConnectionState().equals(LocalClient.ConnectionState.ACCEPTED)){
+            return;
+        }
+
         try {
+
             final Date d = new Date();
-
             ContactList contactList = new ContactList(SystemManager.getInstance().getContactManager().getListeContacts());
-
             localClient.getClient().sendMessage(getJson(localClient, "contacts", contactList));
-        }catch(Exception e)
-        {
-            Log.e("Error", e.toString());
+
+        }catch(Exception e){
+            System.out.println("Could not send contacts");
         }
 
     }
@@ -101,13 +106,9 @@ public class NotifyFactory {
     private String getJson(LocalClient localClient,String type,JsonObject object){
 
         String conn = localClient.getClient().getAddress() + ":" + localClient.getClient().getPort() + "@" + localClient.getPairingKey();
-
         String author = DeviceName.getDeviceName();
-
         Message message = new Message(type,conn,author,object);
-
         Gson gson = new Gson();
-
         return gson.toJson(message);
 
     }
