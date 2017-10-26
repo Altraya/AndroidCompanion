@@ -3,6 +3,7 @@ package androidcompanion.device;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ public class DeviceListingAdaptater extends ArrayAdapter<LocalClient> {
         Button btnRemove;
         TextView deviceIPAdress;
         TextView devicePort;
+        TextView DeviceConnectionState;
     }
 
 
@@ -54,6 +56,7 @@ public class DeviceListingAdaptater extends ArrayAdapter<LocalClient> {
             viewHolder.btnRemove = (Button) convertView.findViewById(R.id.btn_device_remove);
             viewHolder.deviceIPAdress = (TextView) convertView.findViewById(R.id.textView_deviceIP);
             viewHolder.devicePort = (TextView) convertView.findViewById(R.id.textView_devicePort);
+            viewHolder.DeviceConnectionState = (TextView) convertView.findViewById(R.id.textView_ConnectionState);
             // Cache the viewHolder object inside the fresh view
             convertView.setTag(viewHolder);
         } else {
@@ -64,6 +67,20 @@ public class DeviceListingAdaptater extends ArrayAdapter<LocalClient> {
         // into the template view.
         viewHolder.deviceIPAdress.setText("IP Adress : " + device.getClient().getAddress());
         viewHolder.devicePort.setText("Port : " + device.getClient().getPort());
+        switch (device.getConnectionState()) {
+            case PENDING:
+                viewHolder.DeviceConnectionState.setText("Pending...");
+                viewHolder.DeviceConnectionState.setTextColor(Color.rgb(255, 165, 0));
+                break;
+            case ACCEPTED:
+                viewHolder.DeviceConnectionState.setText("Connection etablished");
+                viewHolder.DeviceConnectionState.setTextColor(Color.rgb(26, 182, 52));
+                break;
+            case REFUSED:
+                viewHolder.DeviceConnectionState.setText("Connection Refused");
+                viewHolder.DeviceConnectionState.setTextColor(Color.RED);
+                break;
+        }
         viewHolder.btnDisconnect.setTag(position);
         viewHolder.btnDisconnect.setOnClickListener(new View.OnClickListener() {
             @Override

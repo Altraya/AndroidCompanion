@@ -193,6 +193,12 @@ public class DeviceListingActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public static void refreshListview(){
+        if(deviceAdapter != null){
+            deviceAdapter.notifyDataSetChanged();
+        }
+    }
+
     /**
      * This method tests if the application has notification access enabled
      * @return true if notification access enabled

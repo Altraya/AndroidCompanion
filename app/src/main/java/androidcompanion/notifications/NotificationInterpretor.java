@@ -42,6 +42,14 @@ public class NotificationInterpretor {
             Message message = gson.fromJson(jsonString, Message.class);
 
             switch (message.getType()) {
+                case "connectionAccepted":
+                    SystemManager.getInstance().getToastManager().makeToast("Connexion validée");
+                    source.setConnectionState(LocalClient.ConnectionState.ACCEPTED);
+                    break;
+                case "connectionRefused":
+                    SystemManager.getInstance().getToastManager().makeToast("Connexion refusée");
+                    source.setConnectionState(LocalClient.ConnectionState.REFUSED);
+                    break;
                 case "smsToSend":
                     System.out.println("Will send a message " + message);
                     interpretSmsToSend(message);

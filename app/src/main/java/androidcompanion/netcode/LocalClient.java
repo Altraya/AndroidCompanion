@@ -3,13 +3,15 @@ package androidcompanion.netcode;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
+import android.os.Looper;
 import android.util.Log;
 
 import java.util.UUID;
 
+import androidcompanion.device.DeviceListingActivity;
 import androidcompanion.main.MyApp;
 import androidcompanion.main.SystemManager;
-import androidcompanion.main.ToastManager;
+
 
 /**
  * Created by Jo on 28/04/2017.
@@ -19,7 +21,7 @@ public class LocalClient {
 
     private Client client;
     private LocalClient thisObj;
-
+    private ConnectionState connectionState;
     private ClientSettings clientSettings;
 
     private int pairingKey;
@@ -32,6 +34,8 @@ public class LocalClient {
         thisObj = this;
 
         client = new Client(address,port);
+
+        setConnectionState(ConnectionState.PENDING);
 
         clientSettings = new ClientSettings();
 
@@ -98,6 +102,7 @@ public class LocalClient {
         client.disconnect();
         SystemManager.getInstance().getClientManager().getClients().remove(this);
         SystemManager.getInstance().getSaveManager().saveDevices();
+        DeviceListingActivity.refreshListview();
 
     }
 
@@ -131,5 +136,53 @@ public class LocalClient {
 
     public void setUid(String uid) {
         this.uid = UUID.fromString(uid);
+    }
+
+    public ConnectionState getConnectionState() {
+        return connectionState;
+    }
+
+    public void setConnectionState(final ConnectionState connectionState) {
+        this.connectionState = connectionState;
+
+        switch (connectionState) {
+            case ACCEPTED:
+                break;
+            case PENDING:
+                // TODO le Timer de 10 secondes avant de passer en refused
+                android.os.Handler UIHandler = new android.os.Handler(Looper.getMainLooper());
+                UIHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        if (getConnectionState() == ConnectionState.PENDING) {
+                            SystemManager.getInstance().getToastManager().makeToast("Délai d'attente dépassé");
+                            setConnectionState(ConnectionState.REFUSED);
+                        }
+                    }
+                }, 10000);
+               /* new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (getConnectionState() == ConnectionState.PENDING) {
+                            SystemManager.getInstance().getToastManager().makeToast("Délai d'attente dépassé");
+                            setConnectionState(ConnectionState.REFUSED);
+                        }
+                    }
+                }, 10000);
+               */
+
+                break;
+            case REFUSED:
+                this.disconnect();
+                break;
+        }
+        DeviceListingActivity.refreshListview();
+    }
+
+    public enum ConnectionState {
+        ACCEPTED,
+        PENDING,
+        REFUSED
     }
 }
