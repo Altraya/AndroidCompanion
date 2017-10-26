@@ -8,6 +8,7 @@ import com.jaredrummler.android.device.DeviceName;
 import java.util.Date;
 
 import androidcompanion.main.SystemManager;
+import androidcompanion.main.Tools;
 import androidcompanion.netcode.LocalClient;
 
 import androidcompanion.notifications.json.BatteryState;
@@ -105,7 +106,7 @@ public class NotifyFactory {
 
     private String getJson(LocalClient localClient,String type,JsonObject object){
 
-        String conn = localClient.getClient().getAddress() + ":" + localClient.getClient().getPort() + "@" + localClient.getPairingKey();
+        String conn = localClient.getLocalIp() + ":" + localClient.getClient().getPort() + "@" + localClient.getPairingKey();
         String author = DeviceName.getDeviceName();
         Message message = new Message(type,conn,author,object);
         Gson gson = new Gson();

@@ -11,6 +11,7 @@ import java.util.UUID;
 import androidcompanion.device.DeviceListingActivity;
 import androidcompanion.main.MyApp;
 import androidcompanion.main.SystemManager;
+import androidcompanion.main.Tools;
 
 
 /**
@@ -26,10 +27,13 @@ public class LocalClient {
 
     private int pairingKey;
     private UUID uid;
+    private String localIp;
 
     public LocalClient(String address,int port, int pairingKey){
 
         uid = UUID.randomUUID();
+
+        localIp = Tools.getLocalIpAddress();
 
         thisObj = this;
 
@@ -113,6 +117,45 @@ public class LocalClient {
 
     }
 
+    public void updateStatus(ConnectionState connectionState){
+
+        switch (connectionState) {
+            case ACCEPTED:
+                break;
+            case PENDING:
+                // TODO le Timer de 10 secondes avant de passer en refused
+                android.os.Handler UIHandler = new android.os.Handler(Looper.getMainLooper());
+                UIHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        if (getConnectionState() == ConnectionState.PENDING && client.isActive()) {
+                            SystemManager.getInstance().getToastManager().makeToast("Délai d'attente dépassé");
+                            setConnectionState(ConnectionState.REFUSED);
+                        }
+                    }
+                }, 30000);
+               /* new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (getConnectionState() == ConnectionState.PENDING) {
+                            SystemManager.getInstance().getToastManager().makeToast("Délai d'attente dépassé");
+                            setConnectionState(ConnectionState.REFUSED);
+                        }
+                    }
+                }, 10000);
+               */
+
+                break;
+            case REFUSED:
+                client.disconnect();
+                break;
+        }
+
+        DeviceListingActivity.refreshListview();
+
+    }
+
     public Client getClient() {
         return client;
     }
@@ -149,45 +192,19 @@ public class LocalClient {
         return connectionState;
     }
 
-    public void setConnectionState(final ConnectionState connectionState) {
+    public void setConnectionState(ConnectionState connectionState) {
+
         this.connectionState = connectionState;
+        updateStatus(connectionState);
 
-        switch (connectionState) {
-            case ACCEPTED:
-                break;
-            case PENDING:
-                // TODO le Timer de 10 secondes avant de passer en refused
-                android.os.Handler UIHandler = new android.os.Handler(Looper.getMainLooper());
-                UIHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+    }
 
-                        if (getConnectionState() == ConnectionState.PENDING && client.isActive()) {
-                            SystemManager.getInstance().getToastManager().makeToast("Délai d'attente dépassé");
-                            setConnectionState(ConnectionState.REFUSED);
-                        }
-                    }
-                }, 10000);
-               /* new Timer().schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        if (getConnectionState() == ConnectionState.PENDING) {
-                            SystemManager.getInstance().getToastManager().makeToast("Délai d'attente dépassé");
-                            setConnectionState(ConnectionState.REFUSED);
-                        }
-                    }
-                }, 10000);
-               */
+    public String getLocalIp() {
+        return localIp;
+    }
 
-                break;
-            case REFUSED:
-                client.disconnect();
-                break;
-        }
-
-        DeviceListingActivity.refreshListview();
-
-
+    public void setLocalIp(String localIp) {
+        this.localIp = localIp;
     }
 
     public enum ConnectionState {
